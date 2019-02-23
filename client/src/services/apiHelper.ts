@@ -71,8 +71,8 @@ export class ApiHelper {
 
     return this.http.request(apiCall.method, apiCall.url, reqOptions)
       .pipe(catchError(error => {
-        this.handleApiError(error)
-        return of(null);
+        this.handleApiError(error);
+        return throwError(error) as Observable<any>;
       }));
     // const that = this;
     // const obs = Observable.create(function subscribe(observer) {
