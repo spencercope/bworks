@@ -23,7 +23,7 @@ export class UserDao extends BaseDao {
 
   public setCurrentUser(user: User): void {
     this.currentUser = user;
-    this.setUserId(user.id);
+    this.setUser();
   }
 
   public getCurrentUser(): User {
@@ -39,7 +39,8 @@ export class UserDao extends BaseDao {
     }
   }
 
-  public setUserId(value: number): void {
-    sessionStorage.setItem(this.USER_ID, value.toString());
+  public setUser(): void {
+    sessionStorage.setItem("user",JSON.stringify(this.currentUser) );
+
   }
 }

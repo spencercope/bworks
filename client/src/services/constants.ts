@@ -11,7 +11,7 @@ export class Constants {
     },
     RESOURCES: {
       ASSETS: 'assets',
-      LOGIN: 'login',
+      LOGIN: 'api/users/login',
       SESSION: 'session',
       USERS: 'users',
       DONORS: 'donors',
