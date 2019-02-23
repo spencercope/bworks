@@ -1,0 +1,24 @@
+{
+  "name": "bworks",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "install": "npm run install:client && npm run install:server",
+    "install:client": "(cd ./client && npm install)",
+    "install:server": "(cd ./server && npm install)",
+    "start": "npm run start:dev",
+    "start:dev": "npm run start:client & npm run start:server",
+    "start:client": "(cd ./client && npm run start)",
+    "start:server": "(cd ./server && npm run start:dev)"
+    },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spencercope/bworks.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/spencercope/bworks/issues"
+  },
+  "homepage": "https://github.com/spencercope/bworks#readme"
+}
