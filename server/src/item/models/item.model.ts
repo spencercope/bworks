@@ -88,7 +88,7 @@ export interface BikeAttribute {
     wheelSize: WheelSize,
     marketPrice: number,
     color: string,
-    standoverHeight: string
+    stepoverHeight: string
 }
 
 export interface PCAttribute{
