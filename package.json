@@ -13,7 +13,7 @@
     "start": "npm run start:dev",
     "start:dev": "npm run start:client & npm run start:server",
     "start:client": "(cd ./client && npm run start)",
-    "start:server": "(cd ./server && npm run start:dev)"
+    "start:server": "(cd ./server && npm run start)"
     },
   "repository": {
     "type": "git",
