@@ -95,8 +95,7 @@ export class UsersComponent implements OnInit {
     const users1 = [...this.users];
     if (this.newUser) {
       users1.push(this.user);
-    }
-    else {
+    } else {
       users1[this.users.indexOf(this.selectedUser)] = this.user;
     }
 
