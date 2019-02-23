@@ -1,0 +1,55 @@
+import {
+  MatCardModule,
+  MatIconModule,
+  MatToolbarModule,
+  MatButtonModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatMenuModule,
+  MatGridListModule,
+  MatTableModule,
+  MatSortModule,
+  MatDialogModule,
+  MatSelectModule,
+  MatDatepickerModule,
+} from '@angular/material';
+import { NgModule } from '@angular/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+
+@NgModule({
+  declarations: [],
+  imports: [
+    MatCardModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatMenuModule,
+    MatGridListModule,
+    MatTableModule,
+    MatSortModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+  ],
+  exports: [
+    MatCardModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatMenuModule,
+    MatGridListModule,
+    MatTableModule,
+    MatSortModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+  ],
+  providers: [],
+})
+export class MaterialModule {}

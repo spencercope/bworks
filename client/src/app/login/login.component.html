@@ -1,0 +1,23 @@
+<mat-card class="loginBox">
+  <mat-card-title class="title">
+    Welcome
+  </mat-card-title>
+
+  <form class="login-form">
+    <div fxLayout="column">
+      <mat-form-field class="stretch">
+        <input matInput [(ngModel)]="model.username" name="username" placeholder="Username">
+      </mat-form-field>
+      <br>
+      <mat-form-field class="stretch">
+        <input matInput
+          type="password" 
+          [(ngModel)]="model.password"
+          name="password"
+          placeholder="Password">
+      </mat-form-field>
+      <br>
+      <button type="submit" mat-raised-button (click)="login()">LOGIN</button>
+    </div>
+  </form>
+</mat-card>
