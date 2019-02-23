@@ -9,10 +9,12 @@ import { User } from '../../../../shared/models/user';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  model: User;
+  user: User;
+  isLogedin : Boolean = false;
+
 
   constructor(private router: Router, private authService: AuthService) {
-    this.model = new User();
+    this.user = new User();
   }
 
   ngOnInit() {}
@@ -22,9 +24,9 @@ export class LoginComponent implements OnInit {
   }
 
   public login(): void {
-    console.log(this.model);
+    console.log(this.user);
     this.authService
-      .login(this.model.username, this.model.password)
+      .login(this.user.username, this.user.password)
       .subscribe(data => {
         this.router.navigate(['portal']);
       });
