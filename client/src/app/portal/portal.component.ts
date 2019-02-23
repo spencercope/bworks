@@ -21,27 +21,27 @@ export class PortalComponent implements OnInit {
     tileArray = [
       new Tile(
         'Create Donation',
-        'Start Donation Flow.  However, the styling is bad cause the description has to be this long to work.',
+        'Start Donation Flow.',
         'donation-flow',
-        'card__image--river'
+        'card__image--create-donation'
       ),
       new Tile(
         'Inventory',
-        'Manager your inventory.   However, the styling is bad cause the description has to be this long to work.',
+        'Manager your inventory.',
         'items',
-        'card__image--factory'
+        'card__image--inventory'
       ),
       new Tile(
         'Users',
-        'Manage your users.  However, the styling is bad cause the description has to be this long to work.',
+        'Manage your users.',
         'users',
-        'card__image--road'
+        'card__image--users'
       ),
       new Tile(
         'Donors',
-        'Manage your donors.  However, the styling is bad cause the description has to be this long to work.',
+        'Manage your donors.',
         'donors',
-        'card__image--fence'
+        'card__image--donors'
       ),
     ];
     return tileArray;
