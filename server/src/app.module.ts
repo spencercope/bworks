@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { SharedModule } from './shared/shared.module';
 import { FileReferenceModule } from './file-reference/file-reference.module';
 import { DonorModule } from './donor/donor.module';
+import { ItemModule } from './item/item.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { DonorModule } from './donor/donor.module';
     UserModule,
     FileReferenceModule,
     DonorModule,
+    ItemModule,
   ],
 })
 export class AppModule {}
