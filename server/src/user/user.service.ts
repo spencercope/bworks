@@ -1,4 +1,11 @@
-import {BadRequestException, forwardRef, Inject, Injectable, InternalServerErrorException} from '@nestjs/common';
+import {
+    BadRequestException,
+    forwardRef,
+    Inject,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException
+} from '@nestjs/common';
 import {BaseService} from 'shared/base.service';
 import {User} from './models/user.model';
 import {InjectModel} from '@nestjs/mongoose';
@@ -7,6 +14,8 @@ import {LoginResponseVm} from './models/login-response-vm';
 import {LoginParams} from './models/login-params';
 import {AuthService} from "../shared/auth/auth.service";
 import {compare} from "bcrypt";
+import {CreateUserParams} from "./models/create-user-params";
+import {UserVm} from "./models/user-vm";
 
 @Injectable()
 export class UserService extends BaseService<User> {
@@ -50,5 +59,43 @@ export class UserService extends BaseService<User> {
         const token = await this.authService.signIn(user.username, user.role);
 
         return new LoginResponseVm(token, user);
+    }
+
+    async createUser(params: CreateUserParams): Promise<User> {
+        const newUser = this.createModel(params);
+        return this.create(newUser);
+    }
+
+    async changePassword(id: string, current: string, newPassword: string, byAdmin: boolean = false): Promise<boolean> {
+        const user = await this.findById(id);
+
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        if (!byAdmin) {
+            const isMatched = await compare(current, user.password);
+
+            if (!isMatched) {
+                throw new BadRequestException('Wrong password');
+            }
+        }
+
+        user.password = newPassword;
+        await user.save();
+        return true;
+    }
+
+    async updateUser(vm: UserVm): Promise<User> {
+        const user = await this.findById(vm.id);
+
+        if (!user) {
+            throw new BadRequestException('User not found');
+        }
+
+        user.role = vm.role;
+        user.username = vm.username;
+
+        return this.update(user.id, user);
     }
 }

@@ -1,23 +1,59 @@
-import { BaseDocument, schemaOptions } from "shared/base.model";
-import { Schema } from 'mongoose';
+import {BaseDocument, schemaOptions} from "shared/base.model";
+import {Schema} from 'mongoose';
 
 export enum BikeType {
-    //TODO get enums
+    Road = 'road',
+    Cross = 'cross',
+    MTB = 'mtb',
+    Hybrid = 'hybrid',
+    Kid = 'kid',
 }
 
-export enum WheelSize {
-    //TODO get enums
-}
+export const wheelSizes = [
+    12,
+    14,
+    16,
+    18,
+    20,
+    24,
+    26,
+    27,
+    29,
+    700
+];
 
-export enum FrameSize {
-    //TODO get enums
-}
+export const frameSizes = [
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    54,
+    56,
+    58,
+    60,
+    62,
+    64,
+    66,
+    68,
+    70
+];
 
 export enum ItemType {
-  Bike = 'bike',
-  PC = 'pc',
-  Part = 'part',
-  Misc = 'misc'
+    Bike = 'Bike',
+    PC = 'PC',
+    Part = 'Part',
+    Misc = 'Misc'
 }
 
 export enum ProcessorType {
@@ -32,13 +68,13 @@ export enum CDDrive {
 }
 
 export enum Status {
-  Received = 'received',
-  Scraped = 'scraped',
-  Donated = 'donated',
-  Sold = 'sold',
-  EarnABike = 'earn-bike',
-  EarnAPC = 'earn-a-pc',
-  Progress = 'progress'
+    Received = 'received',
+    Scraped = 'scraped',
+    Donated = 'donated',
+    Sold = 'sold',
+    EarnABike = 'earn-bike',
+    EarnAPC = 'earn-pc',
+    Progress = 'progress'
 }
 
 export enum VideoCard {
@@ -47,14 +83,14 @@ export enum VideoCard {
     Integrated = 'integrated'
 }
 
-export interface Item extends BaseDocument{
-    donorID: string,
+export interface Item extends BaseDocument {
+    donorId: string,
     type: ItemType,
     notes: string,
     images: any, //TODO proper type
     user: string,
     status: Status,
-    barcodeID: number
+    barcodeId: number
 }
 
 export interface Bike extends Item {
@@ -81,27 +117,28 @@ export interface Misc extends Item {
 }
 
 export interface BikeAttribute {
-    frameSize: FrameSize,
+    frameSize: number,
     graduatedDate: Date,
     serialNumber: string,
     bikeType: BikeType,
-    wheelSize: WheelSize,
+    wheelSize: number,
     marketPrice: number,
     color: string,
-    stepoverHeight: string
+    stepOverHeight: string
 }
 
-export interface PCAttribute{
-    graduateDate: Date,
+export interface PCAttribute {
+    graduatedDate: Date,
     processorCores: number,
     processorSpeed: number,
     processorType: ProcessorType,
+    videoCard: VideoCard,
     ram: number,
     hardDrive: number,
     cdDrive: CDDrive,
-    checkedInBy: nameAndDate,
-    installedBy: nameAndDate,
-    qualityassuranceBy: nameAndDate,
+    checkedInBy: NameAndDate,
+    installedBy: NameAndDate,
+    qualityAssuranceBy: NameAndDate,
     osVersion: OSVersion
 }
 
@@ -113,7 +150,7 @@ export interface PCChecklist {
     wifi: boolean
 }
 
-export interface nameAndDate {
+export interface NameAndDate {
     name: string,
     date: Date,
 }
@@ -125,6 +162,124 @@ export interface OSVersion {
 
 
 export const itemSchema = new Schema({
- 
+    donorId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Donor'
+    },
+    type: {
+        type: String,
+        enum: ['Bike', 'PC', 'Part', 'Misc'],
+        required: true
+    },
+    notes: String,
+    images: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'FileReference'
+        }
+    ],
+    user: String,
+    status: {
+        type: String,
+        enum: ['received', 'scraped', 'donated', 'sold', 'earn-bike', 'earn-pc', 'progress']
+    },
+    barcodeId: {
+        type: Number,
+        unique: true
+    }
+}, {...schemaOptions, discriminatorKey: 'type'});
 
-}, schemaOptions);
+export const bikeSchema = new Schema({
+    attributes: new Schema({
+        frameSize: Number,
+        wheelSize: Number,
+        graduatedDate: {
+            type: Date,
+            default: new Date(Date.now())
+        },
+        serialNumber: String,
+        bikeType: {
+            type: String,
+            enum: ['road', 'cross', 'mtb', 'hybrid', 'kid']
+        },
+        marketPrice: Number,
+        color: String,
+        stepOverHeight: String,
+    }, {_id: false}),
+    todos: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Todo'
+        }
+    ],
+    stories: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Story'
+        }
+    ]
+}, {discriminatorKey: 'type'});
+
+export const nameAndDateSchema = new Schema({
+    name: String,
+    date: {
+        type: Date,
+        default: new Date(Date.now())
+    }
+}, {_id: false});
+
+export const pcSchema = new Schema({
+    attributes: new Schema({
+        graduatedDate: {
+            type: Date,
+            default: new Date(Date.now())
+        },
+        processorCores: Number,
+        processorSpeed: Number,
+        processorType: {
+            type: String,
+            enum: ['intel', 'amd']
+        },
+        videoCard: {
+            type: String,
+            enum: ['nvidia', 'amd', 'integrated']
+        },
+        ram: Number,
+        hardDrive: Number,
+        cdDrive: {
+            type: String,
+            enum: ['rom', 'r/w', 'none']
+        },
+        checkedIn: nameAndDateSchema,
+        installed: nameAndDateSchema,
+        qualityAssurance: nameAndDateSchema,
+        osVersion: new Schema({
+            received: String,
+            bWorksUpdate: String,
+        }, {_id: false})
+    }, {_id: false}),
+    checklist: new Schema({
+        keyboard: Boolean,
+        mouse: Boolean,
+        sound: Boolean,
+        nic: Boolean,
+        wifi: Boolean,
+    }, {_id: false}),
+    todos: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Todo'
+        }
+    ],
+    stories: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Story'
+        }
+    ]
+});
+
+export const miscAndPartSchema = new Schema({
+    name: String,
+    description: String,
+}, {discriminatorKey: 'type'});
