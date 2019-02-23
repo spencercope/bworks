@@ -31,9 +31,8 @@ export const userSchema = new Schema({
     },
 }, schemaOptions);
 
-userSchema.pre<User>('save', async function(next) {
+userSchema.pre<User>('save', async function (next) {
     try {
-        this.updatedAt = new Date(Date.now());
         if (!this.isModified('password')) return next();
 
         const salt = await genSalt(10);
@@ -42,4 +41,9 @@ userSchema.pre<User>('save', async function(next) {
     } catch (e) {
         return next(e);
     }
+});
+
+userSchema.pre<User>("findOneAndUpdate", function (next) {
+    this.updatedAt = new Date(Date.now());
+    return next();
 });

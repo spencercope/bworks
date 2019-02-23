@@ -9,7 +9,7 @@ export class FileReferenceVm extends BaseVm<FileReference> {
     publicUrl: string;
     fileName: string;
     itemId: string;
-    note: string;
+    note?: string;
 
     getViewModel(model: FileReference): void {
         this.publicUrl = model.publicUrl;
