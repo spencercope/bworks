@@ -4,8 +4,8 @@ import {genSalt, hash} from 'bcrypt';
 
 export enum UserRole {
     Volunteer = 'volunteer',
-    Admin = 'admin',
-    SuperAdmin = 'superAdmin'
+    Staff = 'staff',
+    Admin = 'admin'
 }
 
 export interface User extends BaseDocument {
@@ -26,7 +26,7 @@ export const userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['volunteer', 'admin', 'superAdmin'],
+        enum: ['volunteer', 'staff', 'admin'],
         default: 'volunteer'
     },
 }, schemaOptions);

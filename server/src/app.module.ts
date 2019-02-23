@@ -5,6 +5,7 @@ import { SharedModule } from './shared/shared.module';
 import { FileReferenceModule } from './file-reference/file-reference.module';
 import { DonorModule } from './donor/donor.module';
 import { ItemModule } from './item/item.module';
+import { HistoryModule } from './history/history.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ItemModule } from './item/item.module';
     FileReferenceModule,
     DonorModule,
     ItemModule,
+    HistoryModule,
   ],
 })
 export class AppModule {}

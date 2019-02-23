@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {BaseService} from "../shared/base.service";
-import {Bike, Item, ItemType, Misc, Part, PC} from "./models/item.model";
+import {Bike, bikeSchema, Item, Misc, miscAndPartSchema, Part, PC, pcSchema} from "./models/item.model";
 import {Model} from "mongoose";
 import {InjectModel} from '@nestjs/mongoose';
 
@@ -14,9 +14,9 @@ export class ItemService extends BaseService<Item> {
     constructor(@InjectModel('Item') private readonly _itemModel: Model<Item>) {
         super();
         this._model = _itemModel;
-        // this._bikeModel = _itemModel.discriminator<Bike>('Bike', bikeSchema);
-        // this._pcModel = _itemModel.discriminator<PC>('PC', pcSchema);
-        // this._miscModel = _itemModel.discriminator<Misc>('Misc', miscSchema);
-        // this._partModel = _itemModel.discriminator<Part>('Part', partSchema);
+        this._bikeModel = _itemModel.discriminator<Bike>('Bike', bikeSchema);
+        this._pcModel = _itemModel.discriminator<PC>('PC', pcSchema);
+        this._miscModel = _itemModel.discriminator<Misc>('Misc', miscAndPartSchema);
+        this._partModel = _itemModel.discriminator<Part>('Part', miscAndPartSchema);
     }
 }
