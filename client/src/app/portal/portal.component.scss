@@ -41,7 +41,9 @@ img {
 }
 
 .cards {
-  display: flex;
+@media only screen and (min-width: 704px) {
+    display: flex;
+}
   flex-wrap: wrap;
   list-style: none;
   margin: 0;
@@ -49,7 +51,6 @@ img {
 }
 
 .cards__item {
-  display: flex;
   padding: 1rem;
 @media(min-width: 40rem) {
   width: 50%;
@@ -103,34 +104,23 @@ img {
   }
 }
 
-.card__image--flowers {
-  background-image: url(https://unsplash.it/800/600?image=82);
+.card__image--create-donation {
+  background-image: url(../../../assets/tile-images/create-donation.jpg);
 }
-.card__image--road {
-  background-image: url(https://images.unsplash.com/photo-1516750930166-ed88ab1adb61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1498&q=80);
-}
-
-.card__image--river {
-  background-image: url(https://unsplash.it/800/600?image=11);
+.card__image--donors {
+  background-image: url(../../../assets/tile-images//donors.jpg);
 }
 
-.card__image--record {
-  background-image: url(https://unsplash.it/800/600?image=39);
+.card__image--inventory {
+  background-image: url(../../../assets/tile-images/inventory.jpg);
 }
 
-.card__image--fence {
-  background-image: url(https://unsplash.it/800/600?image=59);
-}
-
-.card__image--forest {
-  background-image: url(https://unsplash.it/800/600?image=77);
-}
-
-.card__image--factory {
-  background-image: url(https://images.unsplash.com/photo-1513828646384-e4d8ec30d2bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80);
+.card__image--users {
+  background-image: url(../../../assets/tile-images/users.jpg);
 }
 
 .card__title {
+    text-align: center;
   color: #f4fdff;
   font-size: 1.25rem;
   font-weight: 300;
@@ -139,6 +129,7 @@ img {
 }
 
 .card__text {
+    text-align: center;
   color: #e4e4e2;
   flex: 1 1 auto;
   font-size: 0.875rem;
