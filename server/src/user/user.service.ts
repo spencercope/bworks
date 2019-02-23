@@ -82,7 +82,7 @@ export class UserService extends BaseService<User> {
         }
 
         user.password = newPassword;
-        await user.save();
+        await this.update(user.id, user);
         return true;
     }
 
