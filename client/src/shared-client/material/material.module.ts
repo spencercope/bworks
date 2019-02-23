@@ -12,6 +12,7 @@ import {
   MatDialogModule,
   MatSelectModule,
   MatDatepickerModule,
+  MatRadioModule, MatExpansionModule,
 } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
@@ -33,6 +34,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatSelectModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    MatRadioModule,
+    MatExpansionModule
   ],
   exports: [
     MatCardModule,
@@ -49,6 +52,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatSelectModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    MatRadioModule,
+    MatExpansionModule
   ],
   providers: [],
 })
