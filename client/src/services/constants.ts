@@ -14,7 +14,8 @@ export class Constants {
       LOGIN: 'login',
       SESSION: 'session',
       USERS: 'users',
-      JOBS: 'jobs',
+      DONORS: 'donors',
+      ITEM: 'item',
     },
   };
 

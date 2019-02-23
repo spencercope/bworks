@@ -1,0 +1,21 @@
+<div class="edit-donor-container">
+  <mat-form-field>
+    <input matInput [(ngModel)]="model.name" placeholder="Name">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select [(ngModel)]="model.category" placeholder="Select">
+      <mat-option *ngFor="let ct of donorCategories" [value]="ct.value">
+        {{ ct.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <cva-date
+    [(modelDateField)]="model.dateAcquired">
+  </cva-date>
+
+  <mat-dialog-actions>
+      <button mat-raised-button (click)="save()">Save</button>
+  </mat-dialog-actions>
+</div>

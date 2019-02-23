@@ -1,0 +1,47 @@
+
+  <div class="table-container">
+    <mat-form-field class="white-text">
+      <input matInput (keyup)="applyFilter($event.target.value)"
+      placeholder="Filter">
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+        <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
+        <td mat-cell *matCellDef="let element"> {{ element.category }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dateAcquired">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> DateAcquired </th>
+        <td mat-cell *matCellDef="let element"> {{ element.dateAcquired }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Edit </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-raised-button (click)="editRow(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <button (click)="addNew()" class="mat-fab my-fab-button" aria-label="Add a category">
+    <mat-icon>add</mat-icon>
+  </button>
+

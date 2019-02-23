@@ -38,7 +38,7 @@ export class AuthService {
     return httpRequest.pipe(
       map(loginObj => {
         const loginResponse: any = loginObj;
-        const token = loginResponse.token;
+        const token = loginResponse.accessToken;
         authSvc.userDao.setCurrentUser(loginResponse.user);
         authSvc.apiHelper.setAccessToken(token);
         return loginResponse.user;
