@@ -1,8 +1,8 @@
 export class Constants {
   public static API = {
     ENDPOINTS: {
-      LOCAL: 'http://localhost:3000/',
-      PROD: 'http://192.81.219.113:3007/',
+      LOCAL: 'http://192.81.219.113:3000/api/',
+      PROD: 'http://192.81.219.113:3000/api/',
     },
     VERBS: {
       GET: 'GET',
@@ -11,7 +11,7 @@ export class Constants {
     },
     RESOURCES: {
       ASSETS: 'assets',
-      LOGIN: 'api/users/login',
+      LOGIN: 'users/login',
       SESSION: 'session',
       USERS: 'users',
       DONORS: 'donors',
