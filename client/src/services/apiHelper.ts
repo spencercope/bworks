@@ -1,11 +1,12 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { Constants } from './constants';
-import { ApiCall } from '../../../shared/models/apiCall';
-import { Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { TitleMessageDialog } from '../shared-client/dialog/title-message-dialog/title-message-dialog.component';
-import { MatDialog } from '@angular/material';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {Constants} from './constants';
+import {ApiCall} from '../../../shared/models/apiCall';
+import {Observable, of, throwError} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {TitleMessageDialog} from '../shared-client/dialog/title-message-dialog/title-message-dialog.component';
+import {MatDialog} from '@angular/material';
+import {catchError} from "rxjs/operators";
 
 @Injectable()
 export class ApiHelper {
@@ -18,7 +19,8 @@ export class ApiHelper {
     private http: HttpClient,
     private router: Router,
     private dialog: MatDialog
-  ) {}
+  ) {
+  }
 
   public setEnv(env: string): void {
     this.env = env;
@@ -64,22 +66,29 @@ export class ApiHelper {
         Authorization: 'Bearer ' + this.getAccessToken(),
       });
     }
+
     console.log(apiCall);
-    const that = this;
-    const obs = Observable.create(function subscribe(observer) {
-      const httpReq = that.http.request(apiCall.method, apiCall.url, reqOptions);
-      httpReq.subscribe(
-        data => {
-          observer.next(data);
-          observer.complete();
-        },
-        error => {
-          that.handleApiError(error);
-          observer.error(error);
-        }
-      );
-    });
-    return obs;
+
+    return this.http.request(apiCall.method, apiCall.url, reqOptions)
+      .pipe(catchError(error => {
+        this.handleApiError(error)
+        return of(null);
+      }));
+    // const that = this;
+    // const obs = Observable.create(function subscribe(observer) {
+    //   const httpReq = that.http.request(apiCall.method, apiCall.url, reqOptions);
+    //   httpReq.subscribe(
+    //     data => {
+    //       observer.next(data);
+    //       observer.complete();
+    //     },
+    //     error => {
+    //       that.handleApiError(error);
+    //       observer.error(error);
+    //     }
+    //   );
+    // });
+    // return obs;
   }
 
   public handleApiError(apiError): void {
@@ -113,6 +122,7 @@ export class ApiHelper {
       data: msgObject,
     });
 
-    dialogRef.afterClosed().subscribe(returnInfo => {});
+    dialogRef.afterClosed().subscribe(returnInfo => {
+    });
   }
 }
