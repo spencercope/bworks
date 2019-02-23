@@ -1,6 +1,6 @@
-import { BaseDocument, schemaOptions } from 'shared/base.model';
-import { Schema } from 'mongoose';
-import { genSalt, hash } from 'bcrypt';
+import {BaseDocument, schemaOptions} from 'shared/base.model';
+import {Schema} from 'mongoose';
+import {genSalt, hash} from 'bcrypt';
 
 export enum UserRole {
     Volunteer = 'volunteer',
@@ -37,8 +37,7 @@ userSchema.pre<User>('save', async function(next) {
         if (!this.isModified('password')) return next();
 
         const salt = await genSalt(10);
-        const hashPassword = await hash(this.password, salt);
-        this.password = hashPassword;
+        this.password = await hash(this.password, salt);
         return next();
     } catch (e) {
         return next(e);

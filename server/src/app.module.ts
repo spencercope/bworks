@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { SharedModule } from './shared/shared.module';
+import { FileReferenceModule } from './file-reference/file-reference.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { SharedModule } from './shared/shared.module';
     }),
     SharedModule,
     UserModule,
+    FileReferenceModule,
   ],
 })
 export class AppModule {}
