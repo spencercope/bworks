@@ -19,10 +19,14 @@ export class UsersComponent implements OnInit {
     'dateAcquired',
     'edit',
   ];
-  users: User[] = this.route.snapshot.data['resolvedUsers'] as User[];
+  inComingUsers: User[] = this.route.snapshot.data['resolvedUsers'] as User[];
 
+  displayDialog: boolean;
 
-  cars: any[];
+  user: any = {};
+  selectedUser: User;
+  newUser: boolean;
+  users: User[];
 
   cols: any[];
 
@@ -45,7 +49,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.userDao.getAllFromServer().subscribe( data => {
-        this.cars = data;
+        this.users = data as User[];
     });
 
     this.brands = [
@@ -74,10 +78,52 @@ export class UsersComponent implements OnInit {
     ];
 
     this.cols = [
-      { field: 'vin', header: 'Vin' },
-      { field: 'year', header: 'Year' },
-      { field: 'brand', header: 'Brand' },
-      { field: 'color', header: 'Color' }
+      { field: 'username', header: 'User Name' },
+      { field: 'role', header: 'Role' },
+      { field: 'firstName', header: 'First Name' },
+      { field: 'lastName', header: 'Last Name' }
     ];
+  }
+
+  showDialogToAdd() {
+    this.newUser = true;
+    this.user = {};
+    this.displayDialog = true;
+  }
+
+  save() {
+    const users1 = [...this.users];
+    if (this.newUser) {
+      users1.push(this.user);
+    }
+    else {
+      users1[this.users.indexOf(this.selectedUser)] = this.user;
+    }
+
+    this.users = users1;
+    this.user = null;
+    this.displayDialog = false;
+  }
+
+  delete() {
+    const index = this.users.indexOf(this.selectedUser);
+    // next line needs to happen on delete response
+    // this.users = this.users.filter((val, i) => i !== index);
+    this.user = null;
+    this.displayDialog = false;
+  }
+
+  onRowSelect(event) {
+    this.newUser = false;
+    this.user = this.cloneCar(event.data);
+    this.displayDialog = true;
+  }
+
+  cloneCar(u: User): any {
+    const user = {};
+    for (const prop in u) {
+      user[prop] = u[prop];
+    }
+    return user;
   }
 }
