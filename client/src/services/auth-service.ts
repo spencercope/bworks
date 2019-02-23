@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { ApiHelper } from './apiHelper';
 import { ApiCallFactory } from './apiCallFactory';
 import { UserDao } from './dao/user.dao';
@@ -7,11 +8,16 @@ import { User } from '../../../shared/models/user';
 import { Constants } from './constants';
 import {map} from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+
+})
 export class AuthService {
   apiHelper: ApiHelper;
   apiCallFactory: ApiCallFactory;
   userDao: UserDao;
+  jwtHelper: JwtHelperService;
+
 
   constructor(
     apiHelper: ApiHelper,
@@ -21,6 +27,7 @@ export class AuthService {
     this.apiHelper = apiHelper;
     this.apiCallFactory = apiCallFactory;
     this.userDao = userDao;
+    this.jwtHelper = new JwtHelperService();
   }
 
   public login(username: string, password: string): Observable<User> {
@@ -63,26 +70,8 @@ export class AuthService {
     // return observable;
   }
 
-  // public checkSession(): Observable<any> {
-  //   let apiCall = this.apiCallFactory.getDefaultApiCallObjectForSessionCheck({});
+  public checkSession(token): Boolean {
+    return this.jwtHelper.isTokenExpired(token);
 
-  //   let authSvc = this;
-
-  //   let httpRequest = this.apiHelper.makeApiCall(apiCall);
-  //   let observable = Observable.create(function subscribe(observer) {
-  //     httpRequest.subscribe(
-  //       sessionData => {
-  //         observer.next(sessionData);
-  //         let user: any = sessionData;
-  //         authSvc.userDao.setCurrentUser(user);
-  //         observer.complete();
-  //       },
-  //       error => {
-  //         authSvc.apiHelper.setAccessToken(null);
-  //         observer.error(error);
-  //       }
-  //     )
-  //   });
-  //   return observable;
-  // }
+  }
 }

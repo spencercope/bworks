@@ -24,10 +24,10 @@ export class LoginComponent implements OnInit {
   }
 
   public login(): void {
-    console.log(this.user);
     this.authService
       .login(this.user.username, this.user.password)
       .subscribe(data => {
+        console.log(data)
         this.router.navigate(['portal']);
       });
   }
