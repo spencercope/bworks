@@ -1,4 +1,4 @@
-import {BaseDocument, schemaOptions} from "shared/base.model";
+import {BaseDocument, schemaOptions} from "../../shared/base.model"; 
 import {Schema} from 'mongoose';
 
 export enum BikeType {

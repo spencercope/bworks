@@ -1,4 +1,4 @@
-import {BaseDocument, schemaOptions} from 'shared/base.model';
+import {BaseDocument, schemaOptions} from '../../shared/base.model';
 import {Schema} from 'mongoose';
 import {genSalt, hash} from 'bcrypt';
 
