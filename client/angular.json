@@ -26,9 +26,9 @@
               "src/styles.scss",
               "../client/node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "../client/node_modules/font-awesome/css/font-awesome.min.css",
-              "../client/node_modules/bootstrap/dist/css/bootstrap.min.css"
-
-
+              "../client/node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "../client/node_modules/primeng/resources/themes/nova-light/theme.css",
+              "../client/node_modules/primeng/resources/primeng.min.css"
             ],
             "scripts": []
           },

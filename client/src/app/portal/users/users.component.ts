@@ -20,10 +20,19 @@ export class UsersComponent implements OnInit {
     'edit',
   ];
   users: User[] = this.route.snapshot.data['resolvedUsers'] as User[];
-  dataSource = new MatTableDataSource<User>(this.users);
 
-  @ViewChild(MatSort)
-  sort: MatSort;
+
+  cars: any[];
+
+  cols: any[];
+
+  brands: any[];
+
+  colors: any[];
+
+  yearFilter: number;
+
+  yearTimeout: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,19 +42,42 @@ export class UsersComponent implements OnInit {
     console.log(this.users);
   }
 
+
   ngOnInit() {
-    this.dataSource.sort = this.sort;
-    console.log(this.userDao.getCurrentUser());
-  }
+    this.userDao.getAllFromServer().subscribe( data => {
+        this.cars = data;
+    });
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
+    this.brands = [
+      { label: 'All Brands', value: null },
+      { label: 'Audi', value: 'Audi' },
+      { label: 'BMW', value: 'BMW' },
+      { label: 'Fiat', value: 'Fiat' },
+      { label: 'Honda', value: 'Honda' },
+      { label: 'Jaguar', value: 'Jaguar' },
+      { label: 'Mercedes', value: 'Mercedes' },
+      { label: 'Renault', value: 'Renault' },
+      { label: 'VW', value: 'VW' },
+      { label: 'Volvo', value: 'Volvo' }
+    ];
 
-  private addToDataSourceArray(returnInfo): void {
-    if (returnInfo && returnInfo.wasCreated) {
-      this.users.push(returnInfo.user);
-      this.dataSource = new MatTableDataSource<User>(this.users);
-    }
+    this.colors = [
+      { label: 'White', value: 'White' },
+      { label: 'Green', value: 'Green' },
+      { label: 'Silver', value: 'Silver' },
+      { label: 'Black', value: 'Black' },
+      { label: 'Red', value: 'Red' },
+      { label: 'Maroon', value: 'Maroon' },
+      { label: 'Brown', value: 'Brown' },
+      { label: 'Orange', value: 'Orange' },
+      { label: 'Blue', value: 'Blue' }
+    ];
+
+    this.cols = [
+      { field: 'vin', header: 'Vin' },
+      { field: 'year', header: 'Year' },
+      { field: 'brand', header: 'Brand' },
+      { field: 'color', header: 'Color' }
+    ];
   }
 }
