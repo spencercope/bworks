@@ -23,7 +23,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "../client/node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "../client/node_modules/font-awesome/css/font-awesome.min.css",
+              "../client/node_modules/bootstrap/dist/css/bootstrap.min.css"
+
+
             ],
             "scripts": []
           },

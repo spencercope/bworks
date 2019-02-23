@@ -1,7 +1,11 @@
 .loginBox {
-  background-color: #7a7879;
+  background-color: #E6E6FA;
   max-width:  90%;
   width: 500px;
   height: 220px;
   margin: 10% auto;
+}
+.username, .password {
+  width: 100%;
+  display: block;
 }

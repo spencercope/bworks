@@ -9,7 +9,7 @@ import { ApiHelper } from '../services/apiHelper';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'BWORKS';
+  isLogedin: Boolean =  false;
 
   constructor(private router: Router, private apiHelper: ApiHelper) {
     console.log(environment.envName);

@@ -1,35 +1,22 @@
-<mat-toolbar class="fixed-header">
-  <span>{{ title }}</span>
+<div class="container-fluid">
+  <div class="row">
+<mat-toolbar color="primary" class="fixed-header">
+  <span style="cursor: pointer;">
+    <img (click)="navToPortal()" src='../../assets/logo-bworks.png'> 
+  </span>
   <span class="example-fill-remaining-space"></span>
   <button mat-button (click)="navToPortal()">
-    <mat-icon>home</mat-icon>
-  </button>
-  <button mat-button [matMenuTriggerFor]="rootMenu">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <mat-menu #rootMenu="matMenu">
-    <button mat-menu-item>Home</button>
-    <button mat-menu-item>About Us</button>
-    <button mat-menu-item [matMenuTriggerFor]="servicesSubMenu">Services</button>
-    <button mat-menu-item>Projects</button>
-    <button mat-menu-item>News</button>
-    <button mat-menu-item [matMenuTriggerFor]="servicesSubMenu">Contact Us</button>
-  </mat-menu>
-
-  <mat-menu #servicesSubMenu="matMenu">
-    <button mat-menu-item>Industrial Plant & Piping Design</button>
-    <button mat-menu-item>3D Laser Scanning</button>
-    <button mat-menu-item>Software Consulting & Implementation</button>
-    <button mat-menu-item>Construction Site Services</button>
-  </mat-menu>
-
-  <mat-menu #contactSubMenu="matMenu">
-    <button mat-menu-item>Careers</button>
-    <button mat-menu-item>Piping Designer</button>
-    <button mat-menu-item>CAD Designer-Drafter</button>
-  </mat-menu>
+      {{isLogedin ? "Logout" : "Login"}}
+    </button>
 </mat-toolbar>
-
-<div>
+</div>
+<div class="row">
+  <div class="col-md-12 content">
   <router-outlet></router-outlet>
 </div>
+</div>
+<div class = "bWorks_footer">
+<p><i class="fa fa-copyright" aria-hidden="true"></i> 2019 STLBWork</p>
+</div>
+</div>
+
