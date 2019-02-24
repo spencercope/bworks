@@ -2160,11 +2160,10 @@ export class DonorClient {
      * SearchDonor
      */
     searchDonor(email: string): Observable<DonorVm> {
-        let url_ = this.baseUrl + "/donors/search?";
+        let url_ = this.baseUrl + "/donors/{email}";
         if (email === undefined || email === null)
-            throw new Error("The parameter 'email' must be defined and cannot be null.");
-        else
-            url_ += "email=" + encodeURIComponent("" + email) + "&"; 
+            throw new Error("The parameter 'email' must be defined.");
+        url_ = url_.replace("{email}", encodeURIComponent("" + email)); 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
