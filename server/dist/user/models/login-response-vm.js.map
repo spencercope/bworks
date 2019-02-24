@@ -1,0 +1,1 @@
+{"version":3,"file":"login-response-vm.js","sourceRoot":"","sources":["../../../src/user/models/login-response-vm.ts"],"names":[],"mappings":";;AAAA,uCAAmC;AAGnC,MAAa,eAAe;IAI1B,YAAY,KAAa,EAAE,IAAU;QACnC,IAAI,CAAC,WAAW,GAAG,KAAK,CAAC;QACzB,IAAI,CAAC,IAAI,GAAG,IAAI,gBAAM,CAAC,IAAI,CAAC,CAAC;IAC/B,CAAC;CACF;AARD,0CAQC"}

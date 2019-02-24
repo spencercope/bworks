@@ -1,4 +1,8 @@
+import {ApiModelProperty, ApiModelPropertyOptional} from "@nestjs/swagger";
+
 export class ChangePasswordParams {
-    current: string;
+    @ApiModelPropertyOptional()
+    current?: string;
+    @ApiModelProperty()
     newPassword: string;
 }
