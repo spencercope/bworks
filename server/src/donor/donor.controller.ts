@@ -51,13 +51,13 @@ export class DonorController {
         return new DonorVm(donor);
     }
 
-    @Get('search')
+    @Get(':searchemail')
     @Roles(UserRole.Admin, UserRole.Staff, UserRole.Volunteer)
     @UseGuards(AuthGuard(), RolesGuard)
     @ApiOkResponse({type: DonorVm})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'SearchDonor'})
-    async searchDonor(@Query('email') searchemail: string): Promise<DonorVm> {
+    async searchDonor(@Param('searchemail') searchemail: string): Promise<DonorVm> {
         const donor = await this.donorService.findOne({email:searchemail});
         return new DonorVm(donor);
     }
