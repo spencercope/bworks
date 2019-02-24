@@ -146,4 +146,13 @@ export class ItemController {
         const misc = await this.itemService.getMiscById(id);
         return new MiscVm(misc);
     }
+
+    @Get(':barcodeId')
+    @ApiOkResponse({type: ItemVm})
+    @CustomApiDefaultErrors()
+    @CustomApiOperation({title: 'GetItemByBarcodeId'})
+    async getItemByBarcodeId(@Param('barcodeId') barcodeId: string): Promise<ItemVm> {
+        const item = await this.itemService.findOne({barcodeId});
+        return new ItemVm(item);
+    }
 }

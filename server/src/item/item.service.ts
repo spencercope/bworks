@@ -61,6 +61,7 @@ export class ItemService extends BaseService<Item> {
         bike.status = vm.status;
         bike.user = vm.user;
         bike.notes = vm.notes;
+        bike.wikiLinks = vm.wikiLinks;
 
         return this._bikeModel.findByIdAndUpdate(bike.id, bike, {new: true})
             .populate('images')
@@ -79,6 +80,7 @@ export class ItemService extends BaseService<Item> {
         pc.status = vm.status;
         pc.user = vm.user;
         pc.notes = vm.notes;
+        pc.wikiLinks = vm.wikiLinks;
 
         return this._pcModel.findByIdAndUpdate(pc.id, pc, {new: true})
             .populate('images')
@@ -96,6 +98,7 @@ export class ItemService extends BaseService<Item> {
 
         part.name = vm.name;
         part.description = vm.description;
+        part.wikiLinks = vm.wikiLinks;
 
         return this._partModel.findByIdAndUpdate(part.id, part, {new: true});
     }
@@ -109,6 +112,7 @@ export class ItemService extends BaseService<Item> {
 
         misc.name = vm.name;
         misc.description = vm.description;
+        misc.wikiLinks = vm.wikiLinks;
 
         return this._miscModel.findByIdAndUpdate(misc.id, misc, {new: true});
     }

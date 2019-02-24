@@ -29,8 +29,8 @@ async function bootstrap() {
 
     // Swagger
     const swaggerOptions = new DocumentBuilder()
-        .setTitle('Nest Listing')
-        .setDescription('API Documentation for Nest Listing')
+        .setTitle('STL BWorks')
+        .setDescription('API Documentation for STL BWorks')
         .setVersion('1.0.0')
         .setHost('192.81.219.113:3000')
         // .setHost('localhost:3000')

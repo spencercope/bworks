@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, Query} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, Query} from '@nestjs/common';
 import {DonorService} from "./donor.service";
 import {ApiCreatedResponse, ApiOkResponse, ApiUseTags} from '@nestjs/swagger';
 import {DonorVm} from "./models/donor-vm";
@@ -29,6 +29,15 @@ export class DonorController {
     async gelAllDonors(): Promise<DonorVm[]> {
         const donors = await this.donorService.findAll();
         return donors.map(donor => new DonorVm(donor));
+    }
+
+    @Get(':id')
+    @ApiOkResponse({type: DonorVm})
+    @CustomApiDefaultErrors()
+    @CustomApiOperation({title: 'GetDonorById'})
+    async getDonorById(@Param('id') id: string): Promise<DonorVm> {
+        const donor = await this.donorService.findById(id);
+        return new DonorVm(donor);
     }
 
     @Get('search')

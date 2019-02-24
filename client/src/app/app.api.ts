@@ -1730,6 +1730,74 @@ export class ItemClient {
         }
         return _observableOf<MiscVm>(<any>null);
     }
+
+    /**
+     * GetItemByBarcodeId
+     */
+    getItemByBarcodeId(barcodeId: string): Observable<ItemVm> {
+        let url_ = this.baseUrl + "/items/{barcodeId}";
+        if (barcodeId === undefined || barcodeId === null)
+            throw new Error("The parameter 'barcodeId' must be defined.");
+        url_ = url_.replace("{barcodeId}", encodeURIComponent("" + barcodeId)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetItemByBarcodeId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetItemByBarcodeId(<any>response_);
+                } catch (e) {
+                    return <Observable<ItemVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ItemVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetItemByBarcodeId(response: HttpResponseBase): Observable<ItemVm> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ItemVm.fromJS(resultData200) : new ItemVm();
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = resultData400 ? ApiException.fromJS(resultData400) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = resultData500 ? ApiException.fromJS(resultData500) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ItemVm>(<any>null);
+    }
 }
 
 @Injectable({
@@ -1881,6 +1949,74 @@ export class DonorClient {
             }));
         }
         return _observableOf<DonorVm[]>(<any>null);
+    }
+
+    /**
+     * GetDonorById
+     */
+    getDonorById(id: string): Observable<DonorVm> {
+        let url_ = this.baseUrl + "/donors/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDonorById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDonorById(<any>response_);
+                } catch (e) {
+                    return <Observable<DonorVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DonorVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDonorById(response: HttpResponseBase): Observable<DonorVm> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? DonorVm.fromJS(resultData200) : new DonorVm();
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = resultData400 ? ApiException.fromJS(resultData400) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = resultData500 ? ApiException.fromJS(resultData500) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DonorVm>(<any>null);
     }
 
     /**
@@ -2687,6 +2823,7 @@ export class ItemVm implements IItemVm {
     user?: string | null;
     status!: ItemVmStatus;
     barcodeId!: string;
+    wikiLinks?: string[] | null;
 
     constructor(data?: IItemVm) {
         if (data) {
@@ -2713,6 +2850,11 @@ export class ItemVm implements IItemVm {
             this.user = data["user"] !== undefined ? data["user"] : <any>null;
             this.status = data["status"] !== undefined ? data["status"] : <any>null;
             this.barcodeId = data["barcodeId"] !== undefined ? data["barcodeId"] : <any>null;
+            if (data["wikiLinks"] && data["wikiLinks"].constructor === Array) {
+                this.wikiLinks = [];
+                for (let item of data["wikiLinks"])
+                    this.wikiLinks.push(item);
+            }
         }
     }
 
@@ -2739,6 +2881,11 @@ export class ItemVm implements IItemVm {
         data["user"] = this.user !== undefined ? this.user : <any>null;
         data["status"] = this.status !== undefined ? this.status : <any>null;
         data["barcodeId"] = this.barcodeId !== undefined ? this.barcodeId : <any>null;
+        if (this.wikiLinks && this.wikiLinks.constructor === Array) {
+            data["wikiLinks"] = [];
+            for (let item of this.wikiLinks)
+                data["wikiLinks"].push(item);
+        }
         return data; 
     }
 }
@@ -2754,6 +2901,7 @@ export interface IItemVm {
     user?: string | null;
     status: ItemVmStatus;
     barcodeId: string;
+    wikiLinks?: string[] | null;
 }
 
 export class BikeAttribute implements IBikeAttribute {
@@ -2967,6 +3115,7 @@ export class BikeVm implements IBikeVm {
     user?: string | null;
     status!: BikeVmStatus;
     barcodeId!: string;
+    wikiLinks?: string[] | null;
     attributes?: BikeAttribute | null;
     todos?: TodoVm[] | null;
     stories?: StoryVm[] | null;
@@ -2996,6 +3145,11 @@ export class BikeVm implements IBikeVm {
             this.user = data["user"] !== undefined ? data["user"] : <any>null;
             this.status = data["status"] !== undefined ? data["status"] : <any>null;
             this.barcodeId = data["barcodeId"] !== undefined ? data["barcodeId"] : <any>null;
+            if (data["wikiLinks"] && data["wikiLinks"].constructor === Array) {
+                this.wikiLinks = [];
+                for (let item of data["wikiLinks"])
+                    this.wikiLinks.push(item);
+            }
             this.attributes = data["attributes"] ? BikeAttribute.fromJS(data["attributes"]) : <any>null;
             if (data["todos"] && data["todos"].constructor === Array) {
                 this.todos = [];
@@ -3033,6 +3187,11 @@ export class BikeVm implements IBikeVm {
         data["user"] = this.user !== undefined ? this.user : <any>null;
         data["status"] = this.status !== undefined ? this.status : <any>null;
         data["barcodeId"] = this.barcodeId !== undefined ? this.barcodeId : <any>null;
+        if (this.wikiLinks && this.wikiLinks.constructor === Array) {
+            data["wikiLinks"] = [];
+            for (let item of this.wikiLinks)
+                data["wikiLinks"].push(item);
+        }
         data["attributes"] = this.attributes ? this.attributes.toJSON() : <any>null;
         if (this.todos && this.todos.constructor === Array) {
             data["todos"] = [];
@@ -3059,6 +3218,7 @@ export interface IBikeVm {
     user?: string | null;
     status: BikeVmStatus;
     barcodeId: string;
+    wikiLinks?: string[] | null;
     attributes?: BikeAttribute | null;
     todos?: TodoVm[] | null;
     stories?: StoryVm[] | null;
@@ -3235,6 +3395,7 @@ export class PCVm implements IPCVm {
     user?: string | null;
     status!: PCVmStatus;
     barcodeId!: string;
+    wikiLinks?: string[] | null;
     attributes?: PCAttribute | null;
     todos?: TodoVm[] | null;
     stories?: StoryVm[] | null;
@@ -3264,6 +3425,11 @@ export class PCVm implements IPCVm {
             this.user = data["user"] !== undefined ? data["user"] : <any>null;
             this.status = data["status"] !== undefined ? data["status"] : <any>null;
             this.barcodeId = data["barcodeId"] !== undefined ? data["barcodeId"] : <any>null;
+            if (data["wikiLinks"] && data["wikiLinks"].constructor === Array) {
+                this.wikiLinks = [];
+                for (let item of data["wikiLinks"])
+                    this.wikiLinks.push(item);
+            }
             this.attributes = data["attributes"] ? PCAttribute.fromJS(data["attributes"]) : <any>null;
             if (data["todos"] && data["todos"].constructor === Array) {
                 this.todos = [];
@@ -3301,6 +3467,11 @@ export class PCVm implements IPCVm {
         data["user"] = this.user !== undefined ? this.user : <any>null;
         data["status"] = this.status !== undefined ? this.status : <any>null;
         data["barcodeId"] = this.barcodeId !== undefined ? this.barcodeId : <any>null;
+        if (this.wikiLinks && this.wikiLinks.constructor === Array) {
+            data["wikiLinks"] = [];
+            for (let item of this.wikiLinks)
+                data["wikiLinks"].push(item);
+        }
         data["attributes"] = this.attributes ? this.attributes.toJSON() : <any>null;
         if (this.todos && this.todos.constructor === Array) {
             data["todos"] = [];
@@ -3327,6 +3498,7 @@ export interface IPCVm {
     user?: string | null;
     status: PCVmStatus;
     barcodeId: string;
+    wikiLinks?: string[] | null;
     attributes?: PCAttribute | null;
     todos?: TodoVm[] | null;
     stories?: StoryVm[] | null;
@@ -3343,6 +3515,7 @@ export class PartVm implements IPartVm {
     user?: string | null;
     status!: PartVmStatus;
     barcodeId!: string;
+    wikiLinks?: string[] | null;
     name?: string | null;
     description?: string | null;
 
@@ -3371,6 +3544,11 @@ export class PartVm implements IPartVm {
             this.user = data["user"] !== undefined ? data["user"] : <any>null;
             this.status = data["status"] !== undefined ? data["status"] : <any>null;
             this.barcodeId = data["barcodeId"] !== undefined ? data["barcodeId"] : <any>null;
+            if (data["wikiLinks"] && data["wikiLinks"].constructor === Array) {
+                this.wikiLinks = [];
+                for (let item of data["wikiLinks"])
+                    this.wikiLinks.push(item);
+            }
             this.name = data["name"] !== undefined ? data["name"] : <any>null;
             this.description = data["description"] !== undefined ? data["description"] : <any>null;
         }
@@ -3399,6 +3577,11 @@ export class PartVm implements IPartVm {
         data["user"] = this.user !== undefined ? this.user : <any>null;
         data["status"] = this.status !== undefined ? this.status : <any>null;
         data["barcodeId"] = this.barcodeId !== undefined ? this.barcodeId : <any>null;
+        if (this.wikiLinks && this.wikiLinks.constructor === Array) {
+            data["wikiLinks"] = [];
+            for (let item of this.wikiLinks)
+                data["wikiLinks"].push(item);
+        }
         data["name"] = this.name !== undefined ? this.name : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
         return data; 
@@ -3416,6 +3599,7 @@ export interface IPartVm {
     user?: string | null;
     status: PartVmStatus;
     barcodeId: string;
+    wikiLinks?: string[] | null;
     name?: string | null;
     description?: string | null;
 }
@@ -3431,6 +3615,7 @@ export class MiscVm implements IMiscVm {
     user?: string | null;
     status!: MiscVmStatus;
     barcodeId!: string;
+    wikiLinks?: string[] | null;
     name?: string | null;
     description?: string | null;
 
@@ -3459,6 +3644,11 @@ export class MiscVm implements IMiscVm {
             this.user = data["user"] !== undefined ? data["user"] : <any>null;
             this.status = data["status"] !== undefined ? data["status"] : <any>null;
             this.barcodeId = data["barcodeId"] !== undefined ? data["barcodeId"] : <any>null;
+            if (data["wikiLinks"] && data["wikiLinks"].constructor === Array) {
+                this.wikiLinks = [];
+                for (let item of data["wikiLinks"])
+                    this.wikiLinks.push(item);
+            }
             this.name = data["name"] !== undefined ? data["name"] : <any>null;
             this.description = data["description"] !== undefined ? data["description"] : <any>null;
         }
@@ -3487,6 +3677,11 @@ export class MiscVm implements IMiscVm {
         data["user"] = this.user !== undefined ? this.user : <any>null;
         data["status"] = this.status !== undefined ? this.status : <any>null;
         data["barcodeId"] = this.barcodeId !== undefined ? this.barcodeId : <any>null;
+        if (this.wikiLinks && this.wikiLinks.constructor === Array) {
+            data["wikiLinks"] = [];
+            for (let item of this.wikiLinks)
+                data["wikiLinks"].push(item);
+        }
         data["name"] = this.name !== undefined ? this.name : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
         return data; 
@@ -3504,6 +3699,7 @@ export interface IMiscVm {
     user?: string | null;
     status: MiscVmStatus;
     barcodeId: string;
+    wikiLinks?: string[] | null;
     name?: string | null;
     description?: string | null;
 }
