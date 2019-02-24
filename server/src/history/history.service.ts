@@ -68,6 +68,7 @@ export class HistoryService extends BaseService<History> {
         const story = await this._storyModel.create(newStory);
 
         const pc = await this.itemService.getPcById(pcId);
+
         pc.stories.push(story);
         await pc.save();
 
@@ -102,13 +103,15 @@ export class HistoryService extends BaseService<History> {
         newStory.transferredFromTodo = true;
         const story = await this._storyModel.create(newStory);
 
+        await this.delete(todo.id);
+
         const item = await this.itemService.getItemById(itemId);
 
         if (!item) {
             throw new BadRequestException('Item does not have History');
         }
 
-        item.todos = item.todos.filter(t => t.id !== todo.id);
+        item.todos = item.todos.filter(td => td.id !== todoId);
         item.stories.push(story);
         await this.itemService.update(item.id, item);
 

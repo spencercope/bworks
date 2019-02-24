@@ -13,7 +13,7 @@ export class HistoryVm extends BaseVm<History> {
     @ApiModelPropertyOptional()
     note?: string;
     @ApiModelPropertyOptional({type: String, enum: HistoryType})
-    type?: HistoryType;
+    historyType?: HistoryType;
 
     constructor(model: History) {
         super(model);
@@ -24,7 +24,7 @@ export class HistoryVm extends BaseVm<History> {
         this.itemId = model.itemId;
         this.person = model.person;
         this.note = model.note;
-        this.type = model.type;
+        this.historyType = model.historyType;
     }
 }
 

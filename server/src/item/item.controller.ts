@@ -1,10 +1,14 @@
-import {Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards} from '@nestjs/common';
 import {ItemService} from "./item.service";
 import {BikeVm, ItemVm, MiscVm, PartVm, PCVm} from "./models/item-vm";
-import {ApiCreatedResponse, ApiImplicitQuery, ApiOkResponse, ApiUseTags} from '@nestjs/swagger';
+import {ApiBearerAuth, ApiCreatedResponse, ApiImplicitQuery, ApiOkResponse, ApiUseTags} from '@nestjs/swagger';
 import {ToBooleanPipe} from "../shared/pipes/to-boolean.pipe";
 import {CustomApiDefaultErrors} from "../shared/decorators/custom-api-errors.decorator";
 import {CustomApiOperation} from "../shared/decorators/custom-api-operation.decorator";
+import {Roles} from "../shared/decorators/roles.decorator";
+import {UserRole} from "../user/models/user.model";
+import {AuthGuard} from '@nestjs/passport';
+import {RolesGuard} from "../shared/guards/roles.guard";
 
 @Controller('items')
 @ApiUseTags('Item')
@@ -28,6 +32,9 @@ export class ItemController {
 
     @Put('bike/:id')
     @HttpCode(HttpStatus.CREATED)
+    @Roles(UserRole.Admin, UserRole.Staff)
+    @UseGuards(AuthGuard(), RolesGuard)
+    @ApiBearerAuth()
     @ApiCreatedResponse({type: BikeVm})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'UpdateBikeItem'})
@@ -38,6 +45,9 @@ export class ItemController {
 
     @Put('pc/:id')
     @HttpCode(HttpStatus.CREATED)
+    @Roles(UserRole.Admin, UserRole.Staff)
+    @UseGuards(AuthGuard(), RolesGuard)
+    @ApiBearerAuth()
     @ApiCreatedResponse({type: PCVm})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'UpdatePcItem'})
@@ -48,6 +58,9 @@ export class ItemController {
 
     @Put('part/:id')
     @HttpCode(HttpStatus.CREATED)
+    @Roles(UserRole.Admin, UserRole.Staff)
+    @UseGuards(AuthGuard(), RolesGuard)
+    @ApiBearerAuth()
     @ApiCreatedResponse({type: PartVm})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'UpdatePartItem'})
@@ -58,6 +71,9 @@ export class ItemController {
 
     @Put('misc/:id')
     @HttpCode(HttpStatus.CREATED)
+    @Roles(UserRole.Admin, UserRole.Staff)
+    @UseGuards(AuthGuard(), RolesGuard)
+    @ApiBearerAuth()
     @ApiCreatedResponse({type: MiscVm})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'UpdateMiscItem'})
@@ -154,5 +170,17 @@ export class ItemController {
     async getItemByBarcodeId(@Param('barcodeId') barcodeId: string): Promise<ItemVm> {
         const item = await this.itemService.findOne({barcodeId});
         return new ItemVm(item);
+    }
+
+    @Delete(':id')
+    @Roles(UserRole.Admin)
+    @UseGuards(AuthGuard(), RolesGuard)
+    @ApiBearerAuth()
+    @ApiOkResponse({type: Boolean})
+    @CustomApiDefaultErrors()
+    @CustomApiOperation({title: 'DeleteItem'})
+    async deleteItem(@Param('id') id: string): Promise<boolean> {
+        await this.itemService.delete(id);
+        return true;
     }
 }

@@ -1798,6 +1798,74 @@ export class ItemClient {
         }
         return _observableOf<ItemVm>(<any>null);
     }
+
+    /**
+     * DeleteItem
+     */
+    deleteItem(id: string): Observable<boolean> {
+        let url_ = this.baseUrl + "/items/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteItem(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteItem(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteItem(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = resultData400 ? ApiException.fromJS(resultData400) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = resultData500 ? ApiException.fromJS(resultData500) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
+    }
 }
 
 @Injectable({
@@ -1996,6 +2064,75 @@ export class DonorClient {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = resultData200 ? DonorVm.fromJS(resultData200) : new DonorVm();
             return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = resultData400 ? ApiException.fromJS(resultData400) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = resultData500 ? ApiException.fromJS(resultData500) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DonorVm>(<any>null);
+    }
+
+    /**
+     * UpdateDonor
+     */
+    updateDonor(donorVm: DonorVm): Observable<DonorVm> {
+        let url_ = this.baseUrl + "/donors/{id}";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(donorVm);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateDonor(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateDonor(<any>response_);
+                } catch (e) {
+                    return <Observable<DonorVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DonorVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateDonor(response: HttpResponseBase): Observable<DonorVm> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = resultData201 ? DonorVm.fromJS(resultData201) : new DonorVm();
+            return _observableOf(result201);
             }));
         } else if (status === 400) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
@@ -2976,7 +3113,7 @@ export class TodoVm implements ITodoVm {
     itemId?: string | null;
     person?: string | null;
     note?: string | null;
-    type?: TodoVmType | null;
+    historyType?: TodoVmHistoryType | null;
     isTransferred?: boolean | null;
 
     constructor(data?: ITodoVm) {
@@ -2997,7 +3134,7 @@ export class TodoVm implements ITodoVm {
             this.itemId = data["itemId"] !== undefined ? data["itemId"] : <any>null;
             this.person = data["person"] !== undefined ? data["person"] : <any>null;
             this.note = data["note"] !== undefined ? data["note"] : <any>null;
-            this.type = data["type"] !== undefined ? data["type"] : <any>null;
+            this.historyType = data["historyType"] !== undefined ? data["historyType"] : <any>null;
             this.isTransferred = data["isTransferred"] !== undefined ? data["isTransferred"] : <any>null;
         }
     }
@@ -3018,7 +3155,7 @@ export class TodoVm implements ITodoVm {
         data["itemId"] = this.itemId !== undefined ? this.itemId : <any>null;
         data["person"] = this.person !== undefined ? this.person : <any>null;
         data["note"] = this.note !== undefined ? this.note : <any>null;
-        data["type"] = this.type !== undefined ? this.type : <any>null;
+        data["historyType"] = this.historyType !== undefined ? this.historyType : <any>null;
         data["isTransferred"] = this.isTransferred !== undefined ? this.isTransferred : <any>null;
         return data; 
     }
@@ -3032,7 +3169,7 @@ export interface ITodoVm {
     itemId?: string | null;
     person?: string | null;
     note?: string | null;
-    type?: TodoVmType | null;
+    historyType?: TodoVmHistoryType | null;
     isTransferred?: boolean | null;
 }
 
@@ -3044,7 +3181,7 @@ export class StoryVm implements IStoryVm {
     itemId?: string | null;
     person?: string | null;
     note?: string | null;
-    type?: StoryVmType | null;
+    historyType?: StoryVmHistoryType | null;
     transferredFromTodo?: boolean | null;
 
     constructor(data?: IStoryVm) {
@@ -3065,7 +3202,7 @@ export class StoryVm implements IStoryVm {
             this.itemId = data["itemId"] !== undefined ? data["itemId"] : <any>null;
             this.person = data["person"] !== undefined ? data["person"] : <any>null;
             this.note = data["note"] !== undefined ? data["note"] : <any>null;
-            this.type = data["type"] !== undefined ? data["type"] : <any>null;
+            this.historyType = data["historyType"] !== undefined ? data["historyType"] : <any>null;
             this.transferredFromTodo = data["transferredFromTodo"] !== undefined ? data["transferredFromTodo"] : <any>null;
         }
     }
@@ -3086,7 +3223,7 @@ export class StoryVm implements IStoryVm {
         data["itemId"] = this.itemId !== undefined ? this.itemId : <any>null;
         data["person"] = this.person !== undefined ? this.person : <any>null;
         data["note"] = this.note !== undefined ? this.note : <any>null;
-        data["type"] = this.type !== undefined ? this.type : <any>null;
+        data["historyType"] = this.historyType !== undefined ? this.historyType : <any>null;
         data["transferredFromTodo"] = this.transferredFromTodo !== undefined ? this.transferredFromTodo : <any>null;
         return data; 
     }
@@ -3100,7 +3237,7 @@ export interface IStoryVm {
     itemId?: string | null;
     person?: string | null;
     note?: string | null;
-    type?: StoryVmType | null;
+    historyType?: StoryVmHistoryType | null;
     transferredFromTodo?: boolean | null;
 }
 
@@ -3856,13 +3993,14 @@ export enum ItemVmType {
 }
 
 export enum ItemVmStatus {
-    Received = "received", 
-    Scraped = "scraped", 
-    Donated = "donated", 
-    Sold = "sold", 
-    EarnBike = "earn-bike", 
-    EarnPc = "earn-pc", 
-    Progress = "progress", 
+    Donation_Received = "Donation Received", 
+    Scrapped = "Scrapped", 
+    Donated = "Donated", 
+    Sold = "Sold", 
+    Earn_A_Bike_Picked_Up = "Earn A Bike Picked Up", 
+    Earn_A_Bike_Graduation = "Earn A Bike Graduation", 
+    Earn_A_PC = "Earn A PC", 
+    In_Progress = "In Progress", 
 }
 
 export enum BikeAttributeBikeType {
@@ -3874,31 +4012,33 @@ export enum BikeAttributeBikeType {
 }
 
 export enum TodoVmStatus {
-    Received = "received", 
-    Scraped = "scraped", 
-    Donated = "donated", 
-    Sold = "sold", 
-    EarnBike = "earn-bike", 
-    EarnPc = "earn-pc", 
-    Progress = "progress", 
+    Donation_Received = "Donation Received", 
+    Scrapped = "Scrapped", 
+    Donated = "Donated", 
+    Sold = "Sold", 
+    Earn_A_Bike_Picked_Up = "Earn A Bike Picked Up", 
+    Earn_A_Bike_Graduation = "Earn A Bike Graduation", 
+    Earn_A_PC = "Earn A PC", 
+    In_Progress = "In Progress", 
 }
 
-export enum TodoVmType {
+export enum TodoVmHistoryType {
     Internal = "Internal", 
     External = "External", 
 }
 
 export enum StoryVmStatus {
-    Received = "received", 
-    Scraped = "scraped", 
-    Donated = "donated", 
-    Sold = "sold", 
-    EarnBike = "earn-bike", 
-    EarnPc = "earn-pc", 
-    Progress = "progress", 
+    Donation_Received = "Donation Received", 
+    Scrapped = "Scrapped", 
+    Donated = "Donated", 
+    Sold = "Sold", 
+    Earn_A_Bike_Picked_Up = "Earn A Bike Picked Up", 
+    Earn_A_Bike_Graduation = "Earn A Bike Graduation", 
+    Earn_A_PC = "Earn A PC", 
+    In_Progress = "In Progress", 
 }
 
-export enum StoryVmType {
+export enum StoryVmHistoryType {
     Internal = "Internal", 
     External = "External", 
 }
@@ -3911,13 +4051,14 @@ export enum BikeVmType {
 }
 
 export enum BikeVmStatus {
-    Received = "received", 
-    Scraped = "scraped", 
-    Donated = "donated", 
-    Sold = "sold", 
-    EarnBike = "earn-bike", 
-    EarnPc = "earn-pc", 
-    Progress = "progress", 
+    Donation_Received = "Donation Received", 
+    Scrapped = "Scrapped", 
+    Donated = "Donated", 
+    Sold = "Sold", 
+    Earn_A_Bike_Picked_Up = "Earn A Bike Picked Up", 
+    Earn_A_Bike_Graduation = "Earn A Bike Graduation", 
+    Earn_A_PC = "Earn A PC", 
+    In_Progress = "In Progress", 
 }
 
 export enum PCAttributeProcessorType {
@@ -3945,13 +4086,14 @@ export enum PCVmType {
 }
 
 export enum PCVmStatus {
-    Received = "received", 
-    Scraped = "scraped", 
-    Donated = "donated", 
-    Sold = "sold", 
-    EarnBike = "earn-bike", 
-    EarnPc = "earn-pc", 
-    Progress = "progress", 
+    Donation_Received = "Donation Received", 
+    Scrapped = "Scrapped", 
+    Donated = "Donated", 
+    Sold = "Sold", 
+    Earn_A_Bike_Picked_Up = "Earn A Bike Picked Up", 
+    Earn_A_Bike_Graduation = "Earn A Bike Graduation", 
+    Earn_A_PC = "Earn A PC", 
+    In_Progress = "In Progress", 
 }
 
 export enum PartVmType {
@@ -3962,13 +4104,14 @@ export enum PartVmType {
 }
 
 export enum PartVmStatus {
-    Received = "received", 
-    Scraped = "scraped", 
-    Donated = "donated", 
-    Sold = "sold", 
-    EarnBike = "earn-bike", 
-    EarnPc = "earn-pc", 
-    Progress = "progress", 
+    Donation_Received = "Donation Received", 
+    Scrapped = "Scrapped", 
+    Donated = "Donated", 
+    Sold = "Sold", 
+    Earn_A_Bike_Picked_Up = "Earn A Bike Picked Up", 
+    Earn_A_Bike_Graduation = "Earn A Bike Graduation", 
+    Earn_A_PC = "Earn A PC", 
+    In_Progress = "In Progress", 
 }
 
 export enum MiscVmType {
@@ -3979,13 +4122,14 @@ export enum MiscVmType {
 }
 
 export enum MiscVmStatus {
-    Received = "received", 
-    Scraped = "scraped", 
-    Donated = "donated", 
-    Sold = "sold", 
-    EarnBike = "earn-bike", 
-    EarnPc = "earn-pc", 
-    Progress = "progress", 
+    Donation_Received = "Donation Received", 
+    Scrapped = "Scrapped", 
+    Donated = "Donated", 
+    Sold = "Sold", 
+    Earn_A_Bike_Picked_Up = "Earn A Bike Picked Up", 
+    Earn_A_Bike_Graduation = "Earn A Bike Graduation", 
+    Earn_A_PC = "Earn A PC", 
+    In_Progress = "In Progress", 
 }
 
 export interface FileParameter {

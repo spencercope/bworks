@@ -3,7 +3,6 @@ import {Schema} from 'mongoose';
 import {FileReference} from "../../file-reference/models/file-reference.model";
 import {Story, Todo} from "../../history/models/history.model";
 import {ApiModelPropertyOptional} from "@nestjs/swagger";
-import {Donor} from "../../donor/models/donor.model";
 
 export enum BikeType {
     Road = 'road',
@@ -72,13 +71,14 @@ export enum CDDrive {
 }
 
 export enum Status {
-    Received = 'received',
-    Scraped = 'scraped',
-    Donated = 'donated',
-    Sold = 'sold',
-    EarnABike = 'earn-bike',
-    EarnAPC = 'earn-pc',
-    Progress = 'progress'
+    Received = 'Donation Received',
+    Scraped = 'Scrapped',
+    Donated = 'Donated',
+    Sold = 'Sold',
+    EarnABikePickedUp = 'Earn A Bike Picked Up',
+    EarnABikeGraduation = 'Earn A Bike Graduation',
+    EarnAPC = 'Earn A PC',
+    Progress = 'In Progress'
 }
 
 export enum VideoCard {
@@ -106,8 +106,8 @@ export interface Bike extends Item {
 
 export interface PC extends Item {
     attributes: PCAttribute,
-    todos: any[],
-    stories: any,
+    todos: Todo[],
+    stories: Story[],
     checklist: PCChecklist
 }
 
@@ -206,7 +206,16 @@ export const itemSchema = new Schema({
     user: String,
     status: {
         type: String,
-        enum: ['received', 'scraped', 'donated', 'sold', 'earn-bike', 'earn-pc', 'progress']
+        enum: [
+            'Donation Received',
+            'Scrapped',
+            'Donated',
+            'Sold',
+            'Earn A Bike Picked Up',
+            'Earn A Bike Graduation',
+            'Earn A PC',
+            'In Progress'
+        ]
     },
     barcodeId: {
         type: String,
