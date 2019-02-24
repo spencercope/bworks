@@ -1,0 +1,1 @@
+{"version":3,"file":"user-vm.js","sourceRoot":"","sources":["../../../src/user/models/user-vm.ts"],"names":[],"mappings":";;AAAA,kDAA4C;AAG5C,MAAa,MAAO,SAAQ,gBAAY;IAIpC,YAAY,QAAc,IAAI;QAC1B,KAAK,CAAC,KAAK,CAAC,CAAC;IACjB,CAAC;IAED,YAAY,CAAC,KAAW;QACpB,IAAI,CAAC,QAAQ,GAAG,KAAK,CAAC,QAAQ,CAAC;QAC/B,IAAI,CAAC,IAAI,GAAG,KAAK,CAAC,IAAI,CAAC;IAC3B,CAAC;CACJ;AAZD,wBAYC"}
