@@ -19,7 +19,7 @@ const allowedExt = [
     '.ttf',
     '.svg',
 ];
-const resolvePath = (file) => path_1.resolve(`../dist/client/${file}`);
+const resolvePath = (file) => path_1.resolve(`../server/public/client/${file}`);
 let FrontendMiddleware = class FrontendMiddleware {
     resolve(...args) {
         return (req, res, next) => {

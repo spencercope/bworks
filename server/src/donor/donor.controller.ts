@@ -1,17 +1,16 @@
-import {Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards} from '@nestjs/common';
 import {DonorService} from "./donor.service";
 import {ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiUseTags} from '@nestjs/swagger';
 import {DonorVm} from "./models/donor-vm";
 import {CustomApiDefaultErrors} from "../shared/decorators/custom-api-errors.decorator";
 import {CustomApiOperation} from "../shared/decorators/custom-api-operation.decorator";
 import {CreateDonorParams} from "./models/create-donor-params";
-import {Donor} from "../../../shared/models/donor";
 import {Roles} from "../shared/decorators/roles.decorator";
 import {UserRole} from "../user/models/user.model";
 import {AuthGuard} from '@nestjs/passport';
 import {RolesGuard} from "../shared/guards/roles.guard";
 
-@Controller('donors')
+@Controller('api/donors')
 @ApiUseTags('Donor')
 @ApiBearerAuth()
 export class DonorController {

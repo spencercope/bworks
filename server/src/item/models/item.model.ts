@@ -1,8 +1,8 @@
+import {BaseDocument, schemaOptions} from "../../shared/base.model";
 import {Schema} from 'mongoose';
 import {FileReference} from "../../file-reference/models/file-reference.model";
 import {Story, Todo} from "../../history/models/history.model";
 import {ApiModelPropertyOptional} from "@nestjs/swagger";
-import {BaseDocument, schemaOptions} from "../../../dist/shared/base.model";
 
 export enum BikeType {
     Road = 'road',

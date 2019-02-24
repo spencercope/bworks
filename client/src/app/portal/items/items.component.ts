@@ -1,12 +1,8 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { MatSort, MatTableDataSource } from "@angular/material";
-import { ItemDao } from "../../../services/dao/item.dao";
-import { Item } from "../../../../../shared/models/item";
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
-import { UserDao } from "../../../services/dao/user.dao";
-import { ItemClient, ItemVm, BikeVm, DonorVm, DonorClient, ItemVmType } from "src/app/app.api";
-import { forkJoin } from "rxjs";
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {MatDialog} from "@angular/material";
+import {UserDao} from "../../../services/dao/user.dao";
+import {DonorClient, DonorVm, ItemClient, ItemVm} from "src/app/app.api";
 
 @Component({
   selector: "app-items",
@@ -36,16 +32,17 @@ export class ItemsComponent implements OnInit {
     private userDao: UserDao,
     private itemApi: ItemClient,
     private donorApi: DonorClient,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.loadData();
     this.cols = [
-      { field: "barcodeId", header: "Barcode" },
-      { field: "type", header: "Type" },
-      { field: "status", header: "Status" },
-      { field: "createdAt", header: "Created At" },
-      { field: "updatedAt", header: "Last Updated" }
+      {field: "barcodeId", header: "Barcode"},
+      {field: "type", header: "Type"},
+      {field: "status", header: "Status"},
+      {field: "createdAt", header: "Created At"},
+      {field: "updatedAt", header: "Last Updated"}
     ];
   }
 
@@ -65,7 +62,7 @@ export class ItemsComponent implements OnInit {
   save() {
     let items = [...this.items];
     if (this.newItem) {
-      this.itemApi.createBaseItem(this.item,"1111").subscribe(data => {
+      this.itemApi.createBaseItem(this.item, "1111").subscribe(data => {
         this.loadData();
       });
     } else {
@@ -89,7 +86,7 @@ export class ItemsComponent implements OnInit {
   onRowSelect(event) {
     this.newItem = false;
     this.item = this.cloneCar(event.data);
-    
+
     // let itemTypeCall;
     // switch (this.item.type) {
     //   case ItemVmType.Bike:

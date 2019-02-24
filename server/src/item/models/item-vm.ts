@@ -1,8 +1,8 @@
 import {BaseVm} from "../../shared/base-vm";
 import {Bike, BikeAttribute, Item, ItemType, Misc, Part, PC, PCAttribute, Status} from "./item.model";
+import {FileReferenceVm} from "../../file-reference/models/file-reference-vm";
 import {StoryVm, TodoVm} from "../../history/models/history-vm";
 import {ApiModelProperty, ApiModelPropertyOptional} from "@nestjs/swagger";
-import {FileReferenceVm} from "../../../../shared/models/view-models/file-reference-vm";
 
 export class ItemVm extends BaseVm<Item> {
     @ApiModelProperty()
@@ -33,7 +33,7 @@ export class ItemVm extends BaseVm<Item> {
         this.notes = model.notes;
         this.user = model.user;
         this.status = model.status;
-        this.images = model.images.map(image => new FileReferenceVm());
+        this.images = model.images.map(image => new FileReferenceVm(image));
         this.wikiLinks = model.wikiLinks;
     }
 }
