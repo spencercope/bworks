@@ -14,7 +14,15 @@ const file_reference_module_1 = require("./file-reference/file-reference.module"
 const donor_module_1 = require("./donor/donor.module");
 const item_module_1 = require("./item/item.module");
 const history_module_1 = require("./history/history.module");
+const app_controller_1 = require("./app.controller");
+const frontend_middleware_1 = require("./frontend.middleware");
 let AppModule = class AppModule {
+    configure(consumer) {
+        consumer.apply(frontend_middleware_1.FrontendMiddleware).forRoutes({
+            path: '/**',
+            method: common_1.RequestMethod.ALL,
+        });
+    }
 };
 AppModule = __decorate([
     common_1.Module({
@@ -24,6 +32,7 @@ AppModule = __decorate([
                 retryDelay: 300,
                 useNewUrlParser: true,
                 useCreateIndex: true,
+                useFindAndModify: false,
             }),
             shared_module_1.SharedModule,
             user_module_1.UserModule,
@@ -32,6 +41,7 @@ AppModule = __decorate([
             item_module_1.ItemModule,
             history_module_1.HistoryModule,
         ],
+        controllers: [app_controller_1.AppController],
     })
 ], AppModule);
 exports.AppModule = AppModule;

@@ -17,7 +17,8 @@ DonorModule = __decorate([
     common_1.Module({
         imports: [mongoose_1.MongooseModule.forFeature([{ name: 'Donor', schema: donor_model_1.donorSchema }])],
         providers: [donor_service_1.DonorService],
-        controllers: [donor_controller_1.DonorController]
+        controllers: [donor_controller_1.DonorController],
+        exports: [donor_service_1.DonorService]
     })
 ], DonorModule);
 exports.DonorModule = DonorModule;

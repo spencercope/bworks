@@ -27,13 +27,14 @@ export declare enum CDDrive {
     None = "none"
 }
 export declare enum Status {
-    Received = "received",
-    Scraped = "scraped",
-    Donated = "donated",
-    Sold = "sold",
-    EarnABike = "earn-bike",
-    EarnAPC = "earn-pc",
-    Progress = "progress"
+    Received = "Donation Received",
+    Scraped = "Scrapped",
+    Donated = "Donated",
+    Sold = "Sold",
+    EarnABikePickedUp = "Earn A Bike Picked Up",
+    EarnABikeGraduation = "Earn A Bike Graduation",
+    EarnAPC = "Earn A PC",
+    Progress = "In Progress"
 }
 export declare enum VideoCard {
     Nvidia = "nvidia",
@@ -47,7 +48,8 @@ export interface Item extends BaseDocument {
     images: FileReference[];
     user: string;
     status: Status;
-    barcodeId: number;
+    barcodeId: string;
+    wikiLinks?: string[];
 }
 export interface Bike extends Item {
     attributes: BikeAttribute;
@@ -56,8 +58,8 @@ export interface Bike extends Item {
 }
 export interface PC extends Item {
     attributes: PCAttribute;
-    todos: any[];
-    stories: any;
+    todos: Todo[];
+    stories: Story[];
     checklist: PCChecklist;
 }
 export interface Part extends Item {
@@ -68,29 +70,37 @@ export interface Misc extends Item {
     name: string;
     description: string;
 }
-export interface BikeAttribute {
-    frameSize: number;
-    graduatedDate: Date;
-    serialNumber: string;
-    bikeType: BikeType;
-    wheelSize: number;
-    marketPrice: number;
-    color: string;
-    stepOverHeight: string;
+export declare class NameAndDate {
+    name: string;
+    date: Date;
 }
-export interface PCAttribute {
-    graduatedDate: Date;
-    processorCores: number;
-    processorSpeed: number;
-    processorType: ProcessorType;
-    videoCard: VideoCard;
-    ram: number;
-    hardDrive: number;
-    cdDrive: CDDrive;
-    checkedInBy: NameAndDate;
-    installedBy: NameAndDate;
-    qualityAssuranceBy: NameAndDate;
-    osVersion: OSVersion;
+export declare class OSVersion {
+    received: string;
+    bWorksUpdate: string;
+}
+export declare class BikeAttribute {
+    frameSize?: number;
+    graduatedDate?: Date;
+    serialNumber?: string;
+    bikeType?: BikeType;
+    wheelSize?: number;
+    marketPrice?: number;
+    color?: string;
+    stepOverHeight?: string;
+}
+export declare class PCAttribute {
+    graduatedDate?: Date;
+    processorCores?: number;
+    processorSpeed?: number;
+    processorType?: ProcessorType;
+    videoCard?: VideoCard;
+    ram?: number;
+    hardDrive?: number;
+    cdDrive?: CDDrive;
+    checkedInBy?: NameAndDate;
+    installedBy?: NameAndDate;
+    qualityAssuranceBy?: NameAndDate;
+    osVersion?: OSVersion;
 }
 export interface PCChecklist {
     keyboard: boolean;
@@ -98,14 +108,6 @@ export interface PCChecklist {
     sound: boolean;
     nic: boolean;
     wifi: boolean;
-}
-export interface NameAndDate {
-    name: string;
-    date: Date;
-}
-export interface OSVersion {
-    received: string;
-    bWorksUpdate: string;
 }
 export declare const itemSchema: Schema<any>;
 export declare const bikeSchema: Schema<any>;

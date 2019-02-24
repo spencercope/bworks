@@ -7,7 +7,8 @@ import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
 import {HttpStatus, Logger} from "@nestjs/common";
 import {HttpExceptionFilter} from './shared/filters/http-exception.filter';
-import {SwaggerModule, DocumentBuilder} from '@nestjs/swagger';
+import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
+import {join} from "path";
 
 async function bootstrap() {
     const expressApp = express();
@@ -15,14 +16,14 @@ async function bootstrap() {
     expressApp.use(compression());
     expressApp.use(helmet());
 
-  const logRequestStart = (req: express.Request, res: express.Response, next: any) => {
+    const logRequestStart = (req: express.Request, res: express.Response, next: any) => {
 
         const reqTime = Date.now();
         res.on('finish', () => {
             let millis = Date.now() - reqTime;
             Logger.log(`${req.method} ${req.originalUrl} ${res.statusCode} ${res.get('Content-Length') || 0}b -> ${millis}ms`, 'request');
         });
-	next();
+        next();
     };
     expressApp.use(logRequestStart);
     const app = await NestFactory.create(AppModule, expressApp);
@@ -54,8 +55,9 @@ async function bootstrap() {
     expressApp.get('/robots.txt', (req, res) => res.send('User-Agent: *\n' + 'Disallow: /'));
     expressApp.get('/favicon.ico', (req, res) => res.sendStatus(HttpStatus.NO_CONTENT).end());
 
-    app.setGlobalPrefix('api');
+    // app.setGlobalPrefix('api');
     app.useGlobalFilters(new HttpExceptionFilter());
+    app.useStaticAssets(join(__dirname, '..', 'public', 'client'));
 
     await app.listen(process.env.PORT || 3000, () => {
         Logger.log('Server connected to port 3000', 'NestApplication');

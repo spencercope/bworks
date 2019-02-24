@@ -9,12 +9,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const auth_module_1 = require("./auth/auth.module");
 const cloudinary_module_1 = require("./cloudinary/cloudinary.module");
+const email_module_1 = require("./email/email.module");
 let SharedModule = class SharedModule {
 };
 SharedModule = __decorate([
     common_1.Global(),
     common_1.Module({
-        imports: [auth_module_1.AuthModule, cloudinary_module_1.CloudinaryModule]
+        imports: [auth_module_1.AuthModule, cloudinary_module_1.CloudinaryModule, email_module_1.EmailModule]
     })
 ], SharedModule);
 exports.SharedModule = SharedModule;

@@ -1,11 +1,13 @@
 import { BaseVm } from "../../shared/base-vm";
 import { Donor } from "./donor.model";
+import { ItemVm } from "../../item/models/item-vm";
 export declare class DonorVm extends BaseVm<Donor> {
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
-    zip: number;
+    zip?: number;
     phoneNumber?: string;
-    donations?: any;
+    donations?: ItemVm[];
     refSource?: string;
     constructor(model: Donor);
     getViewModel(model: Donor): void;

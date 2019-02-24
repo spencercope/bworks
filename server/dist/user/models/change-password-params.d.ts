@@ -1,4 +1,4 @@
 export declare class ChangePasswordParams {
-    current: string;
+    current?: string;
     newPassword: string;
 }

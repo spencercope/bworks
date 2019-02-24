@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth-service';
-import { User } from '../../../../shared/models/user';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {AuthService} from '../../services/auth-service';
+import {User} from '../../../../shared/models/user';
 
 @Component({
   selector: 'app-login',
@@ -10,14 +10,15 @@ import { User } from '../../../../shared/models/user';
 })
 export class LoginComponent implements OnInit {
   user: User;
-  isLogedin : Boolean = false;
+  isLogedin: Boolean = false;
 
 
   constructor(private router: Router, private authService: AuthService) {
     this.user = new User();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   private navTo(route: string): void {
     this.router.navigate([route]);
@@ -27,7 +28,7 @@ export class LoginComponent implements OnInit {
     this.authService
       .login(this.user.username, this.user.password)
       .subscribe(data => {
-        console.log(data)
+        console.log(data);
         this.router.navigate(['portal']);
       });
   }

@@ -13,7 +13,7 @@ const allowedExt = [
     '.svg',
 ];
 
-const resolvePath = (file: string) => resolve(`../dist/client/${file}`);
+const resolvePath = (file: string) => resolve(`../server/public/client/${file}`);
 
 @Injectable()
 export class FrontendMiddleware implements NestMiddleware {

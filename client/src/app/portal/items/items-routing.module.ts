@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { ItemsComponent } from './items.component';
-import { ItemsResolve } from './items-resolve';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {ItemsComponent} from './items.component';
 
 @NgModule({
   imports: [
@@ -17,4 +16,5 @@ import { ItemsResolve } from './items-resolve';
   ],
   exports: [RouterModule],
 })
-export class ItemsRoutingModule {}
+export class ItemsRoutingModule {
+}

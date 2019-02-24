@@ -1,6 +1,6 @@
 import {BaseVm} from "../../shared/base-vm";
 import {Bike, BikeAttribute, Item, ItemType, Misc, Part, PC, PCAttribute, Status} from "./item.model";
-import {FileReferenceVm} from "file-reference/models/file-reference-vm";
+import {FileReferenceVm} from "../../file-reference/models/file-reference-vm";
 import {StoryVm, TodoVm} from "../../history/models/history-vm";
 import {ApiModelProperty, ApiModelPropertyOptional} from "@nestjs/swagger";
 

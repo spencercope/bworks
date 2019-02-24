@@ -6,7 +6,7 @@ import {ApiCreatedResponse, ApiImplicitQuery, ApiUseTags} from '@nestjs/swagger'
 import {CustomApiDefaultErrors} from "../shared/decorators/custom-api-errors.decorator";
 import {CustomApiOperation} from "../shared/decorators/custom-api-operation.decorator";
 
-@Controller('histories')
+@Controller('api/histories')
 @ApiUseTags('History')
 export class HistoryController {
     constructor(private readonly historyService: HistoryService) {

@@ -6,12 +6,12 @@ export declare class HistoryVm extends BaseVm<History> {
     itemId?: string;
     person?: string;
     note?: string;
-    type: HistoryType;
+    historyType?: HistoryType;
     constructor(model: History);
     getViewModel(model: History): void;
 }
 export declare class TodoVm extends HistoryVm {
-    isTransferred: boolean;
+    isTransferred?: boolean;
     constructor(model: Todo);
     getViewModel(model: Todo): void;
 }

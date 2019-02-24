@@ -11,6 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const base_service_1 = require("../shared/base.service");
@@ -21,6 +29,24 @@ let DonorService = class DonorService extends base_service_1.BaseService {
         super();
         this._donorModel = _donorModel;
         this._model = _donorModel;
+    }
+    createDonor(params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const newDonor = this.createModel(params);
+            return this.create(newDonor);
+        });
+    }
+    updateDonor(vm) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const donor = yield this.findById(vm.id);
+            donor.email = vm.email;
+            donor.firstName = vm.firstName;
+            donor.lastName = vm.lastName;
+            donor.refSource = vm.refSource;
+            donor.phoneNumber = vm.phoneNumber;
+            donor.zip = vm.zip;
+            return this.update(donor.id, donor);
+        });
     }
 };
 DonorService = __decorate([

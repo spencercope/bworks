@@ -10,7 +10,7 @@ export interface History extends BaseDocument {
     itemId?: string;
     person?: string;
     note?: string;
-    type: HistoryType;
+    historyType?: HistoryType;
 }
 export interface Todo extends History {
     isTransferred: boolean;

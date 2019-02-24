@@ -10,7 +10,16 @@ var HistoryType;
 exports.historySchema = new mongoose_1.Schema({
     status: {
         type: String,
-        enum: ['received', 'scraped', 'donated', 'sold', 'earn-bike', 'earn-pc', 'progress']
+        enum: [
+            'Donation Received',
+            'Scrapped',
+            'Donated',
+            'Sold',
+            'Earn A Bike Picked Up',
+            'Earn A Bike Graduation',
+            'Earn A PC',
+            'In Progress'
+        ]
     },
     itemId: {
         type: mongoose_1.Schema.Types.ObjectId,
@@ -18,21 +27,21 @@ exports.historySchema = new mongoose_1.Schema({
     },
     person: String,
     note: String,
-    type: {
+    historyType: {
         type: String,
         enum: ['Internal', 'External']
     }
-}, Object.assign({}, base_model_1.schemaOptions, { discriminatorKey: 'type' }));
+}, Object.assign({}, base_model_1.schemaOptions, { discriminatorKey: 'historyType' }));
 exports.todoSchema = new mongoose_1.Schema({
     isTransferred: {
         type: Boolean,
         default: false
     }
-}, { discriminatorKey: 'type' });
+}, { discriminatorKey: 'historyType' });
 exports.storySchema = new mongoose_1.Schema({
     transferredFromTodo: {
         type: Boolean,
         default: false
     }
-}, { discriminatorKey: 'type' });
+}, { discriminatorKey: 'historyType' });
 //# sourceMappingURL=history.model.js.map

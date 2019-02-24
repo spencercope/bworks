@@ -25,22 +25,39 @@ const base_service_1 = require("../shared/base.service");
 const item_model_1 = require("./models/item.model");
 const mongoose_1 = require("mongoose");
 const mongoose_2 = require("@nestjs/mongoose");
+const donor_service_1 = require("../donor/donor.service");
 let ItemService = class ItemService extends base_service_1.BaseService {
-    constructor(_itemModel) {
+    constructor(_itemModel, donorService) {
         super();
         this._itemModel = _itemModel;
+        this.donorService = donorService;
         this._model = _itemModel;
         this._bikeModel = _itemModel.discriminator('Bike', item_model_1.bikeSchema);
         this._pcModel = _itemModel.discriminator('PC', item_model_1.pcSchema);
         this._miscModel = _itemModel.discriminator('Misc', item_model_1.miscAndPartSchema);
         this._partModel = _itemModel.discriminator('Part', item_model_1.miscAndPartSchema);
     }
-    createBaseItem(donorId, itemVm) {
+    createBaseItem(donorId, itemVm, isOffsite, barcodeId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newItem = this.createModel({ donorId, type: itemVm.type });
+            const donor = yield this.donorService.findById(donorId);
+            if (!donor) {
+                throw new common_1.NotFoundException('Donor not found');
+            }
+            const newItem = this.createModel({ donorId: donor.id, type: itemVm.type });
             const count = yield this.counts();
-            newItem.barcodeId = count + 1;
-            return this.create(newItem);
+            if (isOffsite) {
+                if (!barcodeId) {
+                    throw new common_1.BadRequestException('Barcode is required for Offsite item');
+                }
+                newItem.barcodeId = barcodeId;
+            }
+            else {
+                newItem.barcodeId = (count + 1).toString();
+            }
+            const item = yield this.create(newItem);
+            donor.donations.push(item);
+            yield donor.save();
+            return item;
         });
     }
     updateBike(id, vm) {
@@ -53,7 +70,11 @@ let ItemService = class ItemService extends base_service_1.BaseService {
             bike.status = vm.status;
             bike.user = vm.user;
             bike.notes = vm.notes;
-            return this._bikeModel.findByIdAndUpdate(bike.id, bike, { new: true });
+            bike.wikiLinks = vm.wikiLinks;
+            return this._bikeModel.findByIdAndUpdate(bike.id, bike, { new: true })
+                .populate('images')
+                .populate('todos')
+                .populate('stories');
         });
     }
     updatePc(id, vm) {
@@ -66,7 +87,12 @@ let ItemService = class ItemService extends base_service_1.BaseService {
             pc.status = vm.status;
             pc.user = vm.user;
             pc.notes = vm.notes;
-            return this._pcModel.findByIdAndUpdate(pc.id, pc, { new: true });
+            pc.wikiLinks = vm.wikiLinks;
+            return this._pcModel.findByIdAndUpdate(pc.id, pc, { new: true })
+                .populate('images')
+                .populate('todos')
+                .populate('stories');
+            ;
         });
     }
     updatePart(id, vm) {
@@ -77,6 +103,7 @@ let ItemService = class ItemService extends base_service_1.BaseService {
             }
             part.name = vm.name;
             part.description = vm.description;
+            part.wikiLinks = vm.wikiLinks;
             return this._partModel.findByIdAndUpdate(part.id, part, { new: true });
         });
     }
@@ -88,14 +115,82 @@ let ItemService = class ItemService extends base_service_1.BaseService {
             }
             misc.name = vm.name;
             misc.description = vm.description;
+            misc.wikiLinks = vm.wikiLinks;
             return this._miscModel.findByIdAndUpdate(misc.id, misc, { new: true });
+        });
+    }
+    getItemById(itemId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const item = yield this.findById(itemId);
+            switch (item.type) {
+                case item_model_1.ItemType.Bike:
+                    return yield this.getBikeById(itemId);
+                case item_model_1.ItemType.PC:
+                    return yield this.getPcById(itemId);
+                case item_model_1.ItemType.Part:
+                case item_model_1.ItemType.Misc:
+                    return null;
+            }
+        });
+    }
+    getMiscById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this._miscModel.findById(id);
+        });
+    }
+    getPartById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this._partModel.findById(id);
+        });
+    }
+    getPcById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this._pcModel.findById(id)
+                .populate('images')
+                .populate('todos')
+                .populate('stories');
+        });
+    }
+    getBikeById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this._bikeModel.findById(id)
+                .populate('images')
+                .populate('todos')
+                .populate('stories');
+        });
+    }
+    getMiscs() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this._miscModel.find();
+        });
+    }
+    getParts() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this._partModel.find();
+        });
+    }
+    getPCs() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this._pcModel.find()
+                .populate('images')
+                .populate('todos')
+                .populate('stories');
+        });
+    }
+    getBikes() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this._bikeModel.find()
+                .populate('images')
+                .populate('todos')
+                .populate('stories');
         });
     }
 };
 ItemService = __decorate([
     common_1.Injectable(),
     __param(0, mongoose_2.InjectModel('Item')),
-    __metadata("design:paramtypes", [mongoose_1.Model])
+    __metadata("design:paramtypes", [mongoose_1.Model,
+        donor_service_1.DonorService])
 ], ItemService);
 exports.ItemService = ItemService;
 //# sourceMappingURL=item.service.js.map

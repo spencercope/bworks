@@ -1,4 +1,4 @@
-import {BaseDocument, schemaOptions} from "shared/base.model";
+import {BaseDocument, schemaOptions} from "../../shared/base.model";
 import {Schema} from 'mongoose';
 import {FileReference} from "../../file-reference/models/file-reference.model";
 import {Story, Todo} from "../../history/models/history.model";

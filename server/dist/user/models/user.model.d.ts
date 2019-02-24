@@ -7,6 +7,9 @@ export declare enum UserRole {
 }
 export interface User extends BaseDocument {
     username: string;
+    firstName: string;
+    lastName: string;
+    name: string;
     password: string;
     role: UserRole;
 }

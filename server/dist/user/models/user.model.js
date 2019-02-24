@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const base_model_1 = require("shared/base.model");
+const base_model_1 = require("../../shared/base.model");
 const mongoose_1 = require("mongoose");
 const bcrypt_1 = require("bcrypt");
 var UserRole;
@@ -23,6 +23,8 @@ exports.userSchema = new mongoose_1.Schema({
         unique: true,
         required: true,
     },
+    firstName: String,
+    lastName: String,
     password: {
         type: String,
         required: true,
@@ -33,6 +35,9 @@ exports.userSchema = new mongoose_1.Schema({
         default: 'volunteer'
     },
 }, base_model_1.schemaOptions);
+exports.userSchema.virtual('name').get(function () {
+    return this.firstName + ' ' + this.lastName;
+});
 exports.userSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

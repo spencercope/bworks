@@ -11,13 +11,15 @@ const item_service_1 = require("./item.service");
 const item_controller_1 = require("./item.controller");
 const mongoose_1 = require("@nestjs/mongoose");
 const item_model_1 = require("./models/item.model");
+const donor_module_1 = require("../donor/donor.module");
 let ItemModule = class ItemModule {
 };
 ItemModule = __decorate([
     common_1.Module({
-        imports: [mongoose_1.MongooseModule.forFeature([{ name: 'Item', schema: item_model_1.itemSchema }])],
+        imports: [mongoose_1.MongooseModule.forFeature([{ name: 'Item', schema: item_model_1.itemSchema }]), donor_module_1.DonorModule],
         providers: [item_service_1.ItemService],
-        controllers: [item_controller_1.ItemController]
+        controllers: [item_controller_1.ItemController],
+        exports: [item_service_1.ItemService]
     })
 ], ItemModule);
 exports.ItemModule = ItemModule;

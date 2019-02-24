@@ -24,14 +24,29 @@ const common_1 = require("@nestjs/common");
 const base_service_1 = require("../shared/base.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const item_service_1 = require("../item/item.service");
 let FileReferenceService = class FileReferenceService extends base_service_1.BaseService {
-    constructor(_fileReferenceModel) {
+    constructor(_fileReferenceModel, itemService) {
         super();
         this._fileReferenceModel = _fileReferenceModel;
+        this.itemService = itemService;
         this._model = _fileReferenceModel;
     }
-    uploadImage(file, note, itemId) {
+    uploadImage(file, itemId) {
         return __awaiter(this, void 0, void 0, function* () {
+            const item = yield this.itemService.findById(itemId);
+            if (!item) {
+                throw new common_1.NotFoundException('Item not found');
+            }
+            const newFile = this.createModel({
+                itemId,
+                publicUrl: file.secure_url,
+                fileName: file.public_id,
+                sizeBytes: file.bytes
+            });
+            const uploaded = yield this.create(newFile);
+            item.images.push(uploaded);
+            yield item.save();
             return true;
         });
     }
@@ -39,7 +54,8 @@ let FileReferenceService = class FileReferenceService extends base_service_1.Bas
 FileReferenceService = __decorate([
     common_1.Injectable(),
     __param(0, mongoose_1.InjectModel('FileReference')),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __metadata("design:paramtypes", [mongoose_2.Model,
+        item_service_1.ItemService])
 ], FileReferenceService);
 exports.FileReferenceService = FileReferenceService;
 //# sourceMappingURL=file-reference.service.js.map

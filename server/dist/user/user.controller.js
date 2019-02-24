@@ -23,6 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const login_params_1 = require("./models/login-params");
+const login_response_vm_1 = require("./models/login-response-vm");
 const user_vm_1 = require("./models/user-vm");
 const roles_decorator_1 = require("../shared/decorators/roles.decorator");
 const user_model_1 = require("./models/user.model");
@@ -31,6 +32,9 @@ const roles_guard_1 = require("../shared/guards/roles.guard");
 const custom_auth_user_decorator_1 = require("../shared/decorators/custom-auth-user.decorator");
 const create_user_params_1 = require("./models/create-user-params");
 const change_password_params_1 = require("./models/change-password-params");
+const swagger_1 = require("@nestjs/swagger");
+const custom_api_errors_decorator_1 = require("../shared/decorators/custom-api-errors.decorator");
+const custom_api_operation_decorator_1 = require("../shared/decorators/custom-api-operation.decorator");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -92,6 +96,9 @@ let UserController = class UserController {
 };
 __decorate([
     common_1.Post('login'),
+    swagger_1.ApiCreatedResponse({ type: login_response_vm_1.LoginResponseVm }),
+    custom_api_errors_decorator_1.CustomApiDefaultErrors(),
+    custom_api_operation_decorator_1.CustomApiOperation({ title: 'Login' }),
     __param(0, common_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [login_params_1.LoginParams]),
@@ -99,6 +106,9 @@ __decorate([
 ], UserController.prototype, "login", null);
 __decorate([
     common_1.Post('register'),
+    swagger_1.ApiCreatedResponse({ type: user_vm_1.UserVm }),
+    custom_api_errors_decorator_1.CustomApiDefaultErrors(),
+    custom_api_operation_decorator_1.CustomApiOperation({ title: 'Register' }),
     __param(0, common_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [login_params_1.LoginParams]),
@@ -108,6 +118,10 @@ __decorate([
     common_1.Get(),
     roles_decorator_1.Roles(user_model_1.UserRole.Admin),
     common_1.UseGuards(passport_1.AuthGuard(), roles_guard_1.RolesGuard),
+    swagger_1.ApiBearerAuth(),
+    swagger_1.ApiOkResponse({ type: user_vm_1.UserVm, isArray: true }),
+    custom_api_errors_decorator_1.CustomApiDefaultErrors(),
+    custom_api_operation_decorator_1.CustomApiOperation({ title: 'GetAllUsers' }),
     __param(0, custom_auth_user_decorator_1.CustomAuthUser()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -116,6 +130,10 @@ __decorate([
 __decorate([
     common_1.Get('me'),
     common_1.UseGuards(passport_1.AuthGuard()),
+    swagger_1.ApiBearerAuth(),
+    swagger_1.ApiOkResponse({ type: user_vm_1.UserVm }),
+    custom_api_errors_decorator_1.CustomApiDefaultErrors(),
+    custom_api_operation_decorator_1.CustomApiOperation({ title: 'Me' }),
     __param(0, custom_auth_user_decorator_1.CustomAuthUser()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -125,6 +143,10 @@ __decorate([
     common_1.Post('create-user'),
     roles_decorator_1.Roles(user_model_1.UserRole.Admin),
     common_1.UseGuards(passport_1.AuthGuard(), roles_guard_1.RolesGuard),
+    swagger_1.ApiBearerAuth(),
+    swagger_1.ApiCreatedResponse({ type: user_vm_1.UserVm }),
+    custom_api_errors_decorator_1.CustomApiDefaultErrors(),
+    custom_api_operation_decorator_1.CustomApiOperation({ title: 'CreateUser' }),
     __param(0, common_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_params_1.CreateUserParams]),
@@ -132,6 +154,9 @@ __decorate([
 ], UserController.prototype, "createUser", null);
 __decorate([
     common_1.Post('change-password/:id'),
+    swagger_1.ApiCreatedResponse({ type: Boolean }),
+    custom_api_errors_decorator_1.CustomApiDefaultErrors(),
+    custom_api_operation_decorator_1.CustomApiOperation({ title: 'ChangePassword' }),
     __param(0, common_1.Param('id')), __param(1, common_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, change_password_params_1.ChangePasswordParams]),
@@ -141,6 +166,10 @@ __decorate([
     common_1.Post('change-password-admin/:id'),
     roles_decorator_1.Roles(user_model_1.UserRole.Admin),
     common_1.UseGuards(passport_1.AuthGuard(), roles_guard_1.RolesGuard),
+    swagger_1.ApiBearerAuth(),
+    swagger_1.ApiCreatedResponse({ type: Boolean }),
+    custom_api_errors_decorator_1.CustomApiDefaultErrors(),
+    custom_api_operation_decorator_1.CustomApiOperation({ title: 'ChangePasswordByAdmin' }),
     __param(0, common_1.Param('id')), __param(1, common_1.Body('newPassword')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
@@ -148,8 +177,12 @@ __decorate([
 ], UserController.prototype, "changePasswordByAdmin", null);
 __decorate([
     common_1.Put('update'),
+    common_1.HttpCode(common_1.HttpStatus.CREATED),
     roles_decorator_1.Roles(user_model_1.UserRole.Admin),
     common_1.UseGuards(passport_1.AuthGuard(), roles_guard_1.RolesGuard),
+    swagger_1.ApiCreatedResponse({ type: user_vm_1.UserVm }),
+    custom_api_errors_decorator_1.CustomApiDefaultErrors(),
+    custom_api_operation_decorator_1.CustomApiOperation({ title: 'UpdateUser' }),
     __param(0, common_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_vm_1.UserVm]),
@@ -159,6 +192,9 @@ __decorate([
     common_1.Delete('delete/:id'),
     roles_decorator_1.Roles(user_model_1.UserRole.Admin),
     common_1.UseGuards(passport_1.AuthGuard(), roles_guard_1.RolesGuard),
+    swagger_1.ApiCreatedResponse({ type: Boolean }),
+    custom_api_errors_decorator_1.CustomApiDefaultErrors(),
+    custom_api_operation_decorator_1.CustomApiOperation({ title: 'DeleteUser' }),
     __param(0, common_1.Param('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -166,6 +202,7 @@ __decorate([
 ], UserController.prototype, "deleteUser", null);
 UserController = __decorate([
     common_1.Controller('users'),
+    swagger_1.ApiUseTags('User'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 exports.UserController = UserController;

@@ -11,11 +11,12 @@ const file_reference_service_1 = require("./file-reference.service");
 const file_reference_controller_1 = require("./file-reference.controller");
 const mongoose_1 = require("@nestjs/mongoose");
 const file_reference_model_1 = require("./models/file-reference.model");
+const item_module_1 = require("../item/item.module");
 let FileReferenceModule = class FileReferenceModule {
 };
 FileReferenceModule = __decorate([
     common_1.Module({
-        imports: [mongoose_1.MongooseModule.forFeature([{ name: 'FileReference', schema: file_reference_model_1.fileReferenceSchema }])],
+        imports: [mongoose_1.MongooseModule.forFeature([{ name: 'FileReference', schema: file_reference_model_1.fileReferenceSchema }]), item_module_1.ItemModule],
         providers: [file_reference_service_1.FileReferenceService],
         controllers: [file_reference_controller_1.FileReferenceController]
     })
