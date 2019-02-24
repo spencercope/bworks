@@ -148,7 +148,6 @@ export class DonationFlowComponent implements OnInit {
   }
 
   finish() {
-    this.rou
   }
 
   printBarcode(text) {
