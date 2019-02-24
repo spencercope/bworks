@@ -95,6 +95,7 @@ export interface Item extends BaseDocument {
     user: string,
     status: Status,
     barcodeId: string;
+    wikiLinks?: string[];
 }
 
 export interface Bike extends Item {
@@ -210,7 +211,8 @@ export const itemSchema = new Schema({
     barcodeId: {
         type: String,
         unique: true
-    }
+    },
+    wikiLinks: [String],
 }, {...schemaOptions, discriminatorKey: 'type'});
 
 export const bikeSchema = new Schema({
