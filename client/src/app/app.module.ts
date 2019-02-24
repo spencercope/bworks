@@ -12,6 +12,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {MaterialModule} from '../shared-client/material/material.module';
 import {PortalModule} from './portal/portal.module';
 import {PrimeNgModule} from '../shared-client/primeng/prime-ng.module';
+import {BarcodeHelperService} from '../services/barcode-helper.service';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {PrimeNgModule} from '../shared-client/primeng/prime-ng.module';
     HttpClient,
     ApiCallFactory,
     UserDao,
+    BarcodeHelperService
   ],
   bootstrap: [AppComponent]
 })

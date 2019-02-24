@@ -18,7 +18,6 @@ export class AppComponent {
   }
 
   ngDoCheck(): void {
-    console.log("TEST:::::");
     const jwtToken = sessionStorage.getItem("jwt");
     this.isLogedin = !this.authService.checkSession(jwtToken);
   }
