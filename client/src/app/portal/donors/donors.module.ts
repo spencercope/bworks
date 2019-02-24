@@ -7,6 +7,7 @@ import { DonorsComponent } from './donors.component';
 import { MaterialModule } from '../../../shared-client/material/material.module';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { PrimeNgModule } from '../../../shared-client/primeng/prime-ng.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { CommonModule } from '@angular/common';
     MaterialModule,
     FormsModule,
     CommonModule,
+    PrimeNgModule,
   ],
   declarations: [DonorsComponent],
   exports: [DonorsComponent],

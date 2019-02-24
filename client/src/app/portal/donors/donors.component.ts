@@ -6,6 +6,7 @@ import { Donor } from '../../../../../shared/models/donor';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DonorEditDialog } from './form/add-edit-dialog';
 import { UserDao } from '../../../services/dao/user.dao';
+import { ObjectUnsubscribedError } from 'rxjs';
 
 @Component({
   selector: 'app-donors',
@@ -20,52 +21,84 @@ export class DonorsComponent implements OnInit {
     'dateAcquired',
     'edit',
   ];
-  donors: Donor[] = this.route.snapshot.data['resolvedDonors'] as Donor[];
-  dataSource = new MatTableDataSource<Donor>(this.donors);
+  incomingDonors: Donor[] = this.route.snapshot.data['resolvedDonors'] as Donor[];
 
-  @ViewChild(MatSort)
-  sort: MatSort;
+  displayDialog: boolean;
+
+  donor: any = {};
+  selectedDonor: Donor;
+  newDonor: boolean;
+  donors: Donor[];
+  
+  cols: any[];
+  
+  brands: any[];
+  
+  colors: any[];
+  
+  yearFilter: number;
+
+  yearTimeout: any;
 
   constructor(
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private userDao: UserDao
+    private donorDao: DonorDao
   ) {
     console.log(this.donors);
   }
 
   ngOnInit() {
-    this.dataSource.sort = this.sort;
-    console.log(this.userDao.getCurrentUser());
+    this.donorDao.getAllFromServer().subscribe( data=> {
+        this.donors = data as Donor[];
+    })
+
+    this.cols = [
+        { field: 'name', header: 'Name' },
+        { field: 'email', header: 'Email' },
+        { field: 'zipCode', header: 'Zip Code' },
+        { field: 'refSource', header: 'Ref. Source' }
+    ];
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  showDialogToAdd() {
+    this.newDonor = true;
+    this.donor = {};
+    this.displayDialog = true;
   }
 
-  editRow(element): void {
-    this.openDialog(element);
-  }
-
-  addNew(): void {
-    this.openDialog({});
-  }
-
-  openDialog(element): void {
-    const dialogRef = this.dialog.open(DonorEditDialog, {
-      width: '250px',
-      data: element,
-    });
-
-    dialogRef.afterClosed().subscribe(returnInfo => {
-      this.addToDataSourceArray(returnInfo);
-    });
-  }
-
-  private addToDataSourceArray(returnInfo): void {
-    if (returnInfo && returnInfo.wasCreated) {
-      this.donors.push(returnInfo.donor);
-      this.dataSource = new MatTableDataSource<Donor>(this.donors);
+  save() {
+      const donors1 = [...this.donors];
+      if (this.newDonor) {
+      donors1.push(this.donor);
+    } else {
+      donors1[this.donors.indexOf(this.selectedDonor)] = this.donor;
     }
+
+    this.donors = donors1;
+    this.donor = null;
+    this.displayDialog = false;
+  }
+
+  delete() {
+    const index = this.donors.indexOf(this.selectedDonor);
+    // next line needs to happen on delete response
+    // this.users = this.users.filter((val, i) => i !== index);
+    this.donor= null;
+    this.displayDialog = false;
+  }
+
+  onRowSelect(event) {
+    this.newDonor = false;
+    this.donor = this.cloneCar(event.data);
+    this.displayDialog = true;
+  }
+
+  cloneCar(u: Donor): any {
+    const user = {};
+    for (const prop in u) {
+      user[prop] = u[prop];
+    }
+    return user;
   }
 }
