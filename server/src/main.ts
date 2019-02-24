@@ -33,10 +33,10 @@ async function bootstrap() {
         .setTitle('STL BWorks')
         .setDescription('API Documentation for STL BWorks')
         .setVersion('1.0.0')
-        .setHost('192.81.219.113:3000')
-        // .setHost('localhost:3000')
-        .setSchemes('http' as 'http' | 'https')
+        // .setHost('192.81.219.113:3000')
+        .setHost('localhost:3000')
         .setBasePath('/api')
+        .setSchemes('http' as 'http' | 'https')
         .addBearerAuth('Authorization', 'header')
         .build();
 
@@ -55,7 +55,7 @@ async function bootstrap() {
     expressApp.get('/robots.txt', (req, res) => res.send('User-Agent: *\n' + 'Disallow: /'));
     expressApp.get('/favicon.ico', (req, res) => res.sendStatus(HttpStatus.NO_CONTENT).end());
 
-    // app.setGlobalPrefix('api');
+    app.setGlobalPrefix('api');
     app.useGlobalFilters(new HttpExceptionFilter());
     app.useStaticAssets(join(__dirname, '..', 'public', 'client'));
 

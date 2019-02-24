@@ -10,7 +10,7 @@ import {UserRole} from "../user/models/user.model";
 import {AuthGuard} from '@nestjs/passport';
 import {RolesGuard} from "../shared/guards/roles.guard";
 
-@Controller('api/donors')
+@Controller('donors')
 @ApiUseTags('Donor')
 @ApiBearerAuth()
 export class DonorController {
@@ -18,8 +18,8 @@ export class DonorController {
     }
 
     @Post('create')
-    @Roles(UserRole.Admin, UserRole.Staff, UserRole.Volunteer)
-    @UseGuards(AuthGuard(), RolesGuard)
+    // @Roles(UserRole.Admin, UserRole.Staff, UserRole.Volunteer)
+    // @UseGuards(AuthGuard(), RolesGuard)
     @ApiCreatedResponse({type: DonorVm})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'CreateDonor'})
@@ -29,13 +29,14 @@ export class DonorController {
     }
 
     @Get()
-    @Roles(UserRole.Admin)
-    @UseGuards(AuthGuard(), RolesGuard)
+    // @Roles(UserRole.Admin)
+    // @UseGuards(AuthGuard(), RolesGuard)
     @ApiOkResponse({type: DonorVm, isArray: true})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'GetAllDonors'})
     async gelAllDonors(): Promise<DonorVm[]> {
-        const donors = await this.donorService.findAll();
+        const donors = await this.donorService.findAllDonors();
+        console.log(donors);
         return donors.map(donor => new DonorVm(donor));
     }
 

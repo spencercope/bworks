@@ -23,7 +23,7 @@ export class UserClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "http://192.81.219.113:3000/api";
+        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/api";
     }
 
     /**
@@ -655,7 +655,7 @@ export class FileReferenceClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "http://192.81.219.113:3000/api";
+        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/api";
     }
 
     /**
@@ -744,7 +744,7 @@ export class ItemClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "http://192.81.219.113:3000/api";
+        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/api";
     }
 
     /**
@@ -1878,7 +1878,7 @@ export class DonorClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "http://192.81.219.113:3000/api";
+        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/api";
     }
 
     /**
@@ -2235,7 +2235,7 @@ export class HistoryClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "http://192.81.219.113:3000/api";
+        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/api";
     }
 
     /**

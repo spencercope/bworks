@@ -10,7 +10,7 @@ import {UserRole} from "../user/models/user.model";
 import {AuthGuard} from '@nestjs/passport';
 import {RolesGuard} from "../shared/guards/roles.guard";
 
-@Controller('api/items')
+@Controller('items')
 @ApiUseTags('Item')
 export class ItemController {
     constructor(private readonly itemService: ItemService) {

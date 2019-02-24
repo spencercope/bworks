@@ -14,6 +14,10 @@ export class DonorService extends BaseService<Donor> {
         this._model = _donorModel;
     }
 
+    async findAllDonors(): Promise<Donor[]> {
+        return this._model.find().populate('donations');
+    }
+
     async createDonor(params: CreateDonorParams): Promise<Donor> {
         const newDonor = this.createModel(params);
         return this.create(newDonor);

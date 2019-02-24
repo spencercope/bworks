@@ -33,7 +33,7 @@ export class ItemVm extends BaseVm<Item> {
         this.notes = model.notes;
         this.user = model.user;
         this.status = model.status;
-        this.images = model.images.map(image => new FileReferenceVm(image));
+        this.images = model.images ? model.images.map(image => new FileReferenceVm(image)) : [];
         this.wikiLinks = model.wikiLinks;
     }
 }

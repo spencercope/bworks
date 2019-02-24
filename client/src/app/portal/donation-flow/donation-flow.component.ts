@@ -1,10 +1,8 @@
-import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { UserDao } from '../../../services/dao/user.dao';
-import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BarcodeHelperService} from '../../../services/barcode-helper.service';
-import {DonorClient, ItemClient} from '../../app.api';
-import {ItemVm} from '../../../../../server/src/item/models/item-vm';
+import {DonorClient, ItemClient, ItemVm} from '../../app.api';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-donation-flow',
@@ -35,14 +33,17 @@ export class DonationFlowComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private printHelper: BarcodeHelperService,
     private itemApi: ItemClient,
     private donorApi: DonorClient) {
 
-    this.items = [{
-      type: '',
-      notes: '',
-    }];
+    this.items = [
+      {
+        type: '',
+        notes: '',
+      }
+    ];
 
     this.options = {
       PC: 'pc',
@@ -54,9 +55,9 @@ export class DonationFlowComponent implements OnInit {
 
     // To initialize FormGroup
     this.donorForm = fb.group({
-      'firstName' : [ null, Validators.required],
-      'lastName' : [ null, Validators.required],
-      'zip' : [null],
+      'firstName': [null, Validators.required],
+      'lastName': [null, Validators.required],
+      'zip': [null],
       'email': [null, Validators.compose([Validators.required, Validators.email])],
       'phoneNumber': [null],
       'refSource': [null]
@@ -77,27 +78,24 @@ export class DonationFlowComponent implements OnInit {
     console.log(this.items);
     this.items.push({
       type: '',
-      desc: '',
+      notes: '',
     });
   }
 
   deleteItem() {
-    this.items.splice(this.items.length - 1, 0);
+    this.items.splice(this.items.length - 1, 1);
   }
 
   searchForEmail() {
-    this.donorApi.getAllDonors().subscribe( data => {
+    this.donorApi.getAllDonors().subscribe(data => {
       console.log(data);
-      this.donor = data.filter(d => d.email === this.searchEmail );
-      this.donor = this.donor[0];
+      this.donor = data.find(d => d.email === this.searchEmail);
       if (this.donor) {
-        console.log(this.donor);
         this.donorForm.controls['firstName'].setValue(this.donor.firstName);
         this.donorForm.controls['lastName'].setValue(this.donor.lastName);
         this.donorForm.controls['email'].setValue(this.donor.email);
         this.donorForm.controls['firstName'].setValue(this.donor.firstName);
         this.donorForm.controls['zip'].setValue(this.donor.zip);
-        console.log(this.donorForm);
         this.donorForm.disable();
         this.showNextPart = true;
       }
@@ -122,7 +120,7 @@ export class DonationFlowComponent implements OnInit {
   }
 
   private submitDonor(form) {
-    this.donorApi.createDonor(form.value).subscribe( newlyCreatedDonror => {
+    this.donorApi.createDonor(form.value).subscribe(newlyCreatedDonror => {
       console.log(newlyCreatedDonror);
       this.showNextPart = true;
       form.disable();
@@ -137,9 +135,9 @@ export class DonationFlowComponent implements OnInit {
   saveAndGenerate(index) {
     // save and create barcode
     // then enable the print
-    console.log(this.items[index]);
+    const itemVm = new ItemVm(...this.items[index]);
     this.itemApi.createBaseItem(
-      this.items[index],
+      itemVm,
       this.donor.id
     ).subscribe(item => {
       this.items[index] = item;
@@ -148,6 +146,7 @@ export class DonationFlowComponent implements OnInit {
   }
 
   finish() {
+    this.router.navigate(['/']);
   }
 
   printBarcode(text) {

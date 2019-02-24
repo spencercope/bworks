@@ -8,7 +8,7 @@ import {UserRole} from "../user/models/user.model";
 import {RolesGuard} from "../shared/guards/roles.guard";
 import {AuthGuard} from '@nestjs/passport';
 
-@Controller('api/file-references')
+@Controller('file-references')
 @ApiUseTags('FileReference')
 export class FileReferenceController {
     constructor(private readonly fileReferenceService: FileReferenceService) {

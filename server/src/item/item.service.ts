@@ -30,7 +30,7 @@ export class ItemService extends BaseService<Item> {
             throw new NotFoundException('Donor not found');
         }
 
-        const newItem = this.createModel({donorId: donor.id, type: itemVm.type});
+        const newItem = this.createModel({donorId: donor.id, type: itemVm.type, notes: itemVm.notes});
         const count = await this.counts();
 
         if (isOffsite) {

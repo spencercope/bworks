@@ -20,7 +20,7 @@ export class FrontendMiddleware implements NestMiddleware {
     resolve(...args: any[]): MiddlewareFunction {
         return (req, res, next) => {
             const {url} = req;
-            if (url.indexOf('api') === 1) {
+            if (url.indexOf('/api') === 1) {
                 // it starts with /api --> continue with execution
                 next();
             } else if (allowedExt.filter(ext => url.indexOf(ext) > 0).length > 0) {

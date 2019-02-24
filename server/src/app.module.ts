@@ -1,4 +1,4 @@
-import {MiddlewareConsumer, Module, NestModule, RequestMethod} from '@nestjs/common';
+import {Module} from '@nestjs/common';
 import {MongooseModule} from '@nestjs/mongoose';
 import {UserModule} from './user/user.module';
 import {SharedModule} from './shared/shared.module';
@@ -6,8 +6,6 @@ import {FileReferenceModule} from './file-reference/file-reference.module';
 import {DonorModule} from './donor/donor.module';
 import {ItemModule} from './item/item.module';
 import {HistoryModule} from './history/history.module';
-import {AppController} from './app.controller';
-import {FrontendMiddleware} from "./frontend.middleware";
 
 @Module({
     imports: [
@@ -24,16 +22,15 @@ import {FrontendMiddleware} from "./frontend.middleware";
         DonorModule,
         ItemModule,
         HistoryModule,
-    ],
-    controllers: [AppController],
+    ]
 })
-export class AppModule implements NestModule {
-    configure(consumer: MiddlewareConsumer): void {
-        consumer.apply(FrontendMiddleware).forRoutes(
-            {
-                path: '/**', // For all routes
-                method: RequestMethod.ALL, // For all methods
-            },
-        );
-    }
+export class AppModule {
+    // configure(consumer: MiddlewareConsumer): void {
+    //     consumer.apply(FrontendMiddleware).forRoutes(
+    //         {
+    //             path: '/**', // For all routes
+    //             method: RequestMethod.ALL, // For all methods
+    //         },
+    //     );
+    // }
 }

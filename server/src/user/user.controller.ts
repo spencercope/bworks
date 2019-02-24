@@ -26,7 +26,7 @@ import {ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiUseTags} from '@nes
 import {CustomApiDefaultErrors} from "../shared/decorators/custom-api-errors.decorator";
 import {CustomApiOperation} from "../shared/decorators/custom-api-operation.decorator";
 
-@Controller('api/users')
+@Controller('users')
 @ApiUseTags('User')
 export class UserController {
     constructor(private readonly userService: UserService) {
