@@ -23,7 +23,7 @@ export class UserClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "http://192.81.219.113:3000/api";
+        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/api";
     }
 
     /**
@@ -648,17 +648,21 @@ export class UserClient {
 @Injectable({
     providedIn: 'root'
 })
-export class Client {
+export class FileReferenceClient {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "http://192.81.219.113:3000/api";
+        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/api";
     }
 
-    image(itemId: string): Observable<void> {
+    /**
+     * UpdateProfilePic
+     * @param image (optional) Image
+     */
+    updateProfilePic(itemId: string, image?: FileParameter | null | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/file-references/image?";
         if (itemId === undefined || itemId === null)
             throw new Error("The parameter 'itemId' must be defined and cannot be null.");
@@ -666,28 +670,34 @@ export class Client {
             url_ += "itemId=" + encodeURIComponent("" + itemId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = new FormData();
+        if (image !== null && image !== undefined)
+            content_.append("image", image.data, image.fileName ? image.fileName : "image");
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Accept": "application/json"
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processImage(response_);
+            return this.processUpdateProfilePic(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processImage(<any>response_);
+                    return this.processUpdateProfilePic(<any>response_);
                 } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
+                    return <Observable<boolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<void>><any>_observableThrow(response_);
+                return <Observable<boolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processImage(response: HttpResponseBase): Observable<void> {
+    protected processUpdateProfilePic(response: HttpResponseBase): Observable<boolean> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -696,14 +706,31 @@ export class Client {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
         if (status === 201) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = resultData201 !== undefined ? resultData201 : <any>null;
+            return _observableOf(result201);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = resultData400 ? ApiException.fromJS(resultData400) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = resultData500 ? ApiException.fromJS(resultData500) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result500);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(<any>null);
+        return _observableOf<boolean>(<any>null);
     }
 }
 
@@ -717,25 +744,24 @@ export class ItemClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "http://192.81.219.113:3000/api";
+        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/api";
     }
 
     /**
      * CreateBaseItem
      * @param isOffsite (optional) 
+     * @param barcodeId (optional) 
      */
-    createBaseItem(itemVm: ItemVm, barcodeId: string, donorId: string, isOffsite?: boolean | null | undefined): Observable<ItemVm> {
+    createBaseItem(itemVm: ItemVm, donorId: string, isOffsite?: boolean | null | undefined, barcodeId?: string | null | undefined): Observable<ItemVm> {
         let url_ = this.baseUrl + "/items?";
-        if (barcodeId === undefined || barcodeId === null)
-            throw new Error("The parameter 'barcodeId' must be defined and cannot be null.");
-        else
-            url_ += "barcodeId=" + encodeURIComponent("" + barcodeId) + "&"; 
         if (donorId === undefined || donorId === null)
             throw new Error("The parameter 'donorId' must be defined and cannot be null.");
         else
             url_ += "donorId=" + encodeURIComponent("" + donorId) + "&"; 
         if (isOffsite !== undefined)
             url_ += "isOffsite=" + encodeURIComponent("" + isOffsite) + "&"; 
+        if (barcodeId !== undefined)
+            url_ += "barcodeId=" + encodeURIComponent("" + barcodeId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(itemVm);
@@ -1709,6 +1735,89 @@ export class ItemClient {
 @Injectable({
     providedIn: 'root'
 })
+export class DonorClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/api";
+    }
+
+    /**
+     * CreateDonor
+     */
+    createDonor(createDonorParams: CreateDonorParams): Observable<DonorVm> {
+        let url_ = this.baseUrl + "/donors/create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(createDonorParams);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateDonor(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateDonor(<any>response_);
+                } catch (e) {
+                    return <Observable<DonorVm>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DonorVm>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateDonor(response: HttpResponseBase): Observable<DonorVm> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = resultData201 ? DonorVm.fromJS(resultData201) : new DonorVm();
+            return _observableOf(result201);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = resultData400 ? ApiException.fromJS(resultData400) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = resultData500 ? ApiException.fromJS(resultData500) : new ApiException();
+            return throwException("A server error occurred.", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DonorVm>(<any>null);
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
 export class HistoryClient {
     private http: HttpClient;
     private baseUrl: string;
@@ -1716,7 +1825,7 @@ export class HistoryClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "http://192.81.219.113:3000/api";
+        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/api";
     }
 
     /**
@@ -3261,6 +3370,138 @@ export interface IMiscVm {
     description?: string | null;
 }
 
+export class CreateDonorParams implements ICreateDonorParams {
+    firstName!: string;
+    lastName!: string;
+    email!: string;
+    zip?: number | null;
+    phoneNumber?: string | null;
+    refSource?: string | null;
+
+    constructor(data?: ICreateDonorParams) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.firstName = data["firstName"] !== undefined ? data["firstName"] : <any>null;
+            this.lastName = data["lastName"] !== undefined ? data["lastName"] : <any>null;
+            this.email = data["email"] !== undefined ? data["email"] : <any>null;
+            this.zip = data["zip"] !== undefined ? data["zip"] : <any>null;
+            this.phoneNumber = data["phoneNumber"] !== undefined ? data["phoneNumber"] : <any>null;
+            this.refSource = data["refSource"] !== undefined ? data["refSource"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CreateDonorParams {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateDonorParams();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
+        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        data["zip"] = this.zip !== undefined ? this.zip : <any>null;
+        data["phoneNumber"] = this.phoneNumber !== undefined ? this.phoneNumber : <any>null;
+        data["refSource"] = this.refSource !== undefined ? this.refSource : <any>null;
+        return data; 
+    }
+}
+
+export interface ICreateDonorParams {
+    firstName: string;
+    lastName: string;
+    email: string;
+    zip?: number | null;
+    phoneNumber?: string | null;
+    refSource?: string | null;
+}
+
+export class DonorVm implements IDonorVm {
+    createdAt?: string | null;
+    updatedAt?: string | null;
+    id?: string | null;
+    name!: string;
+    email!: string;
+    zip?: number | null;
+    phoneNumber?: string | null;
+    donations?: ItemVm[] | null;
+    refSource?: string | null;
+
+    constructor(data?: IDonorVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.createdAt = data["createdAt"] !== undefined ? data["createdAt"] : <any>null;
+            this.updatedAt = data["updatedAt"] !== undefined ? data["updatedAt"] : <any>null;
+            this.id = data["id"] !== undefined ? data["id"] : <any>null;
+            this.name = data["name"] !== undefined ? data["name"] : <any>null;
+            this.email = data["email"] !== undefined ? data["email"] : <any>null;
+            this.zip = data["zip"] !== undefined ? data["zip"] : <any>null;
+            this.phoneNumber = data["phoneNumber"] !== undefined ? data["phoneNumber"] : <any>null;
+            if (data["donations"] && data["donations"].constructor === Array) {
+                this.donations = [];
+                for (let item of data["donations"])
+                    this.donations.push(ItemVm.fromJS(item));
+            }
+            this.refSource = data["refSource"] !== undefined ? data["refSource"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): DonorVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new DonorVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createdAt"] = this.createdAt !== undefined ? this.createdAt : <any>null;
+        data["updatedAt"] = this.updatedAt !== undefined ? this.updatedAt : <any>null;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        data["zip"] = this.zip !== undefined ? this.zip : <any>null;
+        data["phoneNumber"] = this.phoneNumber !== undefined ? this.phoneNumber : <any>null;
+        if (this.donations && this.donations.constructor === Array) {
+            data["donations"] = [];
+            for (let item of this.donations)
+                data["donations"].push(item.toJSON());
+        }
+        data["refSource"] = this.refSource !== undefined ? this.refSource : <any>null;
+        return data; 
+    }
+}
+
+export interface IDonorVm {
+    createdAt?: string | null;
+    updatedAt?: string | null;
+    id?: string | null;
+    name: string;
+    email: string;
+    zip?: number | null;
+    phoneNumber?: string | null;
+    donations?: ItemVm[] | null;
+    refSource?: string | null;
+}
+
 export enum UserVmRole {
     Volunteer = "volunteer", 
     Staff = "staff", 
@@ -3411,6 +3652,11 @@ export enum MiscVmStatus {
     EarnBike = "earn-bike", 
     EarnPc = "earn-pc", 
     Progress = "progress", 
+}
+
+export interface FileParameter {
+    data: any;
+    fileName: string;
 }
 
 export class SwaggerException extends Error {
