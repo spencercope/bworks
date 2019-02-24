@@ -1,0 +1,15 @@
+<mat-card class="mt-4">
+  <mat-card-title>Login In</mat-card-title>
+  <mat-card-content>
+    <mat-form-field>
+      <input type="email" matInput placeholder="Your email *" [(ngModel)]="username"/>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input type="password" matInput placeholder="Your password *" [(ngModel)]="password"/>
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions>
+    <button type="submit" mat-raised-button color="primary" (click)="login()">Login</button>
+  </mat-card-actions>
+</mat-card>

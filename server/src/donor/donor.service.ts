@@ -18,6 +18,10 @@ export class DonorService extends BaseService<Donor> {
         return this._model.find().populate('donations');
     }
 
+    async findDonorByEmail(email: string): Promise<Donor> {
+        return this._model.findOne({email}).populate('donations');
+    }
+
     async createDonor(params: CreateDonorParams): Promise<Donor> {
         const newDonor = this.createModel(params);
         return this.create(newDonor);

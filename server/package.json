@@ -19,6 +19,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "webpack": "webpack --config webpack.config.js",
     "swagger": "nswag run STLBWorks.nswag",
+    "swagger2": "nswag run STLBWorks2.nswag",
     "build:client": "cd ../client && npm install",
     "postinstall": "tsc"
   },

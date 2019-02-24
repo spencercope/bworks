@@ -5,6 +5,7 @@ import {Model} from "mongoose";
 import {InjectModel} from '@nestjs/mongoose';
 import {BikeVm, ItemVm, MiscVm, PartVm, PCVm} from "./models/item-vm";
 import {DonorService} from "../donor/donor.service";
+import {Observable} from "rxjs/internal/Observable";
 
 @Injectable()
 export class ItemService extends BaseService<Item> {
