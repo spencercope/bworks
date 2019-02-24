@@ -57,8 +57,8 @@ export class DonorController {
     @ApiOkResponse({type: DonorVm})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'SearchDonor'})
-    async searchDonor(@Query('email') email: string): Promise<DonorVm> {
-        const donor = await this.donorService.findOne({email});
+    async searchDonor(@Query('email') searchemail: string): Promise<DonorVm> {
+        const donor = await this.donorService.findOne({email:searchemail});
         return new DonorVm(donor);
     }
 
