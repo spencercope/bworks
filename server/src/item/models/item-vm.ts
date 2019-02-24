@@ -3,6 +3,7 @@ import {Bike, BikeAttribute, Item, ItemType, Misc, Part, PC, PCAttribute, Status
 import {FileReferenceVm} from "file-reference/models/file-reference-vm";
 import {StoryVm, TodoVm} from "../../history/models/history-vm";
 import {ApiModelProperty, ApiModelPropertyOptional} from "@nestjs/swagger";
+import {DonorVm} from "../../donor/models/donor-vm";
 
 export class ItemVm extends BaseVm<Item> {
     @ApiModelProperty()

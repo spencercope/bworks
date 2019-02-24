@@ -7,7 +7,8 @@ import {donorSchema} from "./models/donor.model";
 @Module({
     imports: [MongooseModule.forFeature([{name: 'Donor', schema: donorSchema}])],
     providers: [DonorService],
-    controllers: [DonorController]
+    controllers: [DonorController],
+    exports: [DonorService]
 })
 export class DonorModule {
 }

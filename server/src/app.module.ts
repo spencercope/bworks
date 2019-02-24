@@ -14,6 +14,7 @@ import { HistoryModule } from './history/history.module';
       retryDelay: 300,
       useNewUrlParser: true,
       useCreateIndex: true,
+      useFindAndModify: false,
     }),
     SharedModule,
     UserModule,

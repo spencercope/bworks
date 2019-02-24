@@ -3,11 +3,17 @@ import {BaseService} from "../shared/base.service";
 import {Donor} from "./models/donor.model";
 import {InjectModel} from '@nestjs/mongoose';
 import {Model} from "mongoose";
+import {CreateDonorParams} from './models/create-donor-params';
 
 @Injectable()
 export class DonorService extends BaseService<Donor> {
     constructor(@InjectModel('Donor') private readonly _donorModel: Model<Donor>) {
         super();
         this._model = _donorModel;
+    }
+
+    async createDonor(params: CreateDonorParams): Promise<Donor> {
+        const newDonor = this.createModel(params);
+        return this.create(newDonor);
     }
 }

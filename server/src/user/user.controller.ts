@@ -1,4 +1,16 @@
-import {BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from '@nestjs/common';
+import {
+    BadRequestException,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpCode,
+    HttpStatus,
+    Param,
+    Post,
+    Put,
+    UseGuards
+} from '@nestjs/common';
 import {UserService} from "./user.service";
 import {LoginParams} from "./models/login-params";
 import {LoginResponseVm} from "./models/login-response-vm";
@@ -91,6 +103,7 @@ export class UserController {
     }
 
     @Put('update')
+    @HttpCode(HttpStatus.CREATED)
     @Roles(UserRole.Admin)
     @UseGuards(AuthGuard(), RolesGuard)
     @ApiCreatedResponse({type: UserVm})

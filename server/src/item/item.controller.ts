@@ -1,7 +1,7 @@
-import {Body, Controller, Get, Param, Post, Put, Query} from '@nestjs/common';
+import {Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query} from '@nestjs/common';
 import {ItemService} from "./item.service";
 import {BikeVm, ItemVm, MiscVm, PartVm, PCVm} from "./models/item-vm";
-import {ApiCreatedResponse, ApiImplicitQuery, ApiUseTags, ApiOkResponse} from '@nestjs/swagger';
+import {ApiCreatedResponse, ApiImplicitQuery, ApiOkResponse, ApiUseTags} from '@nestjs/swagger';
 import {ToBooleanPipe} from "../shared/pipes/to-boolean.pipe";
 import {CustomApiDefaultErrors} from "../shared/decorators/custom-api-errors.decorator";
 import {CustomApiOperation} from "../shared/decorators/custom-api-operation.decorator";
@@ -15,10 +15,11 @@ export class ItemController {
     @Post()
     @ApiCreatedResponse({type: ItemVm})
     @ApiImplicitQuery({name: 'isOffsite', required: false})
+    @ApiImplicitQuery({name: 'barcodeId', required: false})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'CreateBaseItem'})
     async createItem(@Query('donorId') donorId: string,
-                     @Query('barcodeId') barcodeId: string,
+                     @Query('barcodeId') barcodeId: string = '',
                      @Query('isOffsite', new ToBooleanPipe()) isOffsite: boolean = false,
                      @Body() itemVm: ItemVm): Promise<ItemVm> {
         const item = await this.itemService.createBaseItem(donorId, itemVm, isOffsite, barcodeId);
@@ -26,6 +27,7 @@ export class ItemController {
     }
 
     @Put('bike/:id')
+    @HttpCode(HttpStatus.CREATED)
     @ApiCreatedResponse({type: BikeVm})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'UpdateBikeItem'})
@@ -35,6 +37,7 @@ export class ItemController {
     }
 
     @Put('pc/:id')
+    @HttpCode(HttpStatus.CREATED)
     @ApiCreatedResponse({type: PCVm})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'UpdatePcItem'})
@@ -44,6 +47,7 @@ export class ItemController {
     }
 
     @Put('part/:id')
+    @HttpCode(HttpStatus.CREATED)
     @ApiCreatedResponse({type: PartVm})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'UpdatePartItem'})
@@ -53,6 +57,7 @@ export class ItemController {
     }
 
     @Put('misc/:id')
+    @HttpCode(HttpStatus.CREATED)
     @ApiCreatedResponse({type: MiscVm})
     @CustomApiDefaultErrors()
     @CustomApiOperation({title: 'UpdateMiscItem'})

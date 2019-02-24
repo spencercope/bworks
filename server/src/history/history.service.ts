@@ -4,8 +4,12 @@ import {BaseService} from "../shared/base.service";
 import {InjectModel} from '@nestjs/mongoose';
 import {Model} from "mongoose";
 import {StoryVm, TodoVm} from "./models/history-vm";
-import {Status} from "../item/models/item.model";
+import {Bike, PC, Status} from "../item/models/item.model";
 import {ItemService} from "../item/item.service";
+import {EmailService} from "../shared/email/email.service";
+import {Donor} from "../donor/models/donor.model";
+import {EmailTemplates} from "../shared/email/email-templates.enum";
+import {DonorService} from "../donor/donor.service";
 
 @Injectable()
 export class HistoryService extends BaseService<History> {
@@ -13,7 +17,9 @@ export class HistoryService extends BaseService<History> {
     private readonly _storyModel: Model<Story>;
 
     constructor(@InjectModel('History') private readonly _historyModel: Model<History>,
-                private readonly itemService: ItemService) {
+                private readonly itemService: ItemService,
+                private readonly donorService: DonorService,
+                private readonly emailService: EmailService) {
         super();
         this._model = _historyModel;
         this._todoModel = _historyModel.discriminator<Todo>('Todo', todoSchema);
@@ -47,6 +53,9 @@ export class HistoryService extends BaseService<History> {
         bike.stories.push(story);
         await bike.save();
 
+        const donor = await this.donorService.findById(bike.donorId);
+
+        await this.sendNewStoryEmail(donor, bike);
         return story;
     }
 
@@ -62,6 +71,9 @@ export class HistoryService extends BaseService<History> {
         pc.stories.push(story);
         await pc.save();
 
+        const donor = await this.donorService.findById(pc.donorId);
+
+        await this.sendNewStoryEmail(donor, pc);
         return story;
     }
 
@@ -100,6 +112,19 @@ export class HistoryService extends BaseService<History> {
         item.stories.push(story);
         await this.itemService.update(item.id, item);
 
+        const donor = await this.donorService.findById(item.donorId);
+
+        await this.sendNewStoryEmail(donor, item);
         return story;
+    }
+
+    private async sendNewStoryEmail(donor: Donor, item: Bike | PC): Promise<void> {
+        const data = {
+            firstName: donor.firstName,
+            images: item.images.map(image => image.publicUrl),
+            stories: item.stories
+        };
+
+        return this.emailService.sendEmail(EmailTemplates.NewStory, donor.email, '', data);
     }
 }

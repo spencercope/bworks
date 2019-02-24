@@ -4,6 +4,7 @@ import {Bike, bikeSchema, Item, ItemType, Misc, miscAndPartSchema, Part, PC, pcS
 import {Model} from "mongoose";
 import {InjectModel} from '@nestjs/mongoose';
 import {BikeVm, ItemVm, MiscVm, PartVm, PCVm} from "./models/item-vm";
+import {DonorService} from "../donor/donor.service";
 
 @Injectable()
 export class ItemService extends BaseService<Item> {
@@ -12,7 +13,8 @@ export class ItemService extends BaseService<Item> {
     private _partModel: Model<Part>;
     private _miscModel: Model<Misc>;
 
-    constructor(@InjectModel('Item') private readonly _itemModel: Model<Item>) {
+    constructor(@InjectModel('Item') private readonly _itemModel: Model<Item>,
+                private readonly donorService: DonorService) {
         super();
         this._model = _itemModel;
         this._bikeModel = _itemModel.discriminator<Bike>('Bike', bikeSchema);
@@ -22,7 +24,13 @@ export class ItemService extends BaseService<Item> {
     }
 
     async createBaseItem(donorId: string, itemVm: ItemVm, isOffsite: boolean, barcodeId: string): Promise<Item> {
-        const newItem = this.createModel({donorId, type: itemVm.type});
+        const donor = await this.donorService.findById(donorId);
+
+        if (!donor) {
+            throw new NotFoundException('Donor not found');
+        }
+
+        const newItem = this.createModel({donorId: donor.id, type: itemVm.type});
         const count = await this.counts();
 
         if (isOffsite) {
@@ -34,7 +42,12 @@ export class ItemService extends BaseService<Item> {
         } else {
             newItem.barcodeId = (count + 1).toString();
         }
-        return this.create(newItem);
+        const item = await this.create(newItem);
+
+        donor.donations.push(item);
+        await donor.save();
+
+        return item;
     }
 
     async updateBike(id: string, vm: BikeVm): Promise<Bike> {
@@ -49,7 +62,10 @@ export class ItemService extends BaseService<Item> {
         bike.user = vm.user;
         bike.notes = vm.notes;
 
-        return this._bikeModel.findByIdAndUpdate(bike.id, bike, {new: true});
+        return this._bikeModel.findByIdAndUpdate(bike.id, bike, {new: true})
+            .populate('images')
+            .populate('todos')
+            .populate('stories');
     }
 
     async updatePc(id: string, vm: PCVm): Promise<PC> {
@@ -64,7 +80,11 @@ export class ItemService extends BaseService<Item> {
         pc.user = vm.user;
         pc.notes = vm.notes;
 
-        return this._pcModel.findByIdAndUpdate(pc.id, pc, {new: true});
+        return this._pcModel.findByIdAndUpdate(pc.id, pc, {new: true})
+            .populate('images')
+            .populate('todos')
+            .populate('stories');
+        ;
     }
 
     async updatePart(id: string, vm: PartVm): Promise<Part> {
@@ -116,11 +136,17 @@ export class ItemService extends BaseService<Item> {
     }
 
     async getPcById(id: string): Promise<PC> {
-        return this._pcModel.findById(id);
+        return this._pcModel.findById(id)
+            .populate('images')
+            .populate('todos')
+            .populate('stories');
     }
 
     async getBikeById(id: string): Promise<Bike> {
-        return this._bikeModel.findById(id);
+        return this._bikeModel.findById(id)
+            .populate('images')
+            .populate('todos')
+            .populate('stories');
     }
 
     async getMiscs(): Promise<Misc[]> {
@@ -132,11 +158,17 @@ export class ItemService extends BaseService<Item> {
     }
 
     async getPCs(): Promise<PC[]> {
-        return this._pcModel.find();
+        return this._pcModel.find()
+            .populate('images')
+            .populate('todos')
+            .populate('stories');
     }
 
     async getBikes(): Promise<Bike[]> {
-        return this._bikeModel.find();
+        return this._bikeModel.find()
+            .populate('images')
+            .populate('todos')
+            .populate('stories');
     }
 
 }

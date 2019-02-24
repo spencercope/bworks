@@ -1,5 +1,6 @@
 import {BaseDocument, schemaOptions} from "../../shared/base.model";
 import {Schema} from "mongoose";
+import {Item} from "../../item/models/item.model";
 
 export interface Donor extends BaseDocument {
     firstName: string;
@@ -8,7 +9,7 @@ export interface Donor extends BaseDocument {
     email: string;
     zip: number;
     phoneNumber?: string;
-    donations?: any; // TODO: wait for Item
+    donations?: Item[]; // TODO: wait for Item
     refSource?: string;
 }
 
@@ -34,11 +35,11 @@ export const donorSchema = new Schema({
     refSource: String,
 }, schemaOptions);
 
-donorSchema.virtual('name').get(function() {
-   return this.firstName + ' ' + this.lastName;
+donorSchema.virtual('name').get(function () {
+    return this.firstName + ' ' + this.lastName;
 });
 
-donorSchema.pre<Donor>("findOneAndUpdate", function(next) {
-   this.updatedAt = new Date(Date.now());
+donorSchema.pre<Donor>("findOneAndUpdate", function (next) {
+    this.updatedAt = new Date(Date.now());
     return next();
 });

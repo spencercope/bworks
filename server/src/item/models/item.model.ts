@@ -3,6 +3,7 @@ import {Schema} from 'mongoose';
 import {FileReference} from "../../file-reference/models/file-reference.model";
 import {Story, Todo} from "../../history/models/history.model";
 import {ApiModelPropertyOptional} from "@nestjs/swagger";
+import {Donor} from "../../donor/models/donor.model";
 
 export enum BikeType {
     Road = 'road',
@@ -188,10 +189,7 @@ export interface PCChecklist {
 }
 
 export const itemSchema = new Schema({
-    donorId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Donor'
-    },
+    donorId: Schema.Types.ObjectId,
     type: {
         type: String,
         enum: ['Bike', 'PC', 'Part', 'Misc'],
