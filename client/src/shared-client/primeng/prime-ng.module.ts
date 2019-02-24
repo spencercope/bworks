@@ -3,6 +3,7 @@ import { TableModule } from 'primeng/table';
 import { SliderModule } from 'primeng/slider';
 import { DropdownModule } from 'primeng/dropdown';
 import {DialogModule} from 'primeng/dialog';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -11,13 +12,15 @@ import {DialogModule} from 'primeng/dialog';
     TableModule,
     SliderModule,
     DropdownModule,
-    DialogModule
+    DialogModule,
+    InputTextareaModule
   ],
   exports: [
     TableModule,
     SliderModule,
     DropdownModule,
-    DialogModule
+    DialogModule,
+    InputTextareaModule
   ],
   providers: [],
 })
