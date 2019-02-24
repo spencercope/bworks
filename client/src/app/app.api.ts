@@ -3901,7 +3901,8 @@ export class DonorVm implements IDonorVm {
     createdAt?: string | null;
     updatedAt?: string | null;
     id?: string | null;
-    name!: string;
+    firstName!: string;
+    lastName!: string;
     email!: string;
     zip?: number | null;
     phoneNumber?: string | null;
@@ -3922,7 +3923,8 @@ export class DonorVm implements IDonorVm {
             this.createdAt = data["createdAt"] !== undefined ? data["createdAt"] : <any>null;
             this.updatedAt = data["updatedAt"] !== undefined ? data["updatedAt"] : <any>null;
             this.id = data["id"] !== undefined ? data["id"] : <any>null;
-            this.name = data["name"] !== undefined ? data["name"] : <any>null;
+            this.firstName = data["firstName"] !== undefined ? data["firstName"] : <any>null;
+            this.lastName = data["lastName"] !== undefined ? data["lastName"] : <any>null;
             this.email = data["email"] !== undefined ? data["email"] : <any>null;
             this.zip = data["zip"] !== undefined ? data["zip"] : <any>null;
             this.phoneNumber = data["phoneNumber"] !== undefined ? data["phoneNumber"] : <any>null;
@@ -3947,7 +3949,8 @@ export class DonorVm implements IDonorVm {
         data["createdAt"] = this.createdAt !== undefined ? this.createdAt : <any>null;
         data["updatedAt"] = this.updatedAt !== undefined ? this.updatedAt : <any>null;
         data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
+        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
         data["email"] = this.email !== undefined ? this.email : <any>null;
         data["zip"] = this.zip !== undefined ? this.zip : <any>null;
         data["phoneNumber"] = this.phoneNumber !== undefined ? this.phoneNumber : <any>null;
@@ -3965,7 +3968,8 @@ export interface IDonorVm {
     createdAt?: string | null;
     updatedAt?: string | null;
     id?: string | null;
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     zip?: number | null;
     phoneNumber?: string | null;

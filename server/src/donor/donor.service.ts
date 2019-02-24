@@ -22,8 +22,8 @@ export class DonorService extends BaseService<Donor> {
     async updateDonor(vm: DonorVm): Promise<Donor> {
         const donor = await this.findById(vm.id);
         donor.email = vm.email;
-        donor.firstName = vm.name.split(' ')[0];
-        donor.lastName = vm.name.split(' ')[1];
+        donor.firstName = vm.firstName;
+        donor.lastName = vm.lastName;
         donor.refSource = vm.refSource;
         donor.phoneNumber = vm.phoneNumber;
         donor.zip = vm.zip;

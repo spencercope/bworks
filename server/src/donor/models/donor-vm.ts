@@ -5,7 +5,9 @@ import {ItemVm} from "../../item/models/item-vm";
 
 export class DonorVm extends BaseVm<Donor> {
     @ApiModelProperty()
-    name: string;
+    firstName: string;
+    @ApiModelProperty()
+    lastName: string;
     @ApiModelProperty()
     email: string;
     @ApiModelPropertyOptional()
@@ -22,7 +24,8 @@ export class DonorVm extends BaseVm<Donor> {
     }
 
     getViewModel(model: Donor): void {
-        this.name = model.name;
+        this.firstName = model.firstName;
+        this.lastName = model.lastName;
         this.email = model.email;
         this.zip = model.zip;
         this.phoneNumber = model.phoneNumber;
