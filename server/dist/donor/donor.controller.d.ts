@@ -6,7 +6,7 @@ export declare class DonorController {
     constructor(donorService: DonorService);
     createDonor(params: CreateDonorParams): Promise<DonorVm>;
     gelAllDonors(): Promise<DonorVm[]>;
-    getDonorById(id: string): Promise<DonorVm>;
     searchDonor(email: string): Promise<DonorVm>;
+    getDonorById(id: string): Promise<DonorVm>;
     updateDonor(vm: DonorVm): Promise<DonorVm>;
 }

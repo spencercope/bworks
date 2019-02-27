@@ -24,7 +24,7 @@ let FrontendMiddleware = class FrontendMiddleware {
     resolve(...args) {
         return (req, res, next) => {
             const { url } = req;
-            if (url.indexOf('api') === 1) {
+            if (url.indexOf('/api') === 1) {
                 next();
             }
             else if (allowedExt.filter(ext => url.indexOf(ext) > 0).length > 0) {

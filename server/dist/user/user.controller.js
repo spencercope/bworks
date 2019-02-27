@@ -201,7 +201,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deleteUser", null);
 UserController = __decorate([
-    common_1.Controller('api/users'),
+    common_1.Controller('users'),
     swagger_1.ApiUseTags('User'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);

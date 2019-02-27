@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {DonationFlowService} from "../../../services/donation-flow.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CreateDonorParams} from "../../../../app.api";
-import {MatDialogRef} from "@angular/material";
 
 @Component({
   selector: 'app-create-donor',
@@ -14,8 +13,7 @@ export class CreateDonorComponent implements OnInit {
   form: FormGroup;
 
   constructor(private donationFlowService: DonationFlowService,
-              private fb: FormBuilder,
-              private dialogRef: MatDialogRef<CreateDonorComponent>) {
+              private fb: FormBuilder) {
   }
 
   ngOnInit() {
@@ -37,7 +35,7 @@ export class CreateDonorComponent implements OnInit {
     const params = new CreateDonorParams(...this.form.value);
     this.donationFlowService.createDonor(params)
       .subscribe(donor => {
-        this.dialogRef.close(donor);
+        // this.dialogRef.close(donor);
       });
   }
 }

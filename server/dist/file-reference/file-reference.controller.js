@@ -56,7 +56,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], FileReferenceController.prototype, "upload", null);
 FileReferenceController = __decorate([
-    common_1.Controller('api/file-references'),
+    common_1.Controller('file-references'),
     swagger_1.ApiUseTags('FileReference'),
     __metadata("design:paramtypes", [file_reference_service_1.FileReferenceService])
 ], FileReferenceController);

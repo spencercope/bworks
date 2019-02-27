@@ -1,5 +1,4 @@
-<mat-toolbar color="primary">
-  <ng-content select=".toggle-btn"></ng-content>
+<!-- <mat-toolbar color="primary">
   <div>
     <a [routerLink]="['/portal']">
       <img src="../../../assets/logo-bworks.png" alt="">
@@ -15,4 +14,16 @@
       </li>
     </ul>
   </div>
-</mat-toolbar>
+</mat-toolbar> -->
+<p-toolbar>
+  <div class="ui-toolbar-group-left">
+      <a [routerLink]="['/portal']">
+        <img src="../../../assets/logo-bworks.png" alt="">
+      </a>
+     </div>
+  
+  <div class="ui-toolbar-group-right">
+      <button pButton type="button" icon="pi pi-search"></button>
+  </div>
+</p-toolbar>
+

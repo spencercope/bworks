@@ -1,33 +1,19 @@
 import {NgModule} from '@angular/core';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatDatepickerModule,
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatNativeDateModule, MatSelectModule,
-  MatSidenavModule, MatSlideToggleModule, MatTableModule,
-  MatToolbarModule,
-} from '@angular/material';
+
+import {InputTextModule} from 'primeng/inputtext';
+import {CardModule} from 'primeng/card';
+import {ButtonModule} from 'primeng/button';
+import {ToolbarModule} from 'primeng/toolbar';
+
+
+
+
 
 const modules = [
-  MatButtonModule,
-  MatIconModule,
-  MatInputModule,
-  MatFormFieldModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatCheckboxModule,
-  MatCardModule,
-  MatSidenavModule,
-  MatToolbarModule,
-  MatListModule,
-  MatSelectModule,
-  MatSlideToggleModule,
-  MatTableModule
+  InputTextModule,
+  CardModule,
+  ButtonModule,
+  ToolbarModule
 ];
 
 @NgModule({

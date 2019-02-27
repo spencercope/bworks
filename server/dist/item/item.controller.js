@@ -312,7 +312,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ItemController.prototype, "deleteItem", null);
 ItemController = __decorate([
-    common_1.Controller('api/items'),
+    common_1.Controller('items'),
     swagger_1.ApiUseTags('Item'),
     __metadata("design:paramtypes", [item_service_1.ItemService])
 ], ItemController);

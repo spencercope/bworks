@@ -6,6 +6,8 @@ import { DonorVm } from "./models/donor-vm";
 export declare class DonorService extends BaseService<Donor> {
     private readonly _donorModel;
     constructor(_donorModel: Model<Donor>);
+    findAllDonors(): Promise<Donor[]>;
+    findDonorByEmail(email: string): Promise<Donor>;
     createDonor(params: CreateDonorParams): Promise<Donor>;
     updateDonor(vm: DonorVm): Promise<Donor>;
 }

@@ -43,7 +43,7 @@ let ItemService = class ItemService extends base_service_1.BaseService {
             if (!donor) {
                 throw new common_1.NotFoundException('Donor not found');
             }
-            const newItem = this.createModel({ donorId: donor.id, type: itemVm.type });
+            const newItem = this.createModel({ donorId: donor.id, type: itemVm.type, notes: itemVm.notes });
             const count = yield this.counts();
             if (isOffsite) {
                 if (!barcodeId) {

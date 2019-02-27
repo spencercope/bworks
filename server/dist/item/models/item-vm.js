@@ -25,7 +25,7 @@ class ItemVm extends base_vm_1.BaseVm {
         this.notes = model.notes;
         this.user = model.user;
         this.status = model.status;
-        this.images = model.images.map(image => new file_reference_vm_1.FileReferenceVm(image));
+        this.images = model.images ? model.images.map(image => new file_reference_vm_1.FileReferenceVm(image)) : [];
         this.wikiLinks = model.wikiLinks;
     }
 }

@@ -9,7 +9,7 @@ import {HistoryModule} from './history/history.module';
 
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb+srv://admin:admin@bworks1-sknsg.gcp.mongodb.net/test?retryWrites=true', { // TODO: ConnectionString missing
+        MongooseModule.forRoot('mongodb://localhost:27017/bworks', { // TODO: ConnectionString missing
             retryAttempts: 5,
             retryDelay: 300,
             useNewUrlParser: true,

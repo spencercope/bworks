@@ -38,9 +38,9 @@ function bootstrap() {
             .setTitle('STL BWorks')
             .setDescription('API Documentation for STL BWorks')
             .setVersion('1.0.0')
-            .setHost('192.81.219.113:3000')
-            .setSchemes('http')
+            .setHost('localhost:3000')
             .setBasePath('/api')
+            .setSchemes('http')
             .addBearerAuth('Authorization', 'header')
             .build();
         const swaggerDoc = swagger_1.SwaggerModule.createDocument(app, swaggerOptions);
@@ -55,6 +55,7 @@ function bootstrap() {
         });
         expressApp.get('/robots.txt', (req, res) => res.send('User-Agent: *\n' + 'Disallow: /'));
         expressApp.get('/favicon.ico', (req, res) => res.sendStatus(common_1.HttpStatus.NO_CONTENT).end());
+        app.setGlobalPrefix('api');
         app.useGlobalFilters(new http_exception_filter_1.HttpExceptionFilter());
         app.useStaticAssets(path_1.join(__dirname, '..', 'public', 'client'));
         yield app.listen(process.env.PORT || 3000, () => {

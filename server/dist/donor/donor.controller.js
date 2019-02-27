@@ -43,19 +43,19 @@ let DonorController = class DonorController {
     }
     gelAllDonors() {
         return __awaiter(this, void 0, void 0, function* () {
-            const donors = yield this.donorService.findAll();
+            const donors = yield this.donorService.findAllDonors();
             return donors.map(donor => new donor_vm_1.DonorVm(donor));
+        });
+    }
+    searchDonor(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const donor = yield this.donorService.findDonorByEmail(email);
+            return new donor_vm_1.DonorVm(donor);
         });
     }
     getDonorById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const donor = yield this.donorService.findById(id);
-            return new donor_vm_1.DonorVm(donor);
-        });
-    }
-    searchDonor(email) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const donor = yield this.donorService.findOne({ email });
             return new donor_vm_1.DonorVm(donor);
         });
     }
@@ -68,8 +68,6 @@ let DonorController = class DonorController {
 };
 __decorate([
     common_1.Post('create'),
-    roles_decorator_1.Roles(user_model_1.UserRole.Admin, user_model_1.UserRole.Staff, user_model_1.UserRole.Volunteer),
-    common_1.UseGuards(passport_1.AuthGuard(), roles_guard_1.RolesGuard),
     swagger_1.ApiCreatedResponse({ type: donor_vm_1.DonorVm }),
     custom_api_errors_decorator_1.CustomApiDefaultErrors(),
     custom_api_operation_decorator_1.CustomApiOperation({ title: 'CreateDonor' }),
@@ -80,8 +78,6 @@ __decorate([
 ], DonorController.prototype, "createDonor", null);
 __decorate([
     common_1.Get(),
-    roles_decorator_1.Roles(user_model_1.UserRole.Admin),
-    common_1.UseGuards(passport_1.AuthGuard(), roles_guard_1.RolesGuard),
     swagger_1.ApiOkResponse({ type: donor_vm_1.DonorVm, isArray: true }),
     custom_api_errors_decorator_1.CustomApiDefaultErrors(),
     custom_api_operation_decorator_1.CustomApiOperation({ title: 'GetAllDonors' }),
@@ -90,9 +86,17 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], DonorController.prototype, "gelAllDonors", null);
 __decorate([
+    common_1.Get('email'),
+    swagger_1.ApiOkResponse({ type: donor_vm_1.DonorVm }),
+    custom_api_errors_decorator_1.CustomApiDefaultErrors(),
+    custom_api_operation_decorator_1.CustomApiOperation({ title: 'SearchDonor' }),
+    __param(0, common_1.Query('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], DonorController.prototype, "searchDonor", null);
+__decorate([
     common_1.Get(':id'),
-    roles_decorator_1.Roles(user_model_1.UserRole.Admin),
-    common_1.UseGuards(passport_1.AuthGuard(), roles_guard_1.RolesGuard),
     swagger_1.ApiOkResponse({ type: donor_vm_1.DonorVm }),
     custom_api_errors_decorator_1.CustomApiDefaultErrors(),
     custom_api_operation_decorator_1.CustomApiOperation({ title: 'GetDonorById' }),
@@ -101,18 +105,6 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], DonorController.prototype, "getDonorById", null);
-__decorate([
-    common_1.Get(':email'),
-    roles_decorator_1.Roles(user_model_1.UserRole.Admin, user_model_1.UserRole.Staff, user_model_1.UserRole.Volunteer),
-    common_1.UseGuards(passport_1.AuthGuard(), roles_guard_1.RolesGuard),
-    swagger_1.ApiOkResponse({ type: donor_vm_1.DonorVm }),
-    custom_api_errors_decorator_1.CustomApiDefaultErrors(),
-    custom_api_operation_decorator_1.CustomApiOperation({ title: 'SearchDonor' }),
-    __param(0, common_1.Param('email')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], DonorController.prototype, "searchDonor", null);
 __decorate([
     common_1.Put(':id'),
     common_1.HttpCode(common_1.HttpStatus.CREATED),
@@ -127,7 +119,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], DonorController.prototype, "updateDonor", null);
 DonorController = __decorate([
-    common_1.Controller('api/donors'),
+    common_1.Controller('donors'),
     swagger_1.ApiUseTags('Donor'),
     swagger_1.ApiBearerAuth(),
     __metadata("design:paramtypes", [donor_service_1.DonorService])

@@ -121,7 +121,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], HistoryController.prototype, "transferTodo", null);
 HistoryController = __decorate([
-    common_1.Controller('api/histories'),
+    common_1.Controller('histories'),
     swagger_1.ApiUseTags('History'),
     __metadata("design:paramtypes", [history_service_1.HistoryService])
 ], HistoryController);

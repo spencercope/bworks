@@ -30,6 +30,16 @@ let DonorService = class DonorService extends base_service_1.BaseService {
         this._donorModel = _donorModel;
         this._model = _donorModel;
     }
+    findAllDonors() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this._model.find().populate('donations');
+        });
+    }
+    findDonorByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this._model.findOne({ email }).populate('donations');
+        });
+    }
     createDonor(params) {
         return __awaiter(this, void 0, void 0, function* () {
             const newDonor = this.createModel(params);
