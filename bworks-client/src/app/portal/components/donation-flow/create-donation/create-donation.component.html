@@ -1,43 +1,79 @@
-<!-- <section mat-dialog-content>
+<p-dialog
+  [modal]="true"
+  [dismissableMask]="true"
+  header="New Donation"
+  [(visible)]="showDialog"
+  [style]="{ width: '500px', height: '500px' }"
+  (onHide)="onHide()"
+>
   <h3>Donor Information:</h3>
-  <hr>
-  <mat-list role="list">
-    <mat-list-item role="listitem">Name: {{data.firstName}} {{data.lastName}}</mat-list-item>
-    <mat-list-item role="listitem">Donations: {{data.donations.length}}</mat-list-item>
-    <mat-list-item role="listitem">Joined: {{data.createdAt | date:'short'}}</mat-list-item>
-  </mat-list>
-  <hr>
-  <div class="d-flex align-items-center">
-    <h3>Add Donation:</h3>
-    <mat-slide-toggle class="ml-2" color="primary" [(ngModel)]="isOffsite">Is this donation off-site?</mat-slide-toggle>
+  <hr />
+  <div class="p-grid ui-fluid">
+    <div class="p-col-4">
+      Name:
+    </div>
+    <div class="p-col-8">{{ donor.firstName }} {{ donor.lastName }}</div>
+
+    <div class="p-col-4">
+      Donations:
+    </div>
+    <div class="p-col-8">
+      {{ donor.donations.length }}
+    </div>
+
+    <div class="p-col-4">
+      Joined:
+    </div>
+    <div class="p-col-8">
+      {{ donor.createdAt | date: "short" }}
+    </div>
   </div>
-  <hr>
-  <div class="row mt-2" *ngFor="let item of newItems; let i = index">
-    <div class="col-6">
-      <mat-form-field>
-        <mat-select placeholder="Type" [(ngModel)]="item.type" [disabled]="item.id">
-          <mat-option *ngFor="let option of options | keyvalue" [value]="option.value">
-            {{option.key}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+<br>
+  <h3>Add Donation:</h3>
+  <hr />
+  <div class="p-grid ui-fluid">
+    <div class="p-col-5">
+      Is this donation off-site?
     </div>
-
-    <div class="col-6">
-      <mat-form-field>
-        <input type="text" matInput [(ngModel)]="item.notes" placeholder="Description" [disabled]="item.id">
-      </mat-form-field>
+    <div class="p-col-7">
+      <p-inputSwitch [(ngModel)]="isOffsite"> </p-inputSwitch>
     </div>
-
-    <div class="col-12" *ngIf="isOffsite && !item.id">
-      <mat-form-field class="w-100">
-        <input type="text" matInput [(ngModel)]="item.barcodeId" placeholder="Barcode" [disabled]="item.id">
-      </mat-form-field>
-    </div>
-
-    <button mat-raised-button color="primary" *ngIf="!item.id" (click)="save(i)">Save</button>
-    <button mat-raised-button *ngIf="item.id" (click)="printBarcode(item.barcodeId)">Print
-      Barcode: {{item.barcodeId}}</button>
-    <hr>
   </div>
-</section> -->
+
+  <div *ngFor="let item of newItems; let i = index">
+    <div class="p-grid ui-fluid">
+      <div class="p-col-4">
+        Type:
+      </div>
+      <div class="p-col-8">
+        <p-dropdown [options]="options" [disabled]="item.id" [(ngModel)]="item.type"></p-dropdown>
+      </div>
+
+      <div class="p-col-4">
+        Description:
+      </div>
+      <div class="p-col-8">
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="item.notes"
+          [disabled]="item.id"
+        />
+      </div>
+
+      <div class="p-col-12" *ngIf="isOffsite && !item.id">
+          <input
+          type="text"
+          pInputText
+          [(ngModel)]="item.barcodeId"
+          placeholder="Barcode"
+          [disabled]="item.id"
+        />        
+      </div>
+    </div>
+   
+    <p-button  *ngIf="!item.id" label="Save" (click)="save(i)">  </p-button>
+    <p-button  *ngIf="item.id" label="Barcode: {{item.barcodeId}}"  (click)="printBarcode(item.barcodeId)" ></p-button>
+  </div>
+
+</p-dialog>

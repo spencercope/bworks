@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DonationFlowService} from "../../services/donation-flow.service";
 import {DonorVm} from "../../../app.api";
-import {CreateDonationComponent} from "./create-donation/create-donation.component";
-import {CreateDonorComponent} from "./create-donor/create-donor.component";
+
 
 @Component({
   selector: 'app-donation-flow',
@@ -11,6 +10,9 @@ import {CreateDonorComponent} from "./create-donor/create-donor.component";
 })
 export class DonationFlowComponent implements OnInit {
   email: string;
+  donor: DonorVm;
+  showDonorForm: boolean =false;
+  showDonationForm: boolean = false;
 
   constructor(private donationFlowService: DonationFlowService) {
   }
@@ -25,30 +27,26 @@ export class DonationFlowComponent implements OnInit {
 
     this.donationFlowService.searchDonor(this.email)
       .subscribe(donor => {
-        this.openDialog(donor);
+        this.donor = donor;
+        this.openDonationDialog();
       });
   }
 
   createNewDonor() {
-    // const ref = this.dialog.open(CreateDonorComponent, {
-    //   width: '800px',
-    //   height: '400px',
-    // });
-
-    // ref.afterClosed().subscribe((donor: DonorVm) => {
-    //   this.openDialog(donor);
-    // });
+    this.showDonorForm = true;
   }
 
-  private openDialog(donor: DonorVm) {
-    // const ref = this.dialog.open(CreateDonationComponent, {
-    //   data: donor,
-    //   height: '700px',
-    //   width: '700px'
-    // });
-
-    // ref.afterClosed().subscribe(_ => {
-    //   this.email = '';
-    // });
+  private openDonationDialog() {
+    this.showDonationForm= true;
+  }
+  onDonorFormClose(donor){
+    this.showDonorForm = false;
+    if(donor){
+      this.donor = donor;
+      this.openDonationDialog();
+    }
+  }
+  onDonationFormClose(){
+    this.showDonationForm = false;
   }
 }

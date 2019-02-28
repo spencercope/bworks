@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {DonationFlowService} from "../../../services/donation-flow.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CreateDonorParams} from "../../../../app.api";
@@ -9,7 +9,8 @@ import {CreateDonorParams} from "../../../../app.api";
   styleUrls: ['./create-donor.component.scss']
 })
 export class CreateDonorComponent implements OnInit {
-
+  @Input()showDialog : boolean;
+  @Output() onClose = new EventEmitter<any>();
   form: FormGroup;
 
   constructor(private donationFlowService: DonationFlowService,
@@ -30,12 +31,16 @@ export class CreateDonorComponent implements OnInit {
       refSource: ['']
     });
   }
+  onHide(){
+    this.onClose.emit(null);
+  }
 
   save() {
     const params = new CreateDonorParams(...this.form.value);
     this.donationFlowService.createDonor(params)
       .subscribe(donor => {
-        // this.dialogRef.close(donor);
+        console.log(donor)
+        this.onClose.emit(donor);
       });
   }
 }

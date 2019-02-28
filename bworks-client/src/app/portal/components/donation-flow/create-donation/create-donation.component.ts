@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, Input, EventEmitter, Output} from '@angular/core';
 import {DonorVm, ItemClient, ItemVm, ItemVmType} from "../../../../app.api";
 
 interface NewItem {
@@ -14,15 +14,22 @@ interface NewItem {
   styleUrls: ['./create-donation.component.scss']
 })
 export class CreateDonationComponent implements OnInit {
+  @Input() donor:DonorVm;
+  @Input() showDialog: boolean;
+  @Output() onClose = new EventEmitter<any>();
 
-  options = ItemVmType;
+  // figure out a better way
+  options = [
+    {label:"Bike",value:"Bike"},
+    {label:"PC",value:"PC"},
+    {label:"Part",value:"Part"},
+    {label:"Misc",value:"Misc"}
+  ];
 
   newItems: NewItem[] = [];
   isOffsite = false;
   barcodeId = '';
-
-  constructor(public data: DonorVm,
-              private itemClient: ItemClient) {
+  constructor(private itemClient: ItemClient) {
   }
 
   ngOnInit() {
@@ -45,7 +52,7 @@ export class CreateDonationComponent implements OnInit {
       vm.notes = item.notes;
       vm.type = item.type;
 
-      this.itemClient.createBaseItem(vm, this.data.id, this.isOffsite, item.barcodeId)
+      this.itemClient.createBaseItem(vm, this.donor.id, this.isOffsite, item.barcodeId)
         .subscribe(response => {
           this.newItems.splice(index, 1, {...item, id: response.id});
           this.createNewItem();
@@ -55,7 +62,7 @@ export class CreateDonationComponent implements OnInit {
       vm.notes = item.notes;
       vm.type = item.type;
 
-      this.itemClient.createBaseItem(vm, this.data.id)
+      this.itemClient.createBaseItem(vm, this.donor.id)
         .subscribe(response => {
           this.newItems.splice(index, 1, {...item, id: response.id, barcodeId: response.barcodeId});
           this.createNewItem();
@@ -83,5 +90,8 @@ export class CreateDonationComponent implements OnInit {
     xhr.open('GET', 'https://bwipjs-api.metafloor.com/?bcid=code128&text=' + text + '&includetext&rotate=R');
     xhr.responseType = 'blob';
     xhr.send();
+  }
+  onHide(){
+    this.onClose.emit(null);
   }
 }
