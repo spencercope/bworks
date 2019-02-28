@@ -9,7 +9,6 @@ import {AppModule} from './app.module';
 import {HttpStatus, Logger} from "@nestjs/common";
 import {HttpExceptionFilter} from './shared/filters/http-exception.filter';
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
-import {join} from "path";
 
 async function bootstrap() {
     const expressApp = express();
