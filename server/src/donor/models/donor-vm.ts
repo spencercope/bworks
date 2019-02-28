@@ -1,12 +1,22 @@
 import {BaseVm} from "../../shared/base-vm";
 import {Donor} from "./donor.model";
+import {ApiModelProperty, ApiModelPropertyOptional} from "@nestjs/swagger";
+import {ItemVm} from "../../item/models/item-vm";
 
 export class DonorVm extends BaseVm<Donor> {
-    name: string;
+    @ApiModelProperty()
+    firstName: string;
+    @ApiModelProperty()
+    lastName: string;
+    @ApiModelProperty()
     email: string;
-    zip: number;
+    @ApiModelPropertyOptional()
+    zip?: number;
+    @ApiModelPropertyOptional()
     phoneNumber?: string;
-    donations?: any; // TODO: wait for Item
+    @ApiModelPropertyOptional({type: ItemVm, isArray: true})
+    donations?: ItemVm[];
+    @ApiModelPropertyOptional()
     refSource?: string;
 
     constructor(model: Donor) {
@@ -14,11 +24,12 @@ export class DonorVm extends BaseVm<Donor> {
     }
 
     getViewModel(model: Donor): void {
-        this.name = model.name;
+        this.firstName = model.firstName;
+        this.lastName = model.lastName;
         this.email = model.email;
         this.zip = model.zip;
         this.phoneNumber = model.phoneNumber;
-        this.donations = model.donations; // TODO: wait for Item
+        this.donations = model.donations.map(donation => new ItemVm(donation));
         this.refSource = model.refSource;
     }
 }

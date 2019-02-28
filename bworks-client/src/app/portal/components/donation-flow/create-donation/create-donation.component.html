@@ -1,0 +1,43 @@
+<!-- <section mat-dialog-content>
+  <h3>Donor Information:</h3>
+  <hr>
+  <mat-list role="list">
+    <mat-list-item role="listitem">Name: {{data.firstName}} {{data.lastName}}</mat-list-item>
+    <mat-list-item role="listitem">Donations: {{data.donations.length}}</mat-list-item>
+    <mat-list-item role="listitem">Joined: {{data.createdAt | date:'short'}}</mat-list-item>
+  </mat-list>
+  <hr>
+  <div class="d-flex align-items-center">
+    <h3>Add Donation:</h3>
+    <mat-slide-toggle class="ml-2" color="primary" [(ngModel)]="isOffsite">Is this donation off-site?</mat-slide-toggle>
+  </div>
+  <hr>
+  <div class="row mt-2" *ngFor="let item of newItems; let i = index">
+    <div class="col-6">
+      <mat-form-field>
+        <mat-select placeholder="Type" [(ngModel)]="item.type" [disabled]="item.id">
+          <mat-option *ngFor="let option of options | keyvalue" [value]="option.value">
+            {{option.key}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-6">
+      <mat-form-field>
+        <input type="text" matInput [(ngModel)]="item.notes" placeholder="Description" [disabled]="item.id">
+      </mat-form-field>
+    </div>
+
+    <div class="col-12" *ngIf="isOffsite && !item.id">
+      <mat-form-field class="w-100">
+        <input type="text" matInput [(ngModel)]="item.barcodeId" placeholder="Barcode" [disabled]="item.id">
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary" *ngIf="!item.id" (click)="save(i)">Save</button>
+    <button mat-raised-button *ngIf="item.id" (click)="printBarcode(item.barcodeId)">Print
+      Barcode: {{item.barcodeId}}</button>
+    <hr>
+  </div>
+</section> -->

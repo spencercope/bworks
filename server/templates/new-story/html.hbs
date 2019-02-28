@@ -1,0 +1,17 @@
+<p>Hi, {{firstName}}</p>
+<br>
+<h2>Images</h2>
+<ul>
+    {{#each images}}
+        <li>{{this}}</li>
+    {{/each}}
+</ul>
+<br>
+<h2>Stories</h2>
+{{#each stories}}
+    <ul>
+        <li>{{this.status}}</li>
+        <li>{{this.createdAt}}</li>
+        <li>{{this.note}}</li>
+    </ul>
+{{/each}}

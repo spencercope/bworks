@@ -1,0 +1,43 @@
+<!-- <mat-card class="mt-4">
+  <mat-card-title>Login In</mat-card-title>
+  <mat-card-content>
+    <mat-form-field>
+      <input type="email" matInput placeholder="Your email *" [(ngModel)]="username"/>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input type="password" matInput placeholder="Your password *" [(ngModel)]="password"/>
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions>
+    <button type="submit" mat-raised-button color="primary" (click)="login()">Login</button>
+  </mat-card-actions>
+</mat-card> -->
+<div class="p-grid mt-5">
+  <div class="p-col"></div>
+  <div class="p-col">
+    <p-card header="LOGIN" [style]="{width: '360px'}" styleClass="ui-card-shadow">
+      <div class="p-grid" >
+          <div class="p-col" >
+              <span class="ui-float-label mt-3">
+                <input id="float-input-username" type="text" [(ngModel)]="username" size="45" pInputText> 
+                <label for="float-input-username">Username</label>
+            </span>
+          </div>
+          <div class="p-col">
+            <span class="ui-float-label mt-3">
+              <input id="float-input-password" type="password" [(ngModel)]="password" size="45" pInputText> 
+              <label for="float-input-password">Password</label>
+          </span>
+        </div>
+      </div>
+      <p-footer>
+          <button pButton type="button" (click)="login()" label="Login" iconPos="right" icon="pi pi-angle-right" style="margin-right: .25em"></button>
+      </p-footer>
+    </p-card>
+  </div>
+  <div class="p-col"></div>
+</div>
+<p-toast position="bottom-center"></p-toast>
+
+

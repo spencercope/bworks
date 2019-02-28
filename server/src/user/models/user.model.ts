@@ -10,6 +10,9 @@ export enum UserRole {
 
 export interface User extends BaseDocument {
     username: string;
+    firstName: string;
+    lastName: string;
+    name: string;
     password: string;
     role: UserRole;
 }
@@ -20,6 +23,8 @@ export const userSchema = new Schema({
         unique: true,
         required: true,
     },
+    firstName: String,
+    lastName: String,
     password: {
         type: String,
         required: true,
@@ -30,6 +35,10 @@ export const userSchema = new Schema({
         default: 'volunteer'
     },
 }, schemaOptions);
+
+userSchema.virtual('name').get(function () {
+    return this.firstName + ' ' + this.lastName;
+});
 
 userSchema.pre<User>('save', async function (next) {
     try {

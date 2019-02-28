@@ -1,5 +1,8 @@
-import {BaseDocument, schemaOptions} from "../../shared/base.model"; 
+import {BaseDocument, schemaOptions} from "../../shared/base.model";
 import {Schema} from 'mongoose';
+import {FileReference} from "../../file-reference/models/file-reference.model";
+import {Story, Todo} from "../../history/models/history.model";
+import {ApiModelPropertyOptional} from "@nestjs/swagger";
 
 export enum BikeType {
     Road = 'road',
@@ -68,13 +71,14 @@ export enum CDDrive {
 }
 
 export enum Status {
-    Received = 'received',
-    Scraped = 'scraped',
-    Donated = 'donated',
-    Sold = 'sold',
-    EarnABike = 'earn-bike',
-    EarnAPC = 'earn-pc',
-    Progress = 'progress'
+    Received = 'Donation Received',
+    Scraped = 'Scrapped',
+    Donated = 'Donated',
+    Sold = 'Sold',
+    EarnABikePickedUp = 'Earn A Bike Picked Up',
+    EarnABikeGraduation = 'Earn A Bike Graduation',
+    EarnAPC = 'Earn A PC',
+    Progress = 'In Progress'
 }
 
 export enum VideoCard {
@@ -87,22 +91,23 @@ export interface Item extends BaseDocument {
     donorId: string,
     type: ItemType,
     notes: string,
-    images: any, //TODO proper type
+    images: FileReference[],
     user: string,
     status: Status,
-    barcodeId: number
+    barcodeId: string;
+    wikiLinks?: string[];
 }
 
 export interface Bike extends Item {
     attributes: BikeAttribute,
-    todos: any[],//TODO proper type
-    stories: any, //TODO proper type
+    todos: Todo[],
+    stories: Story[],
 }
 
 export interface PC extends Item {
     attributes: PCAttribute,
-    todos: any[],
-    stories: any,
+    todos: Todo[],
+    stories: Story[],
     checklist: PCChecklist
 }
 
@@ -116,30 +121,64 @@ export interface Misc extends Item {
     description: string
 }
 
-export interface BikeAttribute {
-    frameSize: number,
-    graduatedDate: Date,
-    serialNumber: string,
-    bikeType: BikeType,
-    wheelSize: number,
-    marketPrice: number,
-    color: string,
-    stepOverHeight: string
+export class NameAndDate {
+    @ApiModelPropertyOptional()
+    name: string;
+    @ApiModelPropertyOptional({type: String, format: 'date-time'})
+    date: Date;
 }
 
-export interface PCAttribute {
-    graduatedDate: Date,
-    processorCores: number,
-    processorSpeed: number,
-    processorType: ProcessorType,
-    videoCard: VideoCard,
-    ram: number,
-    hardDrive: number,
-    cdDrive: CDDrive,
-    checkedInBy: NameAndDate,
-    installedBy: NameAndDate,
-    qualityAssuranceBy: NameAndDate,
-    osVersion: OSVersion
+export class OSVersion {
+    @ApiModelPropertyOptional()
+    received: string;
+    @ApiModelPropertyOptional()
+    bWorksUpdate: string;
+}
+
+export class BikeAttribute {
+    @ApiModelPropertyOptional()
+    frameSize?: number;
+    @ApiModelPropertyOptional({type: String, format: 'date-time'})
+    graduatedDate?: Date;
+    @ApiModelPropertyOptional()
+    serialNumber?: string;
+    @ApiModelPropertyOptional({type: String, enum: BikeType})
+    bikeType?: BikeType;
+    @ApiModelPropertyOptional()
+    wheelSize?: number;
+    @ApiModelPropertyOptional()
+    marketPrice?: number;
+    @ApiModelPropertyOptional()
+    color?: string;
+    @ApiModelPropertyOptional()
+    stepOverHeight?: string;
+}
+
+export class PCAttribute {
+    @ApiModelPropertyOptional({type: String, format: 'date-time'})
+    graduatedDate?: Date;
+    @ApiModelPropertyOptional()
+    processorCores?: number;
+    @ApiModelPropertyOptional()
+    processorSpeed?: number;
+    @ApiModelPropertyOptional({type: String, enum: ProcessorType})
+    processorType?: ProcessorType;
+    @ApiModelPropertyOptional({type: String, enum: VideoCard})
+    videoCard?: VideoCard;
+    @ApiModelPropertyOptional()
+    ram?: number;
+    @ApiModelPropertyOptional()
+    hardDrive?: number;
+    @ApiModelPropertyOptional({type: String, enum: CDDrive})
+    cdDrive?: CDDrive;
+    @ApiModelPropertyOptional({type: NameAndDate})
+    checkedInBy?: NameAndDate;
+    @ApiModelPropertyOptional({type: NameAndDate})
+    installedBy?: NameAndDate;
+    @ApiModelPropertyOptional({type: NameAndDate})
+    qualityAssuranceBy?: NameAndDate;
+    @ApiModelPropertyOptional({type: OSVersion})
+    osVersion?: OSVersion;
 }
 
 export interface PCChecklist {
@@ -150,22 +189,8 @@ export interface PCChecklist {
     wifi: boolean
 }
 
-export interface NameAndDate {
-    name: string,
-    date: Date,
-}
-
-export interface OSVersion {
-    received: string,
-    bWorksUpdate: string
-}
-
-
 export const itemSchema = new Schema({
-    donorId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Donor'
-    },
+    donorId: Schema.Types.ObjectId,
     type: {
         type: String,
         enum: ['Bike', 'PC', 'Part', 'Misc'],
@@ -181,12 +206,22 @@ export const itemSchema = new Schema({
     user: String,
     status: {
         type: String,
-        enum: ['received', 'scraped', 'donated', 'sold', 'earn-bike', 'earn-pc', 'progress']
+        enum: [
+            'Donation Received',
+            'Scrapped',
+            'Donated',
+            'Sold',
+            'Earn A Bike Picked Up',
+            'Earn A Bike Graduation',
+            'Earn A PC',
+            'In Progress'
+        ]
     },
     barcodeId: {
-        type: Number,
+        type: String,
         unique: true
-    }
+    },
+    wikiLinks: [String],
 }, {...schemaOptions, discriminatorKey: 'type'});
 
 export const bikeSchema = new Schema({

@@ -12,7 +12,7 @@ export interface History extends BaseDocument {
     itemId?: string;
     person?: string;
     note?: string;
-    type: HistoryType;
+    historyType?: HistoryType;
 }
 
 export interface Todo extends History {
@@ -26,7 +26,16 @@ export interface Story extends History {
 export const historySchema = new Schema({
     status: {
         type: String,
-        enum: ['received', 'scraped', 'donated', 'sold', 'earn-bike', 'earn-pc', 'progress']
+        enum: [
+            'Donation Received',
+            'Scrapped',
+            'Donated',
+            'Sold',
+            'Earn A Bike Picked Up',
+            'Earn A Bike Graduation',
+            'Earn A PC',
+            'In Progress'
+        ]
     },
     itemId: {
         type: Schema.Types.ObjectId,
@@ -34,22 +43,22 @@ export const historySchema = new Schema({
     },
     person: String,
     note: String,
-    type: {
+    historyType: {
         type: String,
         enum: ['Internal', 'External']
     }
-}, {...schemaOptions, discriminatorKey: 'type'});
+}, {...schemaOptions, discriminatorKey: 'historyType'});
 
 export const todoSchema = new Schema({
     isTransferred: {
         type: Boolean,
         default: false
     }
-}, {discriminatorKey: 'type'});
+}, {discriminatorKey: 'historyType'});
 
 export const storySchema = new Schema({
     transferredFromTodo: {
         type: Boolean,
         default: false
     }
-}, {discriminatorKey: 'type'});
+}, {discriminatorKey: 'historyType'});
