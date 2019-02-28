@@ -23,7 +23,9 @@
      </div>
   
   <div class="ui-toolbar-group-right">
-      <button pButton type="button" icon="pi pi-search"></button>
+    <span *ngIf="!isAuthenticated"> <i  [routerLink]="['/auth/login']" class="pi pi-sign-in" style="cursor: pointer;font-size: 2em"></i></span>
+    <span *ngIf="isAuthenticated"> <i (click)="logout()" class="pi pi-sign-out" style="cursor: pointer; font-size: 2em"></i> </span>
+      
   </div>
 </p-toolbar>
 

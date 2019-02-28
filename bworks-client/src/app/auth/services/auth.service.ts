@@ -19,6 +19,7 @@ export class AuthService {
   }
 
   get isAuthenticated$(): Observable<boolean> {
+    console.log(this.isAuthenticated)
     return this.isAuthenticated.asObservable();
   }
 
@@ -39,13 +40,14 @@ export class AuthService {
     const user: UserVm = this.localStorageService.getObject('user');
     const token = this.localStorageService.get('token');
 
-    if (user) {
+    console.log(user.constructor !== Object)
+    if (Object.entries(user).length !== 0) {
+      console.log("IN HERE")
       this.token = token;
       this.currentUser = user;
       this.isAuthenticated.next(true);
       return true;
     }
-
     this.isAuthenticated.next(false);
     return false;
   }

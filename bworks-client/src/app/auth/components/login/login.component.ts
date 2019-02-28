@@ -2,11 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {LoginParams} from "../../../app.api";
+import { MessageService } from 'primeng/components/common/messageservice';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
 
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
   password: string;
 
   constructor(private authService: AuthService,
-              private router: Router) {
+              private router: Router,
+              private messageSerivce: MessageService,) {
   }
 
   ngOnInit() {
@@ -23,6 +25,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (!this.username || !this.password) {
+      this.messageSerivce.add({severity:'error', summary: 'Error', detail:'Enter username and password'})
       return;
     }
 
@@ -33,6 +36,8 @@ export class LoginComponent implements OnInit {
     this.authService.login(params)
       .subscribe(_ => {
         this.router.navigate(['portal']);
+      },(error)=>{
+        this.messageSerivce.add({severity:'error', summary: 'Error', detail:'Invalid username or password'})
       });
   }
 }

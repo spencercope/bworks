@@ -8,7 +8,7 @@ export class Tile {
     title: string,
     description: string,
     route: string,
-    urlImage: string
+    urlImage: string,
   ) {
     this._title = title;
     this._description = description;
@@ -47,4 +47,5 @@ export class Tile {
   set urlImage(value: string) {
     this._urlImage = value;
   }
+
 }
