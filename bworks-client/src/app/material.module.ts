@@ -11,6 +11,11 @@ import {DynamicDialogModule} from 'primeng/dynamicdialog';
 import {DialogService} from 'primeng/api';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {DropdownModule} from 'primeng/dropdown';
+import {TableModule} from 'primeng/table';
+import {PanelModule} from 'primeng/panel';
+import {CalendarModule} from 'primeng/calendar';
+import {InputTextareaModule} from 'primeng/inputtextarea';
+
 
 
 
@@ -23,7 +28,11 @@ const modules = [
   DialogModule,
   DynamicDialogModule,
   InputSwitchModule,
-  DropdownModule
+  DropdownModule,
+  TableModule,
+  PanelModule,
+  CalendarModule,
+  InputTextareaModule
 ];
 
 @NgModule({

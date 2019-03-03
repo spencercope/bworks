@@ -11,12 +11,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class InventoryComponent implements OnInit {
 
   dataSource: ItemVm[];
-  displayedColumns: string[] = ['barcodeId', 'type', 'createdAt', 'updatedAt', 'detail'];
+  cols: string[] = ['barcodeId', 'type', 'createdAt', 'updatedAt', 'detail'];
 
   constructor(private inventoryService: InventoryService,
               private router: Router,
-              private route: ActivatedRoute) {
-  }
+              private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.inventoryService.getAllItems()

@@ -1,3 +1,162 @@
-<p>
-  bike-detail works!
-</p>
+<div class="p-grid p-align-center ui-fluid mt-4 mr-3 ml-3">
+  <div class="p-col">
+    <p-panel
+      header="Bike Info"
+      [toggleable]="true"
+      [style]="{ 'margin-bottom': '20px' }"
+    >
+      <form *ngIf="bikeAttForm" [formGroup]="bikeAttForm">
+        <div class="p-grid ui-fluid">
+          <div *ngIf="user.role === role.Admin" style=" display: flex;flex-flow: row-reverse;" class="p-col-12">
+            <i
+              *ngIf="!isEditable"
+              class="pi pi-pencil"
+              (click)="onEditClick()"
+              style="font-size: 2.5em; cursor: pointer; color:green;"
+            ></i>
+            <i
+              *ngIf="isEditable"
+              class="pi pi-times"
+              (click)="onCancelClick()"
+              style="font-size: 2.5em; cursor: pointer; color:red;"
+            ></i>
+          </div>
+          <div class="p-col-6 ">
+            <span>Bike Type:</span>
+            <br />
+            <p-dropdown
+              [style]="{ width: '100%' }"
+              formControlName="bikeType"
+              [options]="bikeType"
+            ></p-dropdown>
+          </div>
+
+          <div class="p-col-6">
+            <span>Color:</span>
+            <input
+              type="text"
+              formControlName="color"
+              pInputText
+            />
+          </div>
+
+          <div class="p-col-6">
+            <span>Frame Size:</span>
+            <input
+              type="text"
+              formControlName="frameSize"
+              pInputText
+            />
+          </div>
+
+          <div class="p-col-6">
+            <span>Graduated Date:</span>
+            <p-calendar
+              formControlName="graduatedDate"
+              [touchUI]="true"
+            ></p-calendar>
+          </div>
+
+          <div class="p-col-6">
+            <span>Market Price:</span>
+            <input
+              type="text"
+              formControlName="marketPrice"
+              pInputText
+            />
+          </div>
+
+          <div class="p-col-6">
+            <span>Serial Number</span>
+            <input
+              type="text"
+              formControlName="serialNumber"
+              pInputText
+            />
+          </div>
+          <div class="p-col">
+            <span>Notes: </span>
+            <textarea
+              formControlName="notes"
+              pInputTextarea
+              autoResize="autoResize"
+            ></textarea>
+          </div>
+        </div>
+        <p-button
+          *ngIf="isEditable"
+          label="Save"
+          (onClick)="save()"
+        ></p-button>
+      </form>
+    </p-panel>
+
+    <p-panel
+      header="Donor Info "
+      [toggleable]="true"
+      [style]="{ 'margin-bottom': '20px' }"
+      [collapsed]="true"
+    >
+    </p-panel>
+
+    <p-panel
+      header="Images Info "
+      [toggleable]="true"
+      [style]="{ 'margin-bottom': '20px' }"
+      [collapsed]="true"
+    >
+      The story begins as Don Vito Corleone, the head of a New York Mafia
+      family, oversees his daughter's wedding. His beloved son Michael has just
+      come home from the war, but does not intend to become part of his father's
+      business. Through Michael's life the nature of the family business becomes
+      clear. The business of the family is just like the head of the family,
+      kind and benevolent to those who give respect, but given to ruthless
+      violence whenever anything stands against the good of the family.
+    </p-panel>
+
+    <p-panel
+      header="Todos"
+      [toggleable]="true"
+      [style]="{ 'margin-bottom': '20px' }"
+      [collapsed]="true"
+    >
+      The story begins as Don Vito Corleone, the head of a New York Mafia
+      family, oversees his daughter's wedding. His beloved son Michael has just
+      come home from the war, but does not intend to become part of his father's
+      business. Through Michael's life the nature of the family business becomes
+      clear. The business of the family is just like the head of the family,
+      kind and benevolent to those who give respect, but given to ruthless
+      violence whenever anything stands against the good of the family.
+    </p-panel>
+
+    <p-panel
+      header="Stories"
+      [toggleable]="true"
+      [style]="{ 'margin-bottom': '20px' }"
+      [collapsed]="true"
+    >
+      The story begins as Don Vito Corleone, the head of a New York Mafia
+      family, oversees his daughter's wedding. His beloved son Michael has just
+      come home from the war, but does not intend to become part of his father's
+      business. Through Michael's life the nature of the family business becomes
+      clear. The business of the family is just like the head of the family,
+      kind and benevolent to those who give respect, but given to ruthless
+      violence whenever anything stands against the good of the family.
+    </p-panel>
+
+    <p-panel
+      header="Images"
+      [toggleable]="true"
+      [style]="{ 'margin-bottom': '20px' }"
+      [collapsed]="true"
+    >
+      The story begins as Don Vito Corleone, the head of a New York Mafia
+      family, oversees his daughter's wedding. His beloved son Michael has just
+      come home from the war, but does not intend to become part of his father's
+      business. Through Michael's life the nature of the family business becomes
+      clear. The business of the family is just like the head of the family,
+      kind and benevolent to those who give respect, but given to ruthless
+      violence whenever anything stands against the good of the family.
+    </p-panel>
+  </div>
+</div>

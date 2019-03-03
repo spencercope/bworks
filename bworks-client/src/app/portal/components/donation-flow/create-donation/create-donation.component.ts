@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit, Input, EventEmitter, Output} from '@angular/core';
-import {DonorVm, ItemClient, ItemVm, ItemVmType} from "../../../../app.api";
+import {DonorVm, ItemClient, ItemVm, ItemVmType, ItemVmStatus} from "../../../../app.api";
 
 interface NewItem {
   id?: string;
@@ -51,7 +51,8 @@ export class CreateDonationComponent implements OnInit {
       const vm = new ItemVm();
       vm.notes = item.notes;
       vm.type = item.type;
-
+      vm.status = ItemVmStatus.Donated;
+      console.log(vm)
       this.itemClient.createBaseItem(vm, this.donor.id, this.isOffsite, item.barcodeId)
         .subscribe(response => {
           this.newItems.splice(index, 1, {...item, id: response.id});
@@ -61,6 +62,7 @@ export class CreateDonationComponent implements OnInit {
       const vm = new ItemVm();
       vm.notes = item.notes;
       vm.type = item.type;
+      vm.status = ItemVmStatus.Donated;
 
       this.itemClient.createBaseItem(vm, this.donor.id)
         .subscribe(response => {
