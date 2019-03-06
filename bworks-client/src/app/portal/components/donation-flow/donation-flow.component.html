@@ -1,21 +1,22 @@
 <section style="height: 100vh;" class="p-grid p-align-center ui-fluid">
   <div class="p-col-6 p-offset-3 ">
     <div class="ui-inputgroup">
-        <input type="text" pInputText placeholder="Existing donor? Search by email" [(ngModel)]="email">
-        <button pButton (click)="search()" type="button" label="Search"></button>        
+      <input type="text" pInputText placeholder="Existing donor? Search by email" [(ngModel)]="email" />
+      <button pButton (click)="search()" type="button" label="Search"></button>
     </div>
     <div class="mt-2">
-
-    <button pButton type="button" label="New Donor" class="ui-button-secondary" (click)="createNewDonor()"></button>  
+      <button pButton type="button" label="New Donor" class="ui-button-secondary" (click)="createNewDonor()"></button>
+    </div>
   </div>
-      
-</div>
-
 </section>
 <div *ngIf="showDonorForm">
-<app-create-donor (onClose)="onDonorFormClose($event)" [showDialog]="showDonorForm" ></app-create-donor>
+  <app-create-donor (onClose)="onDonorFormClose($event)" [showDialog]="showDonorForm"></app-create-donor>
 </div>
 
 <div *ngIf="showDonationForm">
-  <app-create-donation [donor]="donor" (onClose)="onDonationFormClose()" [showDialog]="showDonationForm"></app-create-donation>
+  <app-create-donation
+    [donor]="donor"
+    (onClose)="onDonationFormClose()"
+    [showDialog]="showDonationForm"
+  ></app-create-donation>
 </div>

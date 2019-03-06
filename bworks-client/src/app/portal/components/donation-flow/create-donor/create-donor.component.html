@@ -4,67 +4,40 @@
   header="New Donor"
   (onHide)="onHide()"
   [(visible)]="showDialog"
-  [style]="{width: '350px'} "
+  [style]="{ width: '350px' }"
 >
   <form [formGroup]="form">
     <div class="p-grid ui-fluid">
       <div class="p-col-6">
-          <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-          <input
-            type="text"
-            matInput
-            placeholder="First Name"
-            formControlName="firstName"
-            pInputText
-          />
+        <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+        <input type="text" matInput placeholder="First Name" formControlName="firstName" pInputText />
       </div>
 
       <div class="p-col-6">
-          <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-          <input
-            type="text"
-            placeholder="Last Name"
-            formControlName="lastName"
-            pInputText
-          />
+        <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+        <input type="text" placeholder="Last Name" formControlName="lastName" pInputText />
       </div>
 
       <div class="p-col-12">
-          <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-          <input
-            type="text"
-            placeholder="Email"
-            formControlName="email"
-            pInputText
-          />
+        <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+        <input type="text" placeholder="Email" formControlName="email" pInputText />
       </div>
 
       <div class="p-col-4">
-          <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-          <input type="text" placeholder="Zip " formControlName="zip" pInputText >
+        <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+        <input type="text" placeholder="Zip " formControlName="zip" pInputText />
       </div>
 
       <div class="p-col-4">
-          <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-          <input
-            type="text"
-            placeholder="Phone Number"
-            formControlName="phoneNumber"
-            pInputText
-          />
+        <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+        <input type="text" placeholder="Phone Number" formControlName="phoneNumber" pInputText />
       </div>
 
       <div class="p-col-4">
-          <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-          <input
-            type="text"
-            placeholder="Reference"
-            formControlName="refSource"
-            pInputText
-          />
+        <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+        <input type="text" placeholder="Reference" formControlName="refSource" pInputText />
       </div>
     </div>
-      <p-button [disabled]="form.invalid" label="Save" (onClick)="save()"></p-button>
-
+    <p-button [disabled]="form.invalid" label="Save" (onClick)="save()"></p-button>
   </form>
 </p-dialog>

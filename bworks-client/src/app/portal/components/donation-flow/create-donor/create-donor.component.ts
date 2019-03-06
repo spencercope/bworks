@@ -1,21 +1,19 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {DonationFlowService} from "../../../services/donation-flow.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CreateDonorParams} from "../../../../app.api";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { DonationFlowService } from '../../../services/donation-flow.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CreateDonorParams } from '../../../../app.api';
 
 @Component({
   selector: 'app-create-donor',
   templateUrl: './create-donor.component.html',
-  styleUrls: ['./create-donor.component.scss']
+  styleUrls: ['./create-donor.component.scss'],
 })
 export class CreateDonorComponent implements OnInit {
-  @Input()showDialog : boolean;
+  @Input() showDialog: boolean;
   @Output() onClose = new EventEmitter<any>();
   form: FormGroup;
 
-  constructor(private donationFlowService: DonationFlowService,
-              private fb: FormBuilder) {
-  }
+  constructor(private donationFlowService: DonationFlowService, private fb: FormBuilder) {}
 
   ngOnInit() {
     this.initForm();
@@ -28,19 +26,18 @@ export class CreateDonorComponent implements OnInit {
       email: ['', Validators.required],
       zip: [],
       phoneNumber: [''],
-      refSource: ['']
+      refSource: [''],
     });
   }
-  onHide(){
+  onHide() {
     this.onClose.emit(null);
   }
 
   save() {
     const params = new CreateDonorParams(...this.form.value);
-    this.donationFlowService.createDonor(params)
-      .subscribe(donor => {
-        console.log(donor)
-        this.onClose.emit(donor);
-      });
+    this.donationFlowService.createDonor(params).subscribe(donor => {
+      console.log(donor);
+      this.onClose.emit(donor);
+    });
   }
 }

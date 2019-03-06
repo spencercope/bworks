@@ -53,7 +53,9 @@ export abstract class BaseService<T extends BaseDocument> {
 
   async update(id: string, item: T): Promise<T> {
     try {
-      return this._model.findByIdAndUpdate(this.toObjectId(id), item, { new: true }).exec();
+      return this._model
+        .findByIdAndUpdate(this.toObjectId(id), item, { new: true })
+        .exec();
     } catch (err) {
       throw new InternalServerErrorException(err.message, err.toString());
     }

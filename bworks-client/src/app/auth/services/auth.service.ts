@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {LoginParams, LoginResponseVm, UserClient, UserVm} from "../../app.api";
-import {Observable} from "rxjs/internal/Observable";
-import {tap} from "rxjs/operators";
-import {LocalStorageService} from "../../services/local-storage.service";
-import {BehaviorSubject} from "rxjs/internal/BehaviorSubject";
+import { Injectable } from '@angular/core';
+import { LoginParams, LoginResponseVm, UserClient, UserVm } from '../../app.api';
+import { Observable } from 'rxjs/internal/Observable';
+import { tap } from 'rxjs/operators';
+import { LocalStorageService } from '../../services/local-storage.service';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   token: string;
@@ -14,20 +14,19 @@ export class AuthService {
 
   private isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private userClient: UserClient,
-              private localStorageService: LocalStorageService) {
-  }
+  constructor(private userClient: UserClient, private localStorageService: LocalStorageService) {}
 
   get isAuthenticated$(): Observable<boolean> {
     return this.isAuthenticated.asObservable();
   }
 
   login(vm: LoginParams): Observable<LoginResponseVm> {
-    return this.userClient.login(vm)
-      .pipe(tap((response: LoginResponseVm) => {
+    return this.userClient.login(vm).pipe(
+      tap((response: LoginResponseVm) => {
         this.saveLocalLogin(response);
         this.isAuthenticated.next(true);
-      }));
+      }),
+    );
   }
 
   saveLocalLogin(data: LoginResponseVm) {

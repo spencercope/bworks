@@ -1,14 +1,12 @@
-import {Injectable} from '@angular/core';
-import {BikeVm, ItemClient, ItemVm, MiscVm, PartVm, PCVm} from "../../app.api";
-import {Observable} from "rxjs/internal/Observable";
+import { Injectable } from '@angular/core';
+import { BikeVm, ItemClient, ItemVm, MiscVm, PartVm, PCVm } from '../../app.api';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InventoryService {
-
-  constructor(private itemClient: ItemClient) {
-  }
+  constructor(private itemClient: ItemClient) {}
 
   getAllItems(): Observable<ItemVm[]> {
     return this.itemClient.getAllItems();
@@ -32,5 +30,9 @@ export class InventoryService {
 
   getMiscById(id: string): Observable<MiscVm> {
     return this.itemClient.getMiscById(id);
+  }
+
+  updateBikeItem(id: string, vm: BikeVm): Observable<BikeVm> {
+    return this.itemClient.updateBikeItem(vm, id);
   }
 }

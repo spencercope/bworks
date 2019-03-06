@@ -1,3 +1,3 @@
 export enum EmailTemplates {
-    NewStory = 'new-story'
+  NewStory = 'new-story',
 }

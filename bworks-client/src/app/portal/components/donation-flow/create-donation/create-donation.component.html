@@ -25,10 +25,10 @@
       Joined:
     </div>
     <div class="p-col-8">
-      {{ donor.createdAt | date: "short" }}
+      {{ donor.createdAt | date: 'short' }}
     </div>
   </div>
-<br>
+  <br />
   <h3>Add Donation:</h3>
   <hr />
   <div class="p-grid ui-fluid">
@@ -53,27 +53,15 @@
         Description:
       </div>
       <div class="p-col-8">
-        <input
-          type="text"
-          pInputText
-          [(ngModel)]="item.notes"
-          [disabled]="item.id"
-        />
+        <input type="text" pInputText [(ngModel)]="item.notes" [disabled]="item.id" />
       </div>
 
       <div class="p-col-12" *ngIf="isOffsite && !item.id">
-          <input
-          type="text"
-          pInputText
-          [(ngModel)]="item.barcodeId"
-          placeholder="Barcode"
-          [disabled]="item.id"
-        />        
+        <input type="text" pInputText [(ngModel)]="item.barcodeId" placeholder="Barcode" [disabled]="item.id" />
       </div>
     </div>
-   
-    <p-button  *ngIf="!item.id" label="Save" (click)="save(i)">  </p-button>
-    <p-button  *ngIf="item.id" label="Barcode: {{item.barcodeId}}"  (click)="printBarcode(item.barcodeId)" ></p-button>
-  </div>
 
+    <p-button *ngIf="!item.id" label="Save" (click)="save(i)"> </p-button>
+    <p-button *ngIf="item.id" label="Barcode: {{ item.barcodeId }}" (click)="printBarcode(item.barcodeId)"></p-button>
+  </div>
 </p-dialog>
