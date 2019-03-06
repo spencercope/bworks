@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { filter, switchMap } from 'rxjs/operators';
 import { InventoryService } from '../../../services/inventory.service';
-import { BikeVm, BikeAttribute, UserVm, BikeAttributeBikeType, UserVmRole, ItemClient } from '../../../../app.api';
+import { BikeVm, BikeAttribute, UserVm, UserVmRole } from '../../../../app.api';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -99,7 +99,7 @@ export class BikeDetailComponent implements OnInit {
     this.bikeData.notes = notes;
     this.bikeData.attributes = BikeAttribute.fromJS(attributes);
 
-    this.inventoryService.updateBikeItem(this.bikeData.id, this.bikeData).subscribe(data => {
+    this.inventoryService.updateBikeItem(this.bikeData.id, this.bikeData).subscribe(() => {
       this.isEditable = false;
       this.bikeAttForm.disable();
     });

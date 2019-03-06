@@ -5,7 +5,6 @@ import { PortalRoutingModule } from './portal-routing.module';
 import { PortalComponent } from './components/portal/portal.component';
 import { DonationFlowComponent } from './components/donation-flow/donation-flow.component';
 import { InventoryComponent } from './components/inventory/inventory.component';
-import { MaterialModule } from '../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateDonationComponent } from './components/donation-flow/create-donation/create-donation.component';
@@ -29,7 +28,7 @@ import { PartDetailComponent } from './components/inventory/part-detail/part-det
     MiscDetailComponent,
     PartDetailComponent,
   ],
-  imports: [CommonModule, PortalRoutingModule, MaterialModule, FormsModule, HttpClientModule, ReactiveFormsModule],
+  imports: [CommonModule, PortalRoutingModule, FormsModule, HttpClientModule, ReactiveFormsModule],
   entryComponents: [CreateDonationComponent, CreateDonorComponent],
 })
 export class PortalModule {}
