@@ -14,6 +14,7 @@ import { BikeDetailComponent } from './components/inventory/bike-detail/bike-det
 import { PcDetailComponent } from './components/inventory/pc-detail/pc-detail.component';
 import { MiscDetailComponent } from './components/inventory/misc-detail/misc-detail.component';
 import { PartDetailComponent } from './components/inventory/part-detail/part-detail.component';
+import { PrimeImportModule } from '../primeng-import.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { PartDetailComponent } from './components/inventory/part-detail/part-det
     MiscDetailComponent,
     PartDetailComponent,
   ],
-  imports: [CommonModule, PortalRoutingModule, FormsModule, HttpClientModule, ReactiveFormsModule],
+  imports: [CommonModule, PortalRoutingModule, FormsModule, HttpClientModule, ReactiveFormsModule, PrimeImportModule],
   entryComponents: [CreateDonationComponent, CreateDonorComponent],
 })
 export class PortalModule {}

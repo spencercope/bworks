@@ -9,10 +9,11 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HomeComponent } from './components/home/home.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpRequestInterceptor } from './interceptors/http-request.interceptor';
+import { PrimeImportModule } from './primeng-import.module';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, SidebarComponent, HomeComponent],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule, PrimeImportModule],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
