@@ -29,9 +29,9 @@ export class FileReferenceController {
 
   @Post('image')
   @UseInterceptors(FileInterceptor('image'))
-  @Roles(UserRole.Admin, UserRole.Staff)
-  @UseGuards(AuthGuard(), RolesGuard)
-  @ApiBearerAuth()
+  // @Roles(UserRole.Admin, UserRole.Staff)
+  // @UseGuards(AuthGuard(), RolesGuard)
+  // @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
   @ApiImplicitFile({ name: 'image', description: 'Image' })
   @ApiCreatedResponse({ type: Boolean })
@@ -41,6 +41,9 @@ export class FileReferenceController {
     @UploadedFile() file,
     @Query('itemId') itemId: string,
   ): Promise<boolean> {
+    console.log("FILE::::", file)
+    console.log("FILE::::", itemId)
+
     return this.fileReferenceService.uploadImage(file, itemId);
   }
 }

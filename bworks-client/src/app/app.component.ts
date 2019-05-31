@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from './auth/services/auth.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -9,7 +11,9 @@ import { AuthService } from './auth/services/auth.service';
 export class AppComponent {
   title = 'bworks-client';
 
-  constructor(private authService: AuthService) {
-    authService.checkLocalLogin();
+  constructor(private authService: AuthService, private router: Router) {
+     if( !this.authService.checkLocalLogin()){
+      this.router.navigate(['/auth/login']);
+     };
   }
 }

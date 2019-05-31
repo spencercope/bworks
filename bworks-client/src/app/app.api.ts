@@ -663,6 +663,7 @@ export class FileReferenceClient {
      * @param image (optional) Image
      */
     updateProfilePic(itemId: string, image?: FileParameter | null | undefined): Observable<boolean> {
+        console.log("IMAGE:::,",image)
         let url_ = this.baseUrl + "/file-references/image?";
         if (itemId === undefined || itemId === null)
             throw new Error("The parameter 'itemId' must be defined and cannot be null.");

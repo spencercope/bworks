@@ -23,7 +23,7 @@ export class FileReferenceService extends BaseService<FileReference> {
     if (!item) {
       throw new NotFoundException('Item not found');
     }
-
+    console.log("NEWFILE", file)
     const newFile = this.createModel({
       itemId,
       publicUrl: file.secure_url,

@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/internal/Observable';
 import { tap } from 'rxjs/operators';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { JwtHelperService } from '@auth0/angular-jwt';
+const helper = new JwtHelperService();
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +13,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 export class AuthService {
   token: string;
   currentUser: UserVm;
+
 
   private isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -37,12 +40,17 @@ export class AuthService {
   checkLocalLogin(): boolean {
     const user: UserVm = this.localStorageService.getObject('user');
     const token = this.localStorageService.get('token');
-
+    //this could be refactored
     if (Object.entries(user).length !== 0) {
       this.token = token;
       this.currentUser = user;
+      if(helper.isTokenExpired(this.token)){
+        this.isAuthenticated.next(false);
+        return false;
+      }else{
       this.isAuthenticated.next(true);
       return true;
+      }
     }
     this.isAuthenticated.next(false);
     return false;

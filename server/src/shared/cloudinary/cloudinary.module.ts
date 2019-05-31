@@ -27,9 +27,9 @@ export interface CloudinaryFile {
 }
 
 cloudinary.config({
-  cloud_name: 'stlbworks',
-  api_key: '981777456171561',
-  api_secret: 'hCqSPPoVm0suQfIUP7yMy4MeeeA',
+  cloud_name: 'delorfxul',
+  api_key: '261767452865174',
+  api_secret: 'h5dN7dKZmTKpv2hEQjIpiWKxAXk',
 });
 const storage = cloudinaryStorage({
   cloudinary,

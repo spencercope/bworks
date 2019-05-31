@@ -15,6 +15,8 @@ import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import {FileUploadModule} from 'primeng/fileupload';
+
 
 const modules = [
   InputTextModule,
@@ -30,6 +32,7 @@ const modules = [
   PanelModule,
   CalendarModule,
   InputTextareaModule,
+  FileUploadModule
 ];
 
 @NgModule({
