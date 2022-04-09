@@ -28,7 +28,7 @@
     "bootstrap": "4.3.1",
     "core-js": "^2.5.4",
     "font-awesome": "4.7.0",
-    "moment": "^2.22.2",
+    "moment": "^2.29.2",
     "primeng": "^7.0.5",
     "rxjs": "~6.2.0",
     "zone.js": "~0.8.26"
